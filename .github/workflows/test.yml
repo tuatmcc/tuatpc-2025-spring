@@ -1,0 +1,57 @@
+name: Run test
+
+on:
+  push:
+    branches:
+    - 'main'
+
+    paths-ignore:
+    - '**.md'
+    - 'docs/**'
+  pull_request:
+    paths-ignore:
+    - '**.md'
+    - 'docs/**'
+
+jobs:
+  Rime-and-HTML-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.4'
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Update package list
+      run: |
+        sudo apt update
+
+    - name: Install GCC
+      run: |
+        sudo apt install build-essential -y
+        sudo apt install gcc g++ -y
+
+    - name: Upgrade pip
+      run: python3 -m pip install --upgrade pip
+
+    - name: Install Rime
+      run: python3 -m pip install git+https://github.com/icpc-jag/rime
+
+    - name: Install BeautifulSoup
+      run: python3 -m pip install bs4
+
+    - name: Rime test
+      run: rime test --keep_going
+
+    - name: File Name test
+      run: python3 ./scripts/check_filename.py
+
+    - name: HTML test
+      run: python3 ./scripts/check_html.py
+
