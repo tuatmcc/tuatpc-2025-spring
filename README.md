@@ -1,6 +1,6 @@
-# 作問リポジトリサンプル
+# TUATPC2025 Spring
 
-このリポジトリがそのままサンプルとして利用できます。
+## チュートリアル
 
 - リポジトリを運用する人向け => [docs/admin.md](./docs/admin.md)
 - Rimeの使い方 => [docs/rime.md](./docs/rime.md)
