@@ -51,9 +51,12 @@ export EDITOR=/usr/local/bin/code
 > `rime` が使えるようにならない場合は、Pythonのパスが通っていないかもしれません。
 >
 > `~/.bashrc` または `~/.zshrc` に以下を追記してください。（Macの場合は `.zshrc` がデフォルトです）
-> ```sh
+> ```sh 
 > # 自分の環境に合わせてパスは変更してください
+> # (Mac)
 > $ export PATH=/Users/{ngng628}/Library/Python/3.10/bin:$PATH
+> # (Ubuntu)
+> $ export PATH=/home/{mikunyan}/.local/bin:$PATH
 > ```
 
 ## 作問用ディレクトリの作成
