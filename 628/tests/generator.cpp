@@ -26,10 +26,10 @@ int main(int argc, char* argv[]){
   }
 
   // min
-  gen("02_min.in", 1, 1);
+  gen("02_min_01.in", 1, 1);
 
   // max
-  gen("02_max.in", 100, 100);
+  gen("02_max_01.in", 100, 100);
 
   return 0;
 }
