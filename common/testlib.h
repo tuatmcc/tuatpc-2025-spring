@@ -162,6 +162,7 @@ const char *latestFeatures[] = {
 #define random __random_deprecated
 #include <stdlib.h>
 #include <cstdlib>
+#include <cstdint>
 #include <climits>
 #include <algorithm>
 #undef random
