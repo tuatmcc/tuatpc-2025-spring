@@ -44,12 +44,13 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
         if (t == 1) {
             assert(!able_place.empty());
             // able_placeからランダムに選ぶ
-            int x = rnd.next(1, W - 1);
-            int y = rnd.next(1, H);
-            while (!able_place.contains({x, y})) {
-                x = rnd.next(1, W - 1);
-                y = rnd.next(1, H);
+            int rnd_x = rnd.next(1, W - 1);
+            int rnd_y = rnd.next(1, H);
+            auto itr = able_place.lower_bound({rnd_x, rnd_y});
+            if (itr == able_place.end()) {
+                itr = able_place.begin();
             }
+            auto [x, y] = *itr;
 
             assert(1 <= x && x <= W - 1);
             assert(1 <= x + 1 && x + 1 <= W);
@@ -74,19 +75,19 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
         } else if (t == 2) {
             assert(!lefts.empty());
             // leftsからランダムに選ぶ
-            vector<pair<int, int>> lefts_vec(lefts.begin(), lefts.end());
-            int rand_idx = rnd.next(0, (int)lefts.size() - 1);
-            auto rand_left = lefts_vec[rand_idx];
-            assert(lefts.count(rand_left));
-
-            int x = rand_left.first;
-            int y = rand_left.second;
+            int rnd_x = rnd.next(1, W - 1);
+            int rnd_y = rnd.next(1, H);
+            auto itr = lefts.lower_bound({rnd_x, rnd_y});
+            if (itr == lefts.end()) {
+                itr = lefts.begin();
+            }
+            auto [x, y] = *itr;
 
             assert(lines.count({x, y}));
             assert(lines.count({x + 1, y}));
 
             // 線を消す
-            lefts.erase(rand_left);
+            lefts.erase({x, y});
             lines.erase({x, y});
             lines.erase({x + 1, y});
 
@@ -161,6 +162,15 @@ int main(int argc, char *argv[]) {
         string filename = std::format("02_Hsmall{:02}.in", t + 1);
         int W = MIN_W + t;
         int H = MIN_H;
+        int Q = rnd.next(MIN_Q, MAX_Q);
+        Input in = make_input_by_WHQ(filename, W, H, Q);
+    }
+
+    // W, Hが小さい場合
+    for (int t = 0; t < 10; t++) {
+        string filename = std::format("03_small{:02}.in", t + 1);
+        int W = rnd.next(MIN_W, 10);
+        int H = rnd.next(MIN_H, 10);
         int Q = rnd.next(MIN_Q, MAX_Q);
         Input in = make_input_by_WHQ(filename, W, H, Q);
     }
