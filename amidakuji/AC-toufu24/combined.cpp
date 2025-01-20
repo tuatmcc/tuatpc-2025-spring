@@ -234,16 +234,7 @@ int main() {
     while (Q--) {
         int t;
         cin >> t;
-        if (t == 1) {
-            int x, y;
-            cin >> x >> y;
-            x--, y--; // 0-based index
-            // y行目の置換を更新
-            Perm p = seg.get(y);
-            // x番目とx+1番目の要素を入れ替える
-            swap(p.perm[x], p.perm[x + 1]);
-            seg.set(y, p);
-        } else if (t == 2) {
+        if (t == 1 || t == 2) {
             int x, y;
             cin >> x >> y;
             x--, y--; // 0-based index
