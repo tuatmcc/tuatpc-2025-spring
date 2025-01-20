@@ -4,27 +4,27 @@ using namespace std;
 using namespace atcoder;
 
 /*
-op, e ともに$O(W)$である．
+op, e ともに$O(N)$である．
 
-- セグ木構築 : $O(WH)$
+- セグ木構築 : $O(NM)$
 - クエリ処理 :
     - クエリ回数 : $Q$
-    - クエリ1 : $O(W \log H)$
-    - クエリ2 : $O(W \log H)$
-    - クエリ3 : $O(W)$
-    - 合計 : $O(QW \log H)$
-- 全体 : $O(WH + QW \log H)$
+    - クエリ1 : $O(N \log M)$
+    - クエリ2 : $O(N \log M)$
+    - クエリ3 : $O(N)$
+    - 合計 : $O(QN \log M)$
+- 全体 : $O(NM + QN \log M)$
 */
 
-int W, H;
+int N, M;
 
 // セグ木に乗せる置換
 struct Perm {
     vector<int> perm;
 
     // 恒等置換で初期化
-    Perm() : perm(W) {
-        for (int i = 0; i < W; i++) {
+    Perm() : perm(N) {
+        for (int i = 0; i < N; i++) {
             perm[i] = i;
         }
     }
@@ -50,9 +50,9 @@ Perm e() {
 }
 
 int main() {
-    cin >> W >> H;
+    cin >> N >> M;
 
-    segtree<Perm, op, e> seg(H);
+    segtree<Perm, op, e> seg(M);
 
     int Q;
     cin >> Q;

@@ -1,19 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 /*
-配列確保 : $O(WH)$
+配列確保 : $O(NM)$
 クエリ1 : $O(1)$
 クエリ2 : $O(1)$
-クエリ3 : $O(H)$
-合計 $O(WH + QH)$
+クエリ3 : $O(M)$
+合計 $O(NM + QM)$
 でTLEするはず
 */
 int main() {
-    int W, H;
-    cin >> W >> H;
+    int N, M;
+    cin >> N >> M;
 
     // 横線の有無を管理するあみだくじ
-    vector<vector<bool>> grid(H, vector<bool>(W - 1, false));
+    vector<vector<bool>> grid(M, vector<bool>(N - 1, false));
 
     int Q;
     cin >> Q;
@@ -39,11 +39,11 @@ int main() {
 
             // 探索
             int current = s;
-            for (int y = 0; y < H; ++y) {
+            for (int y = 0; y < M; y++) {
                 // 横線があれば左右に移動
                 if (current > 0 && grid[y][current - 1]) {
                     current--; // 左へ移動
-                } else if (current < W - 1 && grid[y][current]) {
+                } else if (current < N - 1 && grid[y][current]) {
                     current++; // 右へ移動
                 }
             }
@@ -51,4 +51,3 @@ int main() {
         }
     }
 }
-

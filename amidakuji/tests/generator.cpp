@@ -1,32 +1,26 @@
 #include <bits/stdc++.h>
 #include "testlib.h"
+#include "constraints.h"
 using namespace std;
 
-const int MIN_W = 2;
-const int MAX_W = 60;
-const int MIN_H = 1;
-const int MAX_H = 100000;
-const int MIN_Q = 1;
-const int MAX_Q = 100000;
-
 struct Input {
-    int W, H;
+    int N, M;
     int Q;
     vector<tuple<int, int, int>> queries;
 };
 
-Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) {
+Input make_input_by_NMQ(const string filename, const int N, const int M, int Q) {
     Input in;
-    in.W = W;
-    in.H = H;
+    in.N = N;
+    in.M = M;
     in.Q = Q;
 
     // クエリをランダムに生成
     set<pair<int, int>> lines;      // 現在の横線の位置
     set<pair<int, int>> lefts;      // 現在の横線の左端の位置
     set<pair<int, int>> able_place; // 横線が引ける場所
-    for (int i = 1; i < W; i++) {
-        for (int j = 1; j <= H; j++) {
+    for (int i = 1; i < N; i++) {
+        for (int j = 1; j <= M; j++) {
             able_place.insert({i, j});
         }
     }
@@ -44,17 +38,17 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
         if (t == 1) {
             assert(!able_place.empty());
             // able_placeからランダムに選ぶ
-            int rnd_x = rnd.next(1, W - 1);
-            int rnd_y = rnd.next(1, H);
+            int rnd_x = rnd.next(1, N - 1);
+            int rnd_y = rnd.next(1, M);
             auto itr = able_place.lower_bound({rnd_x, rnd_y});
             if (itr == able_place.end()) {
                 itr = able_place.begin();
             }
             auto [x, y] = *itr;
 
-            assert(1 <= x && x <= W - 1);
-            assert(1 <= x + 1 && x + 1 <= W);
-            assert(1 <= y && y <= H);
+            assert(1 <= x && x <= N - 1);
+            assert(1 <= x + 1 && x + 1 <= N);
+            assert(1 <= y && y <= M);
 
             // 線を引く
             lefts.insert({x, y});
@@ -75,8 +69,8 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
         } else if (t == 2) {
             assert(!lefts.empty());
             // leftsからランダムに選ぶ
-            int rnd_x = rnd.next(1, W - 1);
-            int rnd_y = rnd.next(1, H);
+            int rnd_x = rnd.next(1, N - 1);
+            int rnd_y = rnd.next(1, M);
             auto itr = lefts.lower_bound({rnd_x, rnd_y});
             if (itr == lefts.end()) {
                 itr = lefts.begin();
@@ -105,7 +99,7 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
                     able_place.insert({x - 1, y});
                 }
             }
-            if (x < W - 1) {
+            if (x < N - 1) {
                 bool ok = true;
                 // 右の右にも横線がある場合はだめ
                 if (lines.contains({x + 2, y})) {
@@ -119,14 +113,14 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
 
             in.queries.emplace_back(t, x, y);
         } else { // t == 3
-            int s = rnd.next(1, W);
+            int s = rnd.next(1, N);
             in.queries.emplace_back(t, s, -1); // 3つめの引数は使わない
         }
     }
 
     // ファイルに書き込む
     ofstream of(filename);
-    of << in.W << " " << in.H << endl;
+    of << in.N << " " << in.M << endl;
     of << in.Q << endl;
     assert(in.Q == (int)in.queries.size());
     for (auto [t, x, y] : in.queries) {
@@ -148,48 +142,48 @@ Input make_input_by_WHQ(const string filename, const int W, const int H, int Q) 
 int main(int argc, char *argv[]) {
     registerGen(argc, argv, 1);
 
-    // Wが最小の場合
+    // Nが最小の場合
     for (int t = 0; t < 5; t++) {
-        string filename = std::format("01_Wsmall{:02}.in", t + 1);
-        int W = MIN_W;
-        int H = MIN_H + t;
+        string filename = std::format("01_Nsmall{:02}.in", t + 1);
+        int N = MIN_N;
+        int M = MIN_M + t;
         int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_WHQ(filename, W, H, Q);
+        Input in = make_input_by_NMQ(filename, N, M, Q);
     }
 
-    // Hが最小の場合
+    // Mが最小の場合
     for (int t = 0; t < 5; t++) {
-        string filename = std::format("02_Hsmall{:02}.in", t + 1);
-        int W = MIN_W + t;
-        int H = MIN_H;
+        string filename = std::format("02_Msmall{:02}.in", t + 1);
+        int N = MIN_N + t;
+        int M = MIN_M;
         int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_WHQ(filename, W, H, Q);
+        Input in = make_input_by_NMQ(filename, N, M, Q);
     }
 
-    // W, Hが小さい場合
+    // N, Mが小さい場合
     for (int t = 0; t < 10; t++) {
         string filename = std::format("03_small{:02}.in", t + 1);
-        int W = rnd.next(MIN_W, 10);
-        int H = rnd.next(MIN_H, 10);
+        int N = rnd.next(MIN_N, 10);
+        int M = rnd.next(MIN_M, 10);
         int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_WHQ(filename, W, H, Q);
+        Input in = make_input_by_NMQ(filename, N, M, Q);
     }
 
-    // W, Hが大きい場合
-    for (int t = 0; t < 10; t++) {
+    // N, M, Qが大きい場合
+    for (int t = 0; t < 15; t++) {
         string filename = std::format("03_large{:02}.in", t + 1);
-        int W = rnd.next(max(MIN_W, MAX_W - 10), MAX_W);
-        int H = rnd.next(max(MIN_H, MAX_H - 10), MAX_H);
-        int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_WHQ(filename, W, H, Q);
+        int N = rnd.next(max(MIN_N, MAX_N - 10), MAX_N);
+        int M = rnd.next(max(MIN_M, MAX_M - 10), MAX_M);
+        int Q = rnd.next(max(MIN_Q, MAX_Q - 10), MAX_Q);
+        Input in = make_input_by_NMQ(filename, N, M, Q);
     }
 
     // ランダム
-    for (int t = 0; t < 30; t++) {
+    for (int t = 0; t < 20; t++) {
         string filename = std::format("04_random{:02}.in", t + 1);
-        int W = rnd.next(MIN_W, MAX_W);
-        int H = rnd.next(MIN_H, MAX_H);
+        int N = rnd.next(MIN_N, MAX_N);
+        int M = rnd.next(MIN_M, MAX_M);
         int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_WHQ(filename, W, H, Q);
+        Input in = make_input_by_NMQ(filename, N, M, Q);
     }
 }
