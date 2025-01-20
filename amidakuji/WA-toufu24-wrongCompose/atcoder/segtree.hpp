@@ -1,57 +1,12 @@
-#include <bits/stdc++.h>
+#ifndef ATCODER_SEGTREE_HPP
+#define ATCODER_SEGTREE_HPP 1
 
 #include <algorithm>
 #include <cassert>
 #include <functional>
 #include <vector>
 
-
-#ifdef _MSC_VER
-#include <intrin.h>
-#endif
-
-#if __cplusplus >= 202002L
-#include <bit>
-#endif
-
-namespace atcoder {
-
-namespace internal {
-
-#if __cplusplus >= 202002L
-
-using std::bit_ceil;
-
-#else
-
-unsigned int bit_ceil(unsigned int n) {
-    unsigned int x = 1;
-    while (x < (unsigned int)(n)) x *= 2;
-    return x;
-}
-
-#endif
-
-int countr_zero(unsigned int n) {
-#ifdef _MSC_VER
-    unsigned long index;
-    _BitScanForward(&index, n);
-    return index;
-#else
-    return __builtin_ctz(n);
-#endif
-}
-
-constexpr int countr_zero_constexpr(unsigned int n) {
-    int x = 0;
-    while (!(n & (1 << x))) x++;
-    return x;
-}
-
-}  // namespace internal
-
-}  // namespace atcoder
-
+#include "atcoder/internal_bit"
 
 namespace atcoder {
 
@@ -174,84 +129,4 @@ template <class S, S (*op)(S, S), S (*e)()> struct segtree {
 
 }  // namespace atcoder
 
-using namespace std;
-using namespace atcoder;
-
-/*
-op, e ともに$O(N)$である．
-
-- セグ木構築 : $O(NM)$
-- クエリ処理 :
-    - クエリ回数 : $Q$
-    - クエリ1 : $O(N \log M)$
-    - クエリ2 : $O(N \log M)$
-    - クエリ3 : $O(N)$
-    - 合計 : $O(QN \log M)$
-- 全体 : $O(NM + QN \log M)$
-*/
-
-int N, M;
-
-// セグ木に乗せる置換
-struct Perm {
-    vector<int> perm;
-
-    // 恒等置換で初期化
-    Perm() : perm(N) {
-        for (int i = 0; i < N; i++) {
-            perm[i] = i;
-        }
-    }
-
-    // 置換の合成
-    Perm compose(const Perm &other) const {
-        Perm result;
-        for (int i = 0; i < perm.size(); i++) {
-            result.perm[i] = other.perm[perm[i]];
-        }
-        return result;
-    }
-};
-
-// 置換の合成を演算とする
-Perm op(Perm a, Perm b) {
-    return a.compose(b);
-}
-
-// 恒等置換が単位元
-Perm e() {
-    return Perm();
-}
-
-int main() {
-    cin >> N >> M;
-
-    segtree<Perm, op, e> seg(M);
-
-    int Q;
-    cin >> Q;
-
-    while (Q--) {
-        int t;
-        cin >> t;
-        if (t == 1 || t == 2) {
-            int x, y;
-            cin >> x >> y;
-            x--, y--; // 0-based index
-            // y行目の置換を更新
-            Perm p = seg.get(y);
-            // x番目とx+1番目の要素を入れ替える
-            swap(p.perm[x], p.perm[x + 1]);
-            seg.set(y, p);
-        } else if (t == 3) {
-            int s;
-            cin >> s;
-            s--; // 0-based index
-            // 全行の置換を合成することであみだくじの結果を求める
-            Perm result_perm = seg.all_prod();
-            // s行目の移動先が答え
-            int result = result_perm.perm[s];
-            cout << (result + 1) << endl; // 1-based index
-        }
-    }
-}
+#endif  // ATCODER_SEGTREE_HPP
