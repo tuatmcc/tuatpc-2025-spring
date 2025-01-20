@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy3
+#!/usr/bin/env python3
 # ac-library-python(https://github.com/not522/ac-library-python/tree/master)
 from atcoder.segtree import SegTree
 from typing import List
