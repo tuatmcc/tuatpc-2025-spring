@@ -28,7 +28,7 @@ struct Settings {
 int main(int argc, char* argv[])
 {
     registerGen(argc, argv, 1);
-    Settings small(10, 30, 100, 500), large(10000, 30000, 50000, 100000), max(30000, 30000, 100000, 100000);
+    Settings small(10, 30, 100, 500), large(10000, 30000, 20000, 50000), max(30000, 30000, 50000, 50000);
     auto random = [&](const string name, const Settings& settings) {
         int N = rnd.next(settings.N_MIN, settings.N_MAX);
         int Q = rnd.next(settings.Q_MIN, settings.Q_MAX);
