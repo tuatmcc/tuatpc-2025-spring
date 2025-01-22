@@ -13,9 +13,9 @@ def op(a: List[int], b: List[int]) -> List[int]:
         res[i] = b[a[i]]
     return res
 
-from copy import deepcopy
-e = [i for i in range(N)]
-v = [deepcopy(e) for _ in range(M)]
+import numpy as np
+e = np.arange(N)
+v = np.tile(e,(M,1))
 seg = SegTree(op, e, v)
 for _ in range(Q):
     t, *args = map(int, input().split())
