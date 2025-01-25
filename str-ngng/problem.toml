@@ -1,0 +1,18 @@
+# documents: https://statements-manager.readthedocs.io/ja/stable/problem_config.html
+
+id = "G"
+params_path = "./tests/constraints.hpp"
+#assets_path = "./statement/assets/"
+sample_path = "./tests/"
+ignore_samples = []
+
+[[statements]]
+path = "./statement/statement.md"
+lang = "ja"
+markdown_extensions = ["md_in_html", "tables", "fenced_code"]
+
+[constraints]
+MIN_N = 4
+MAX_N = 30000
+MIN_Q = 1
+MAX_Q = 50000

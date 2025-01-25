@@ -16,10 +16,24 @@ $i$ 回目のクエリでは、$S$ の $l_i$ 文字目から $r_i$ 文字目ま�
 
 ## 制約
 
-- $4 \le N \le 3 \times 10^4$
-- $1 \le Q \le 5 \times 10^4$
+- ${@constraints.MIN_N} \le N \le {@constraints.MAX_N}$
+- ${@constraints.MIN_Q} \le Q \le {@constraints.MAX_Q}$
 - $S$ は英子文字 `a-z` からなる文字列
 - 各クエリについて、$1 \le l \le r \le N$
+
+## 入力
+
+```
+$N$ $Q$
+$l_1$ $r_1$
+$l_2$ $r_2$
+$\vdots$
+$l_Q$ $r_Q$
+```
+
+## 入出力例
+
+{@samples.all}
 
 ## 備考
 

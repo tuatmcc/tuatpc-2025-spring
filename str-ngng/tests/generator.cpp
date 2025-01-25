@@ -1,7 +1,11 @@
 #include "testlib.h"
 #include "bits/stdc++.h"
+#include "constraints.hpp"
+#include <filesystem>
 
 using namespace std;
+
+const string problem_directory = "str-ngng";
 
 void gen(const string name, const string S, const vector<pair<int, int>>& LR)
 {
@@ -12,6 +16,24 @@ void gen(const string name, const string S, const vector<pair<int, int>>& LR)
         ofs << l << " " << r << endl;
     }
 }
+
+void sample()
+{
+    using namespace std::filesystem;
+    string sample_directory = problem_directory + "/tests/";
+    vector<string> sample_ids;
+    try {
+        for (const auto& entry : directory_iterator(relpath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".in") {
+                string sample_id = entry.path().stem();
+                if (exists(sample_id))
+                    sample_ids.emplace_back(entry.path().stem());
+            }
+        }
+    } catch (const filesystem_error& e) {
+        std::cerr << "エラー: " << e.what() << std::endl;
+    }
+};
 
 struct Settings {
     int N_MIN, N_MAX;
@@ -28,7 +50,7 @@ struct Settings {
 int main(int argc, char* argv[])
 {
     registerGen(argc, argv, 1);
-    Settings small(10, 30, 100, 500), large(10000, 30000, 20000, 50000), max(30000, 30000, 50000, 50000);
+    Settings small(10, 30, 100, 500), large(10000, MAX_N, 20000, MAX_Q), max(MAX_N, MAX_N, MAX_Q, MAX_Q);
     auto random = [&](const string name, const Settings& settings) {
         int N = rnd.next(settings.N_MIN, settings.N_MAX);
         int Q = rnd.next(settings.Q_MIN, settings.Q_MAX);

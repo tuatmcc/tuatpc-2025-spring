@@ -1,12 +1,8 @@
 #include "testlib.h"
 #include "bits/stdc++.h"
+#include "constraints.hpp"
 
 using namespace std;
-
-const int MIN_N = 4;
-const int MAX_N = 30000;
-const int MIN_Q = 1;
-const int MAX_Q = 50000;
 
 int main(int argc, char* argv[])
 {
