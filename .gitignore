@@ -6,6 +6,7 @@ Icon*
 Thumbs.db
 *~
 *.out
+!/*/tests/*.out
 target
 testlib.h
 .venv/

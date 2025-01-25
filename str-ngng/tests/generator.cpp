@@ -5,8 +5,6 @@
 
 using namespace std;
 
-const string problem_directory = "str-ngng";
-
 void gen(const string name, const string S, const vector<pair<int, int>>& LR)
 {
     ofstream ofs(name);
@@ -16,24 +14,6 @@ void gen(const string name, const string S, const vector<pair<int, int>>& LR)
         ofs << l << " " << r << endl;
     }
 }
-
-void sample()
-{
-    using namespace std::filesystem;
-    string sample_directory = problem_directory + "/tests/";
-    vector<string> sample_ids;
-    try {
-        for (const auto& entry : directory_iterator(relpath)) {
-            if (entry.is_regular_file() && entry.path().extension() == ".in") {
-                string sample_id = entry.path().stem();
-                if (exists(sample_id))
-                    sample_ids.emplace_back(entry.path().stem());
-            }
-        }
-    } catch (const filesystem_error& e) {
-        std::cerr << "エラー: " << e.what() << std::endl;
-    }
-};
 
 struct Settings {
     int N_MIN, N_MAX;
@@ -66,11 +46,11 @@ int main(int argc, char* argv[])
         gen(name, S, LR);
     };
     // sample
-    {
-        gen("00_sample_01.in", "abaaab", vector<pair<int, int>>({ { 1, 6 }, { 1, 4 } }));
-        gen("00_sample_02.in", "ababababab", vector<pair<int, int>>({ { 1, 10 }, { 1, 6 } }));
-        gen("00_sample_03.in", "abababababababababab", vector<pair<int, int>>({ { 1, 20 }, { 1, 16 } }));
-    }
+    // {
+    //     gen("00_sample_01.in", "abaaab", vector<pair<int, int>>({ { 1, 6 }, { 1, 4 } }));
+    //     gen("00_sample_02.in", "ababababab", vector<pair<int, int>>({ { 1, 10 }, { 1, 6 } }));
+    //     gen("00_sample_03.in", "abababababababababab", vector<pair<int, int>>({ { 1, 20 }, { 1, 16 } }));
+    // }
     // small
     {
         // random

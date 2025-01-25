@@ -43,8 +43,14 @@ jobs:
     - name: Install Rime
       run: python3 -m pip install git+https://github.com/icpc-jag/rime
 
+    - name: Install statements-manager
+      run: python3 -m pip install statements-manager
+
     - name: Install BeautifulSoup
       run: python3 -m pip install bs4
+
+    - name: Run statements-manager
+      run: ss-manager run ./
 
     - name: Rime test
       run: rime test --keep_going
@@ -54,4 +60,16 @@ jobs:
 
     - name: HTML test
       run: python3 ./scripts/check_html.py
+
+    - name: Commit files
+      run: |
+        git add --all
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -m "[ci skip] [bot] Updating to ${{ github.sha }}."
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with: 
+        branch: ${{ github.ref }}
 
