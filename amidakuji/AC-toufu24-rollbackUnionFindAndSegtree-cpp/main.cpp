@@ -1,21 +1,26 @@
+// 参考: https://yukicoder.me/wiki/offline_dsp
+
 #include <bits/stdc++.h>
 using namespace std;
 #include "RollbackUnionFind.hpp"
 
 struct SegmentTreeNode {
-    int tl, tr;
-    vector<pair<int, int>> edges;
-    SegmentTreeNode *left, *right;
+    int tl, tr; // 区間[l, r)
+    vector<pair<int, int>> edges; // ノードで管理する辺
+    SegmentTreeNode *left, *right; // セグ木の子ノード
     SegmentTreeNode(int l, int r) : tl(l), tr(r), left(nullptr), right(nullptr) {}
 };
 
 void register_edge(SegmentTreeNode *node, int L, int R, pair<int, int> edge) {
+    // 区間[L, R)とノードの区間が交差しない場合は何もしない
     if (R <= node->tl || L >= node->tr)
         return;
+    // ノードの区間が完全に[L, R)を含む場合は辺を追加
     if (L <= node->tl && node->tr <= R) {
         node->edges.push_back(edge);
         return;
     }
+    // そうでない場合は再帰的に子ノードに辺を追加
     int mid = (node->tl + node->tr) / 2;
     if (!node->left) {
         node->left = new SegmentTreeNode(node->tl, mid);
@@ -26,6 +31,7 @@ void register_edge(SegmentTreeNode *node, int L, int R, pair<int, int> edge) {
 }
 
 SegmentTreeNode *build_segment_tree(const vector<pair<pair<int, int>, pair<int, int>>> &intervals, int Q) {
+    // セグメントツリーを構築
     SegmentTreeNode *root = new SegmentTreeNode(0, Q);
     for (const auto &[interval, edge] : intervals) {
         auto [L, R] = interval;
