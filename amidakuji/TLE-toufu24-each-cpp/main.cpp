@@ -15,7 +15,7 @@ int main() {
     int Q;
     cin >> Q;
 
-    // 各縦棒に対して{高さ, 左端かどうか}を管理
+    // 各縦棒に対して存在する横棒の{高さ, 左端かどうか}を管理
     vector<set<pair<int, bool>>> to(N);
 
     while (Q--) {
@@ -49,14 +49,18 @@ int main() {
                 auto next_itr = to[cur_x].lower_bound({cur_y, false});
                 if (next_itr != to[cur_x].end()) {
                     if (next_itr->second) {
+                        // 左端の場合は右に移動
                         cur_x = cur_x + 1;
                     } else {
+                        // 右端の場合は左に移動
                         cur_x = cur_x - 1;
                     }
                     cur_y = next_itr->first + 1;
                 } else {
                     cur_y = M;
                 }
+
+                // 下まで到達したら終了
                 if (cur_y == M) {
                     cout << cur_x + 1 << endl;
                     break;

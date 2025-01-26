@@ -159,13 +159,21 @@ int main(int argc, char *argv[]) {
     registerGen(argc, argv, 1);
 
     // Nが最小の場合
-    for (int t = 0; t < 3; t++) {
+    for (int t = 0; t < 4; t++) {
         string filename = std::format("01_Nmin{:02}.in", t + 1);
-        int N = MIN_N;
-        int M = rnd.next(MIN_M, MAX_M);
-        int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_NMQ(filename, N, M, Q);
-        write_output(filename, in);
+        if (t < 2) {
+            int N = MIN_N;
+            int M = rnd.next(MIN_M, MAX_M);
+            int Q = rnd.next(MIN_Q, MAX_Q);
+            Input in = make_input_by_NMQ(filename, N, M, Q);
+            write_output(filename, in);
+        } else {
+            int N = MIN_N;
+            int M = rnd.next(MIN_M, MAX_M);
+            int Q = MAX_Q;
+            Input in = make_input_by_NMQ(filename, N, M, Q, 10, 1, 2);
+            write_output(filename, in);
+        }
     }
 
     // Mが最小の場合
