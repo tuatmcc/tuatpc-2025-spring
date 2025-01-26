@@ -21,3 +21,4 @@ cxx_solution(src='main.cpp', flags=['-std=c++20', '-O2', "-I", "."], challenge_c
 
 ## Score
 #expected_score(100)
+expected_verdicts([AC, WA])
