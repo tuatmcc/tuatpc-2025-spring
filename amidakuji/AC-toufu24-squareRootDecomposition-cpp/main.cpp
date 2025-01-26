@@ -3,7 +3,8 @@ using namespace std;
 
 /*
     - 初期化: O(N * M)
-    - クエリ1, 2, 3: O(N√M)
+    - クエリ1, 2: O(N√M)
+    - クエリ3: O(N + √M)
     - 全体: O(N * M + Q * N√M)
     だと思う
 */
@@ -63,9 +64,9 @@ int main() {
 
             vector<int> result_perm = identity_perm(N);
 
-            // 全ブロックの置換を合成
+            // 各ブロックの置換を順番に適用
             for (int i = 0; i < num_blocks; i++) {
-                result_perm = compose(result_perm, block_perms[i]);
+                s = block_perms[i][s];
             }
 
             // s行目の移動先を出力
