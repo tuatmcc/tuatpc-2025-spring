@@ -1,25 +1,32 @@
 FROM ubuntu:22.04
 
-ARG DEBIAN_FRONTEND=noninteractive
+# ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 基本のインストール
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN apt-get update -y
-RUN apt-get install -y \
-    zsh \
-    time \
-    tzdata \
-    tree \
-    git \
-    curl \
-    ca-certificates
+RUN apt-get install -y zsh
+RUN apt-get install -y time
+RUN apt-get install -y tree
+RUN apt-get install -y git
+RUN apt-get install -y curl
+RUN apt-get install -y neovim
+RUN apt-get install -y ca-certificates
+
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# プロンプトの見た目をいい感じにする
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
+RUN echo "eval \"(starship init zsh)\"" > /root/.zshrc
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # シェルを zsh にする
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ENV SHELL /usr/bin/zsh
 RUN chsh -s /bin/zsh
+CMD ["/bin/zsh"]
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # C++ の環境を整える
