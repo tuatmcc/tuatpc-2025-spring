@@ -19,7 +19,7 @@ RUN apt-get install -y ca-certificates
 # プロンプトの見た目をいい感じにする
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
-RUN echo "eval \"(starship init zsh)\"" > /root/.zshrc
+RUN echo "eval \"\$(starship init zsh)\"" > /root/.zshrc
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # シェルを zsh にする
@@ -57,3 +57,4 @@ COPY . /app
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN uv python install pypy-3.10.14
 RUN uv sync
+RUN uv tool install rime
