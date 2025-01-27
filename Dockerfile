@@ -62,3 +62,4 @@ COPY . /app
 RUN uv python install pypy-3.10.14
 RUN uv sync
 RUN uv tool install rime
+RUN uv tool install statements-manager
