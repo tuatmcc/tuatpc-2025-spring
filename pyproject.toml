@@ -1,0 +1,13 @@
+[project]
+name = "tuatpc-2025-spring"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=2.2.2",
+    "rime",
+]
+
+[tool.uv.sources]
+rime = { git = "https://github.com/icpc-jag/rime" }

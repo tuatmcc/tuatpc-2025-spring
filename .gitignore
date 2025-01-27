@@ -10,7 +10,6 @@ target
 testlib.h
 .venv/
 .python-version
-pyproject.toml
 requirements.lock
 requirements-dev.lock
 !common/testlib.h
