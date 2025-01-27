@@ -1,7 +1,9 @@
 FROM ubuntu:22.04
 
 # ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Asia/Tokyo
+ENV LANG C.UTF-8
+ENV LANGUAGE en_US:
+ENV TZ Asia/Tokyo
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 基本のインストール
@@ -24,7 +26,6 @@ RUN echo "eval \"\$(starship init zsh)\"" > /root/.zshrc
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # シェルを zsh にする
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ENV SHELL /usr/bin/zsh
 RUN chsh -s /bin/zsh
 CMD ["/bin/zsh"]
 
