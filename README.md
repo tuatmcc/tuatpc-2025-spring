@@ -3,6 +3,7 @@
 ## チュートリアル
 
 - リポジトリを運用する人向け => [docs/admin.md](./docs/admin.md)
+- Docker の使い方 => [docs/docker.md](./docs/docker.md)
 - Rimeの使い方 => [docs/rime.md](./docs/rime.md)
 - Git/GitHubの使い方 => [docs/git.md](./docs/git.md)
 
