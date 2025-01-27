@@ -1,4 +1,4 @@
-FROM ubuntu:22.10
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
@@ -6,8 +6,8 @@ ENV TZ=Asia/Tokyo
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 基本のインストール
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-RUN apt-get update && \
-    apt-get install -y\
+RUN apt-get update -y
+RUN apt-get install -y \
     zsh \
     time \
     tzdata \
