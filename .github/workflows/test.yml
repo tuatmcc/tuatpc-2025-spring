@@ -60,16 +60,3 @@ jobs:
 
     - name: HTML test
       run: python3 ./scripts/check_html.py
-
-    - name: Commit files
-      run: |
-        git add --all
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git commit -m "[ci skip] [bot] Updating to ${{ github.sha }}."
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with: 
-        branch: ${{ github.ref }}
-
