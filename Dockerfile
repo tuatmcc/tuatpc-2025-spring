@@ -17,6 +17,7 @@ RUN apt-get install -y curl
 RUN apt-get install -y nano
 RUN apt-get install -y vim
 RUN apt-get install -y tmux
+RUN apt-get install -y ruby
 RUN apt-get install -y ca-certificates
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
