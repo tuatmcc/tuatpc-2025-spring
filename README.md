@@ -31,3 +31,12 @@
 
 ## 参考情報
 - [AOJの実行環境 _ Aizu Online Judge](https://onlinejudge.u-aizu.ac.jp/system_info)
+
+## Docker 環境の導入
+
+### Docker のインストール
+
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
