@@ -1,12 +1,14 @@
 // 参考: https://yukicoder.me/wiki/offline_dsp
 
+// O(NM + Q log(Q) log(NM)) で解けてると思っている
+
 #include <bits/stdc++.h>
 using namespace std;
-#include "RollbackUnionFind.hpp"
+#include "RollbackUnionFindWithData.hpp"
 
 struct SegmentTreeNode {
-    int tl, tr; // 区間[l, r)
-    vector<pair<int, int>> edges; // ノードで管理する辺
+    int tl, tr;                    // 区間[l, r)
+    vector<pair<int, int>> edges;  // ノードで管理する辺
     SegmentTreeNode *left, *right; // セグ木の子ノード
     SegmentTreeNode(int l, int r) : tl(l), tr(r), left(nullptr), right(nullptr) {}
 };
@@ -76,6 +78,11 @@ int main() {
     // {時間, 辺のインデックス}
     vector<pair<pair<int, int>, pair<int, int>>> edges_interval;
 
+    // すべての時間にノードを持つセグメントツリーを構築
+    for (int i = 0; i < Q + 2; i++) {
+        edges_interval.push_back({{i, i}, {-1, -1}});
+    }
+
     for (int i = 1; i <= Q; i++) {
         auto [t, x, y] = queries[i - 1];
         if (t == 1) {
@@ -112,10 +119,6 @@ int main() {
     for (auto [edge, st] : active_edges) {
         edges_interval.push_back({{st, Q + 1}, edge});
     }
-    // すべての時間にノードを持つセグメントツリーを構築
-    for (int i = 0; i < Q + 2; i++) {
-        edges_interval.push_back({{i, i}, {-1, -1}});
-    }
 
     // セグ木を構築
     // 最初と最後のノードを考慮するために+2
@@ -123,7 +126,7 @@ int main() {
 
     // dfsでクエリを処理
     vector<int> ans(Q, -2);
-    RollbackUnionFind uf(N * (M + 1));
+    RollbackUnionFindWithData uf(N * (M + 1));
     auto dfs = [&](SegmentTreeNode *node, auto &&dfs) -> void {
         int cnt = 0;
         if (!node)
@@ -142,12 +145,7 @@ int main() {
                 int s = get<1>(queries[t]);
                 assert(0 <= s && s < N);
                 // どの行に到達するか
-                for (int i = 0; i < N; i++) {
-                    if (uf.find(s) == uf.find(i + N * M)) {
-                        ans[t] = i;
-                        break;
-                    }
-                }
+                ans[t] = uf.get_data(s) - N * M;
             }
         } else {
             // 左右の子に伝搬

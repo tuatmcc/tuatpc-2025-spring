@@ -2,12 +2,12 @@
 
 #pragma once
 
-struct RollbackUnionFind {
+struct RollbackUnionFindWithData {
     vector<int> data;
     stack<pair<int, int>> history;
     int inner_snap;
 
-    RollbackUnionFind(int sz) : inner_snap(0) { data.assign(sz, -1); }
+    RollbackUnionFindWithData(int sz) : inner_snap(0) { data.assign(sz, -1); }
 
     bool unite(int x, int y) {
         x = find(x), y = find(y);
