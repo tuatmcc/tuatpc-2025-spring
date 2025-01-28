@@ -3,8 +3,7 @@ name: Run test
 on:
   push:
     branches:
-    - 'main'
-
+    - '**'
     paths-ignore:
     - '**.md'
     - 'docs/**'
