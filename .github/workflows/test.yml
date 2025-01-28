@@ -19,39 +19,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-    - uses: ruby/setup-ruby@v1
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
       with:
-        ruby-version: '2.4'
-
-    - uses: actions/setup-python@v4
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+ 
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
       with:
-        python-version: '3.8'
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
-    - name: Update package list
-      run: |
-        sudo apt update
-
-    - name: Install GCC
-      run: |
-        sudo apt install build-essential -y
-        sudo apt install gcc g++ -y
-
-    - name: Upgrade pip
-      run: python3 -m pip install --upgrade pip
-
-    - name: Install Rime
-      run: python3 -m pip install git+https://github.com/icpc-jag/rime
-
-    - name: Install BeautifulSoup
-      run: python3 -m pip install bs4
-
-    - name: Rime test
-      run: rime test --keep_going
-
-    - name: File Name test
-      run: python3 ./scripts/check_filename.py
-
-    - name: HTML test
-      run: python3 ./scripts/check_html.py
-
+    - name: Rime test and filename check and html check
+      run: docker run --rm ${{ steps.meta.outputs.tags }} /bin/zsh -c "rime test --keep_going & uv run --python python3.10 ./scripts/check_filename.py & uv run --python python3.10 ./scripts/check_html.py"
