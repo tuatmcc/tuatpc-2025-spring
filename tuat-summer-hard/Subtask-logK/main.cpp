@@ -91,33 +91,19 @@ int main(){
 
     const int R = 1600;
     const int D = 4200;
-    vector<mint> inv(D);
-    inv[1] = 1;
-    for(int i = 2; i < D; ++i) inv[i] = -inv[MOD % i] * (MOD / i);
 
-    auto exp = [&](vector<mint> &f) -> vector<mint> {
-        vector<mint> F(D), Fd(D), fd(D);
-        for(int i = 1; i < D; ++i) fd[i - 1] = Fd[i - 1] = f[i] * i;
-        for(int i = 1; i < D; ++i){
-            F[i] = Fd[i - 1] * inv[i];
-            for(int j = 0; i + j < D; ++j){
-                Fd[i + j] += F[i] * fd[j];
+    auto subset_sum = [](vector<int> &rate) -> mint {
+        int n = rate.size();
+        vector dp(n + 1, vector(D, mint(0)));
+        dp[0][0] = 1;
+        for(int i = 0; i < n; ++i){
+            for(int j = 0; j < D; ++j){
+                dp[i + 1][j] += dp[i][j];
+                if(j + rate[i] < D) dp[i + 1][j + rate[i]] += dp[i][j];
             }
         }
-        return F;
-    };
-
-    auto subset_sum = [&](vector<mint> &cnt) -> mint {
-        vector<mint> f(D);
-        for(int i = 1; i < D; ++i){
-            for(int j = 1; i * j < D; ++j){
-                if(j & 1) f[i * j] += cnt[i] * inv[j];
-                else f[i * j] -= cnt[i] * inv[j];
-            }
-        }
-        auto F = exp(f);
-        mint ret = 0;
-        for(int i = 1; i < D; ++i) ret += F[i];
+        mint ret;
+        for(int i = 1; i < D; ++i) ret += dp.back()[i];
         return ret;
     };
 
@@ -133,17 +119,17 @@ int main(){
     // S2 ... 総和が 4200 未満のチームの総数
     mint S2;
     {
-        vector<mint> cnt(D);
-        for(int i = 0; i < N; ++i) if(M[i] < D) cnt[M[i]] += 1;
-        S2 = subset_sum(cnt);
+        vector<int> rate;
+        for(int i = 0; i < N; ++i) if(M[i] < D) rate.push_back(M[i]);
+        S2 = subset_sum(rate);
     }
 
     // S12 ... 最大値が 1600 未満かつ総和が 4200 未満のチームの総数
     mint S12;
     {
-        vector<mint> cnt(D);
-        for(int i = 0; i < N; ++i) if(M[i] < R) cnt[M[i]] += 1;
-        S12 = subset_sum(cnt);
+        vector<int> rate;
+        for(int i = 0; i < N; ++i) if(M[i] < R) rate.push_back(M[i]);
+        S12 = subset_sum(rate);
     }
 
     
@@ -158,8 +144,9 @@ int main(){
     {
         // 2 人チーム
         for(int i = 0; i < N; ++i){
-            if(M[i] < R) continue;
-            T += distance(lower_bound(M.begin(), M.begin() + i, D - M[i]), M.begin() + i);
+            for(int j = i + 1; j < N; ++j){
+                if(M[i] + M[j] >= D and max(M[i], M[j]) >= R) T += 1;
+            }
         }
     }
 
