@@ -182,7 +182,45 @@ void makeMaxTestcase(){
         of << (char)('A' + rnd.next(0, 6));
     }
     of << endl;
-    of.close();    
+    of.close();  
+
+    /*dfsだとTLEする(?), N = 1000でThe sum of Mi = 100*/
+    ofstream of2(format("03_max_02.in").c_str());
+    /*N*/
+    N = MAX_N / 100;
+    of2 << N << endl;
+    /*X*/
+    for(int i = 0; i < N; i++){
+        if(i != 0)of2 << " ";
+        of2 << 'A';
+    } 
+    of2 << endl;
+
+    for(int i = 0; i < N; i++){
+        /*Mi*/
+        of2 << "100" << endl;
+        /*V*/
+        set<int> vset;
+        while(vset.size() < 100){
+            vset.insert(rnd.next(1, 1000));
+        }
+        bool flag = false;
+        for(auto v : vset){
+            if(flag)of2 << " ";
+            else flag = true;
+            of2 << v;
+        }
+        of2 << endl;
+        /*W*/
+        for(int j = 0; j < 100; j++){
+            if(j != 0)of2 << " ";
+            of2 << "1";
+        }
+        of2 << endl;
+    }
+    /*S*/
+    of2 << "AAAAAAAA" << endl;
+    of2.close();
 }
 
 int main(int argc, char* argv[]){
