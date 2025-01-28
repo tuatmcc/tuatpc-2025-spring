@@ -24,7 +24,8 @@ RUN apt-get install -y ca-certificates
 # プロンプトの見た目をいい感じにする
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
-RUN echo "eval \"\$(starship init zsh)\"" > /root/.zshrc
+RUN echo "eval \"\$(starship init zsh)\"" >> /root/.zshrc
+RUN echo "(cd /root/app && uv sync &> /dev/null)" >> /root/.zshrc
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # シェルを zsh にする
@@ -35,8 +36,15 @@ CMD ["/bin/zsh"]
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # C++ の環境を整える
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-RUN apt-get update && \
-    apt-get install -y g++
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt-get update
+RUN apt-get install -y gcc-13
+RUN apt-get install -y g++-13
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+RUN update-alternatives --config gcc
+RUN update-alternatives --config g++
 
 # ac-library
 RUN git clone https://github.com/atcoder/ac-library.git /lib/ac-library
@@ -51,16 +59,8 @@ ENV PATH="/root/.local/bin/:$PATH"
 RUN echo "alias pypy=\"uv run --python pypy3.10 -q\"" >> /root/.zshrc
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 作業ディレクトリに移動して、
-# 作問リポジトリをコピー
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WORKDIR /app
-COPY . /app
-
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Python の環境を整える
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN uv python install pypy-3.10.14
-RUN uv sync
 RUN uv tool install rime
 RUN uv tool install statements-manager
