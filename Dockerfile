@@ -25,13 +25,12 @@ RUN apt-get install -y ca-certificates
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 RUN echo "eval \"\$(starship init zsh)\"" >> /root/.zshrc
-RUN echo "(cd /root/app && uv sync &> /dev/null)" >> /root/.zshrc
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # シェルを zsh にする
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RUN chsh -s /bin/zsh
-CMD ["/bin/zsh"]
+CMD /bin/zsh -c "cd /root/app && uv sync && exec /bin/zsh"
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # C++ の環境を整える
