@@ -1,6 +1,6 @@
 // 参考: https://yukicoder.me/wiki/offline_dsp
 
-// O(NM + Q log(Q) log(NM)) で解けてると思っている
+// O((Q + N) log(Q + N)) で解けてると思っている
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -49,14 +49,23 @@ int main() {
     int Q;
     cin >> Q;
     vector<tuple<int, int, int>> queries;
+    vector<set<int>> need_node(N); // 構築が必要なノード
+    for (int i = 0; i < N; i++) {
+        need_node[i].insert(0);
+        need_node[i].insert(M + 1);
+    }
     for (int i = 0; i < Q; i++) {
         int t;
         cin >> t;
         if (t == 1 || t == 2) {
             int x, y;
             cin >> x >> y;
-            x--, y--; // 0-based index
+            x--; // 0-based index
             queries.emplace_back(t, x, y);
+            need_node[x].insert(y);
+            need_node[x + 1].insert(y + 1);
+            need_node[x].insert(y + 1);
+            need_node[x + 1].insert(y);
         } else {
             int s;
             cin >> s;
@@ -69,12 +78,14 @@ int main() {
     // 始めにN*Mの辺があって，そのうえでQ回の操作がある
     // {辺のインデックス, 追加時間}
     map<pair<int, int>, int> active_edges;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            // 縦に辺を張る
-            active_edges[{i + j * N, i + (j + 1) * N}] = 0;
+    for (int x = 0; x < N; x++) {
+        vector<int> y_vec(need_node[x].begin(), need_node[x].end());
+        for (int i = 0; i < y_vec.size() - 1; i++) {
+            pair<int, int> edge = {x + y_vec[i] * N, x + y_vec[i + 1] * N};
+            active_edges[edge] = 0;
         }
     }
+
     // {時間, 辺のインデックス}
     vector<pair<pair<int, int>, pair<int, int>>> edges_interval;
 
@@ -126,7 +137,7 @@ int main() {
 
     // dfsでクエリを処理
     vector<int> ans(Q, -2);
-    RollbackUnionFindWithData uf(N * (M + 1));
+    RollbackUnionFindWithData uf(N * (M + 2));
     auto dfs = [&](SegmentTreeNode *node, auto &&dfs) -> void {
         int cnt = 0;
         if (!node)
@@ -145,7 +156,7 @@ int main() {
                 int s = get<1>(queries[t]);
                 assert(0 <= s && s < N);
                 // どの行に到達するか
-                ans[t] = uf.get_data(s) - N * M;
+                ans[t] = uf.get_data(s) - N * (M + 1);
             }
         } else {
             // 左右の子に伝搬
