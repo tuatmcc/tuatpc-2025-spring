@@ -34,7 +34,7 @@ void write_output(const string filename, const Input &in) {
 
 // N, M, Qからクエリを生成する
 // one_prob: t=1の確率, two_prob: t=2の確率, three_prob: t=3の確率 (確率は3つの総和で割ったものとして算出する)
-Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, const int one_prob = 1, const int two_prob = 1, const int three_prob = 1) {
+Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1, const int two_prob = 1, const int three_prob = 1) {
     Input in;
     in.N = N;
     in.M = M;
@@ -197,104 +197,250 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
     return in;
 }
 
+void make_sample_testcase() {
+    // 5 4
+    // 8
+    // 1 1 1
+    // 1 2 2
+    // 3 1
+    // 1 3 1
+    // 3 4
+    // 2 1 1
+    // 3 1
+    // 3 3
+    Input in;
+    in.N = 5;
+    in.M = 4;
+    in.Q = 8;
+    in.queries = {
+        {1, 1, 1},
+        {1, 2, 2},
+        {3, 1, -1},
+        {1, 3, 1},
+        {3, 4, -1},
+        {2, 1, 1},
+        {3, 1, -1},
+        {3, 3, -1},
+    };
+    write_output("00sample01.in", in);
+
+    // 7 3
+    // 20
+    // 1 6 1
+    // 1 3 1
+    // 3 4
+    // 1 1 1
+    // 1 6 3
+    // 2 6 1
+    // 1 3 3
+    // 3 1
+    // 1 6 1
+    // 2 6 1
+    // 1 2 2
+    // 2 3 1
+    // 1 4 1
+    // 3 5
+    // 1 6 1
+    // 1 6 2
+    // 3 1
+    // 1 1 3
+    // 3 6
+    // 1 4 2
+    in.N = 7;
+    in.M = 3;
+    in.Q = 20;
+    in.queries = {
+        {1, 6, 1},
+        {1, 3, 1},
+        {3, 4, -1},
+        {1, 1, 1},
+        {1, 6, 3},
+        {2, 6, 1},
+        {1, 3, 3},
+        {3, 1, -1},
+        {1, 6, 1},
+        {2, 6, 1},
+        {1, 2, 2},
+        {2, 3, 1},
+        {1, 4, 1},
+        {3, 5, -1},
+        {1, 6, 1},
+        {1, 6, 2},
+        {3, 1, -1},
+        {1, 1, 3},
+        {3, 6, -1},
+        {1, 4, 2},
+    };
+    write_output("00sample02.in", in);
+}
+
 int32_t main(int32_t argc, char *argv[]) {
     registerGen(argc, argv, 1);
 
-    // Nが最小の場合
-    for (int t = 0; t < 2; t++) {
-        string filename = std::format("01_Nmin{:02}.in", t + 1);
-        if (t < 1) {
-            int N = MIN_N;
-            int M = rnd.next(MIN_M, MAX_M);
-            int Q = rnd.next(MIN_Q, MAX_Q);
-            Input in = make_input_by_NMQ(filename, N, M, Q);
+    // ------------------sample------------------
+    {
+        make_sample_testcase();
+    }
+
+    // ------------------normal------------------
+    {
+        int t = 1;
+        // ランダム
+        for (int i = 0; i < 2; i++) {
+            string filename = std::format("21_normal{:02}.in", t++);
+            int N = rnd.next(NORMAL_MIN_N, NORMAL_MAX_N);
+            int M = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M);
+            int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
+            Input in = make_input_by_NMQ(N, M, Q);
             write_output(filename, in);
-        } else {
-            int N = MIN_N;
-            int M = rnd.next(MIN_M, MAX_M);
-            int Q = MAX_Q;
-            Input in = make_input_by_NMQ(filename, N, M, Q, 10, 1, 2);
-            write_output(filename, in);
+        }
+        // Nが最小の場合
+        {
+            t = 1;
+            {
+                string filename = std::format("22_normal_Nmin{:02}.in", t++);
+                int N = NORMAL_MIN_N;
+                int M = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M);
+                int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
+                Input in = make_input_by_NMQ(N, M, Q);
+                write_output(filename, in);
+            }
+            {
+                string filename = std::format("22_normal_Nmin{:02}.in", t++);
+                int N = NORMAL_MIN_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q, 10, 1, 2);
+                write_output(filename, in);
+            }
+        }
+        // Mが最小の場合
+        {
+            t = 1;
+            {
+                string filename = std::format("23_normal_Mmin{:02}.in", t++);
+                int N = rnd.next(NORMAL_MIN_N, NORMAL_MAX_N);
+                int M = NORMAL_MIN_M;
+                int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
+                Input in = make_input_by_NMQ(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // N,M,Qが最大の場合
+        {
+            for (int i = 0; i < 2; i++) {
+                string filename = std::format("24_normal_max{:02}.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // クエリ1,2が多い場合
+        {
+            t = 1;
+            {
+                string filename = std::format("25_normal_many12query{:02}.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q, 5, 5, 1);
+                write_output(filename, in);
+            }
+        }
+        // クエリ3が多い場合
+        {
+            t = 1;
+            {
+                string filename = std::format("26_normal_many3query{:02}.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q, 1, 1, 10);
+                write_output(filename, in);
+            }
         }
     }
 
-    // Mが最小の場合
-    for (int t = 0; t < 1; t++) {
-        string filename = std::format("02_Mmin{:02}.in", t + 1);
-        int N = rnd.next(MIN_N, MAX_N);
-        int M = MIN_M;
-        int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_NMQ(filename, N, M, Q);
-        write_output(filename, in);
-    }
-
-    // // N, Mが小さい場合
-    // for (int t = 0; t < 2; t++) {
-    //     string filename = std::format("03_small{:02}.in", t + 1);
-    //     int N = rnd.next(MIN_N + 1, 5);
-    //     int M = rnd.next(MIN_M + 1, 5);
-    //     int Q = rnd.next(MIN_Q, MAX_Q);
-    //     Input in = make_input_by_NMQ(filename, N, M, Q);
-    //     write_output(filename, in);
-    // }
-
-    // N, Mが最小の場合
-    for (int t = 0; t < 1; t++) {
-        string filename = std::format("04_min{:02}.in", t + 1);
-        int N = MIN_N;
-        int M = MIN_M;
-        int Q = rnd.next(MIN_Q, MAX_Q);
-        Input in = make_input_by_NMQ(filename, N, M, Q);
-        write_output(filename, in);
-    }
-
-    // // N, M, Qが大きい場合
-    // for (int t = 0; t < 2; t++) {
-    //     string filename = std::format("05_large{:02}.in", t + 1);
-    //     int N = rnd.next(max(MIN_N, MAX_N - 10), MAX_N);
-    //     int M = rnd.next(max(MIN_M, MAX_M - 10), MAX_M);
-    //     int Q = rnd.next(max(MIN_Q, MAX_Q - 10), MAX_Q);
-    //     Input in = make_input_by_NMQ(filename, N, M, Q);
-    //     write_output(filename, in);
-    // }
-
-    // N, M, Qが最大の場合
-    for (int t = 0; t < 1; t++) {
-        string filename = std::format("06_max{:02}.in", t + 1);
-        int N = MAX_N;
-        int M = MAX_M;
-        int Q = MAX_Q;
-        Input in = make_input_by_NMQ(filename, N, M, Q);
-        write_output(filename, in);
-    }
-
-    // // ランダム
-    // for (int t = 0; t < 5; t++) {
-    //     string filename = std::format("07_random{:02}.in", t + 1);
-    //     int N = rnd.next(MIN_N, MAX_N);
-    //     int M = rnd.next(MIN_M, MAX_M);
-    //     int Q = rnd.next(MIN_Q, MAX_Q);
-    //     Input in = make_input_by_NMQ(filename, N, M, Q);
-    //     write_output(filename, in);
-    // }
-
-    // 1,2が多い場合
-    for (int t = 0; t < 1; t++) {
-        string filename = std::format("08_many12query{:02}.in", t + 1);
-        int N = MAX_N;
-        int M = MAX_M;
-        int Q = MAX_Q;
-        Input in = make_input_by_NMQ(filename, N, M, Q, 5, 5, 1);
-        write_output(filename, in);
-    }
-
-    // 3が多い場合
-    for (int t = 0; t < 1; t++) {
-        string filename = std::format("09_many3query{:02}.in", t + 1);
-        int N = MAX_N;
-        int M = MAX_M;
-        int Q = MAX_Q;
-        Input in = make_input_by_NMQ(filename, N, M, Q, 1, 1, 10);
-        write_output(filename, in);
+    // -------------------hard---------------------------
+    {
+        int t = 1;
+        // ランダム
+        for (int i = 0; i < 2; i++) {
+            string filename = std::format("31_hard{:02}.in", t++);
+            int N = rnd.next(HARD_MIN_N, HARD_MAX_N);
+            int M = rnd.next(HARD_MIN_M, HARD_MAX_M);
+            int Q = rnd.next(HARD_MIN_Q, HARD_MAX_Q);
+            Input in = make_input_by_NMQ(N, M, Q);
+            write_output(filename, in);
+        }
+        // Nが最小の場合
+        {
+            t = 1;
+            {
+                string filename = std::format("32_hard_Nmin{:02}.in", t++);
+                int N = HARD_MIN_N;
+                int M = rnd.next(HARD_MIN_M, HARD_MAX_M);
+                int Q = rnd.next(HARD_MIN_Q, HARD_MAX_Q);
+                Input in = make_input_by_NMQ(N, M, Q);
+                write_output(filename, in);
+            }
+            {
+                string filename = std::format("32_hard_Nmin{:02}.in", t++);
+                int N = HARD_MIN_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q, 10, 1, 2);
+                write_output(filename, in);
+            }
+        }
+        // Mが最小の場合
+        {
+            t = 1;
+            {
+                string filename = std::format("33_hard_Mmin{:02}.in", t++);
+                int N = rnd.next(HARD_MIN_N, HARD_MAX_N);
+                int M = HARD_MIN_M;
+                int Q = rnd.next(HARD_MIN_Q, HARD_MAX_Q);
+                Input in = make_input_by_NMQ(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // N,M,Qが最大の場合
+        {
+            for (int i = 0; i < 2; i++) {
+                string filename = std::format("34_hard_max{:02}.in", t++);
+                int N = HARD_MAX_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // クエリ1,2が多い場合
+        {
+            t = 1;
+            {
+                string filename = std::format("35_hard_many12query{:02}.in", t++);
+                int N = HARD_MAX_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q, 5, 5, 1);
+                write_output(filename, in);
+            }
+        }
+        // クエリ3が多い場合
+        {
+            t = 1;
+            {
+                string filename = std::format("36_hard_many3query{:02}.in", t++);
+                int N = HARD_MAX_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                Input in = make_input_by_NMQ(N, M, Q, 1, 1, 10);
+                write_output(filename, in);
+            }
+        }
     }
 }
