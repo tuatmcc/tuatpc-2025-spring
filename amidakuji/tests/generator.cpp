@@ -3,6 +3,8 @@
 #include "constraints.h"
 using namespace std;
 
+#define int int64_t
+
 // 入力の構造体
 struct Input {
     int N, M;
@@ -39,21 +41,37 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
     in.Q = Q;
 
     // クエリをランダムに生成
-    set<pair<int, int>> lines;      // 現在の横線の位置
-    set<pair<int, int>> lefts;      // 現在の横線の左端の位置
-    set<pair<int, int>> able_place; // 横線が引ける場所
-    for (int i = 1; i < N; i++) {
-        for (int j = 1; j <= M; j++) {
-            able_place.insert({i, j});
+    set<pair<int, int>> lines; // 現在の横線の位置
+    set<pair<int, int>> lefts; // 現在の横線の左端の位置
+
+    // 4*Q個の位置をランダムに選んでそこからクエリを生成
+    // 4*Qは左右を考慮して多めに取っている
+    set<pair<int, int>> able_place;
+    if ((N - 1) * M < 4 * Q) {
+        for (int i = 1; i < N; i++) {
+            for (int j = 1; j <= M; j++) {
+                able_place.insert({i, j});
+            }
+        }
+    } else {
+        for (int i = 0; i < 4 * Q; i++) {
+            int x = rnd.next(1L, N - 1);
+            int y = rnd.next(1L, M);
+            if (able_place.contains({x, y})) {
+                i--;
+                continue;
+            }
+            able_place.insert({x, y});
         }
     }
+    auto original_able_place = able_place;
 
     const int prob_sum = one_prob + two_prob + three_prob;
     assert(prob_sum > 0);
     while (Q--) {
         int t;
         // クエリ1, 2, 3をそれぞれone_prob, two_prob, three_probの確率で選ぶ
-        int tmp = rnd.next(1, prob_sum);
+        int tmp = rnd.next(1L, prob_sum);
         if (tmp <= one_prob) {
             t = 1;
         } else if (tmp <= one_prob + two_prob) {
@@ -63,18 +81,34 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
         }
 
         // 制約違反を避けるための処理
-        if (lines.empty() && t == 2) {
-            t = rnd.next(1, 2) == 1 ? 1 : 3; // 横線が存在しない場合t=2を除外
-        }
+        // 以下の二つを同時に満たすことはない
+        assert(!((able_place.empty() && t == 1) && (lefts.empty() && t == 2)));
         if (able_place.empty() && t == 1) {
-            t = rnd.next(1, 2) == 1 ? 2 : 3; // 新しい横線が入るスペースがないならt=1を除外
+            // 新しい横線が入るスペースがないならt=1を除外
+            int tmp_prob_sum = two_prob + three_prob;
+            tmp = rnd.next(1L, tmp_prob_sum);
+            if (tmp <= two_prob) {
+                t = 2;
+            } else {
+                t = 3;
+            }
+        }
+        if (lefts.empty() && t == 2) {
+            // 横線が存在しない場合t=2を除外
+            int tmp_prob_sum = one_prob + three_prob;
+            tmp = rnd.next(1L, tmp_prob_sum);
+            if (tmp <= one_prob) {
+                t = 1;
+            } else {
+                t = 3;
+            }
         }
 
         if (t == 1) {
             assert(!able_place.empty());
             // able_placeからランダムに選ぶ
-            int rnd_x = rnd.next(1, N - 1);
-            int rnd_y = rnd.next(1, M);
+            int rnd_x = rnd.next(1L, N - 1);
+            int rnd_y = rnd.next(1L, M);
             auto itr = able_place.lower_bound({rnd_x, rnd_y});
             if (itr == able_place.end()) {
                 itr = able_place.begin();
@@ -104,8 +138,8 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
         } else if (t == 2) {
             assert(!lefts.empty());
             // leftsからランダムに選ぶ
-            int rnd_x = rnd.next(1, N - 1);
-            int rnd_y = rnd.next(1, M);
+            int rnd_x = rnd.next(1L, N - 1);
+            int rnd_y = rnd.next(1L, M);
             auto itr = lefts.lower_bound({rnd_x, rnd_y});
             if (itr == lefts.end()) {
                 itr = lefts.begin();
@@ -129,6 +163,10 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
                 if (lines.contains({x - 2, y})) {
                     ok = false;
                 }
+                // 元のable_placeに含まれていない場合はだめ
+                if (!original_able_place.contains({x - 1, y})) {
+                    ok = false;
+                }
                 if (ok) {
                     assert(!able_place.contains({x - 1, y}));
                     able_place.insert({x - 1, y});
@@ -140,6 +178,10 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
                 if (lines.contains({x + 2, y})) {
                     ok = false;
                 }
+                // 元のable_placeに含まれていない場合はだめ
+                if (!original_able_place.contains({x + 1, y})) {
+                    ok = false;
+                }
                 if (ok) {
                     assert(!able_place.contains({x + 1, y}));
                     able_place.insert({x + 1, y});
@@ -148,14 +190,14 @@ Input make_input_by_NMQ(const string filename, const int N, const int M, int Q, 
 
             in.queries.emplace_back(t, x, y);
         } else { // t == 3
-            int s = rnd.next(1, N);
+            int s = rnd.next(1L, N);
             in.queries.emplace_back(t, s, -1); // 3つめの引数は使わない
         }
     }
     return in;
 }
 
-int main(int argc, char *argv[]) {
+int32_t main(int32_t argc, char *argv[]) {
     registerGen(argc, argv, 1);
 
     // Nが最小の場合

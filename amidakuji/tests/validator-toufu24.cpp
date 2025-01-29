@@ -12,8 +12,9 @@ int main(int argc, char *argv[]) {
     int Q = inf.readInt(MIN_Q, MAX_Q, "Q");
     inf.readEoln();
 
-    vector<vector<bool>> lines(M, vector<bool>(N - 1, false));
-    while (Q--) {
+    set<pair<int, int>> lines_lefts;
+    // while (Q--) {
+    for (int i = 0; i < Q; i++) {
         int t = inf.readInt(1, 3, "t");
         inf.readSpace();
         if (t == 1) {
@@ -21,21 +22,17 @@ int main(int argc, char *argv[]) {
             inf.readSpace();
             int y = inf.readInt(1, M, "y");
             inf.readEoln();
-            x--, y--;
-            ensuref(!lines[y][x], "line already exists");
-            if (x > 0)
-                ensuref(!lines[y][x - 1], "line already exists left");
-            if (x < N - 2)
-                ensuref(!lines[y][x + 1], "line already exists right");
-            lines[y][x] = true;
+            ensuref(!lines_lefts.contains({x, y}), std::format("line does not exist at ({}, {}) when {}", x, y, i).c_str());
+            ensuref(!lines_lefts.contains({x - 1, y}), std::format("line already exists left at ({}, {}) when {}", x - 1, y, i).c_str());
+            ensuref(!lines_lefts.contains({x + 1, y}), std::format("line already exists right at ({}, {}) when {}", x + 1, y, i).c_str());
+            lines_lefts.insert({x, y});
         } else if (t == 2) {
             int x = inf.readInt(1, N - 1, "x");
             inf.readSpace();
             int y = inf.readInt(1, M, "y");
             inf.readEoln();
-            x--, y--;
-            assert(lines[y][x]);
-            lines[y][x] = false;
+            ensuref(lines_lefts.contains({x, y}), "line does not exist");
+            lines_lefts.erase({x, y});
         } else {
             int s = inf.readInt(1, N, "s");
             inf.readEoln();
