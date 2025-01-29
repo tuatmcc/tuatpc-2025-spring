@@ -1,6 +1,6 @@
 // 参考: https://yukicoder.me/wiki/offline_dsp
 
-// O((Q + N) log(Q + N)) で解けてると思っている
+// O((Q + N) log^2(Q + N)) で解けてると思っている
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -78,11 +78,14 @@ int main() {
     // 始めにN*Mの辺があって，そのうえでQ回の操作がある
     // {辺のインデックス, 追加時間}
     map<pair<int, int>, int> active_edges;
+    set<int> need_node_set;
     for (int x = 0; x < N; x++) {
         vector<int> y_vec(need_node[x].begin(), need_node[x].end());
         for (int i = 0; i < y_vec.size() - 1; i++) {
             pair<int, int> edge = {x + y_vec[i] * N, x + y_vec[i + 1] * N};
             active_edges[edge] = 0;
+            need_node_set.insert(x + y_vec[i] * N);
+            need_node_set.insert(x + y_vec[i + 1] * N);
         }
     }
 
@@ -110,6 +113,11 @@ int main() {
             pair<int, int> new_edge2 = {(x + 1) + y * N, x + (y + 1) * N};
             active_edges[new_edge1] = i;
             active_edges[new_edge2] = i;
+
+            need_node_set.insert(x + y * N);
+            need_node_set.insert(x + (y + 1) * N);
+            need_node_set.insert((x + 1) + y * N);
+            need_node_set.insert((x + 1) + (y + 1) * N);
         } else if (t == 2) {
             // 辺の追加，削除のタイミングを記録
             pair<int, int> edge1 = {x + y * N, (x + 1) + (y + 1) * N};
@@ -124,11 +132,32 @@ int main() {
             pair<int, int> new_edge2 = {(x + 1) + y * N, (x + 1) + (y + 1) * N};
             active_edges[new_edge1] = i;
             active_edges[new_edge2] = i;
+
+            need_node_set.insert(x + y * N);
+            need_node_set.insert(x + (y + 1) * N);
+            need_node_set.insert((x + 1) + y * N);
+            need_node_set.insert((x + 1) + (y + 1) * N);
         }
     }
     // 残りの辺の削除のタイミングを記録
     for (auto [edge, st] : active_edges) {
         edges_interval.push_back({{st, Q + 1}, edge});
+    }
+
+    // ノードのインデックスを振り直す
+    map<int, int> convert;
+    map<int, int> convert_rev;
+    int idx = 0;
+    assert(need_node_set.size() <= N + 4 * (Q + 2));
+    for (int x : need_node_set) {
+        convert[x] = idx++;
+        convert_rev[convert[x]] = x;
+    }
+
+    // edges_intervalもインデックスを振り直す
+    for (auto &p : edges_interval) {
+        p.second.first = convert[p.second.first];
+        p.second.second = convert[p.second.second];
     }
 
     // セグ木を構築
@@ -137,7 +166,8 @@ int main() {
 
     // dfsでクエリを処理
     vector<int> ans(Q, -2);
-    RollbackUnionFindWithData uf(N * (M + 2));
+    RollbackUnionFindWithData uf(need_node_set.size());
+
     auto dfs = [&](SegmentTreeNode *node, auto &&dfs) -> void {
         int cnt = 0;
         if (!node)
@@ -156,7 +186,9 @@ int main() {
                 int s = get<1>(queries[t]);
                 assert(0 <= s && s < N);
                 // どの行に到達するか
-                ans[t] = uf.get_data(s) - N * (M + 1);
+                ans[t] = convert_rev[uf.get_data(s)] - N * (M + 1);
+                assert(ans[t] >= 0);
+                assert(ans[t] < N);
             }
         } else {
             // 左右の子に伝搬
