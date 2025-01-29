@@ -4,6 +4,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
+#define int int64_t
 #include "RollbackUnionFindWithData.hpp"
 
 struct SegmentTreeNode {
@@ -42,7 +43,7 @@ SegmentTreeNode *build_segment_tree(const vector<pair<pair<int, int>, pair<int, 
     return root;
 }
 
-int main() {
+int32_t main() {
     // 入力
     int N, M;
     cin >> N >> M;

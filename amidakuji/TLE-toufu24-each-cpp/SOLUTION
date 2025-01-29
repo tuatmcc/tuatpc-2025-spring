@@ -20,5 +20,4 @@ cxx_solution(src='main.cpp', flags=['-std=c++20', '-O2'], challenge_cases=[]) # 
 #cs_solution(src='main.cs') # C# (mono)
 
 ## Score
-#expected_score(100)
-expected_verdicts([AC, TLE])
+expected_score(0)

@@ -55,8 +55,8 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
         }
     } else {
         for (int i = 0; i < 4 * Q; i++) {
-            int x = rnd.next(1L, N - 1);
-            int y = rnd.next(1L, M);
+            int x = rnd.next(int64_t(1), N - 1);
+            int y = rnd.next(int64_t(1), M);
             if (able_place.contains({x, y})) {
                 i--;
                 continue;
@@ -71,7 +71,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
     while (Q--) {
         int t;
         // クエリ1, 2, 3をそれぞれone_prob, two_prob, three_probの確率で選ぶ
-        int tmp = rnd.next(1L, prob_sum);
+        int tmp = rnd.next(int64_t(1), prob_sum);
         if (tmp <= one_prob) {
             t = 1;
         } else if (tmp <= one_prob + two_prob) {
@@ -86,7 +86,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
         if (able_place.empty() && t == 1) {
             // 新しい横線が入るスペースがないならt=1を除外
             int tmp_prob_sum = two_prob + three_prob;
-            tmp = rnd.next(1L, tmp_prob_sum);
+            tmp = rnd.next(int64_t(1), tmp_prob_sum);
             if (tmp <= two_prob) {
                 t = 2;
             } else {
@@ -96,7 +96,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
         if (lefts.empty() && t == 2) {
             // 横線が存在しない場合t=2を除外
             int tmp_prob_sum = one_prob + three_prob;
-            tmp = rnd.next(1L, tmp_prob_sum);
+            tmp = rnd.next(int64_t(1), tmp_prob_sum);
             if (tmp <= one_prob) {
                 t = 1;
             } else {
@@ -107,8 +107,8 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
         if (t == 1) {
             assert(!able_place.empty());
             // able_placeからランダムに選ぶ
-            int rnd_x = rnd.next(1L, N - 1);
-            int rnd_y = rnd.next(1L, M);
+            int rnd_x = rnd.next(int64_t(1), N - 1);
+            int rnd_y = rnd.next(int64_t(1), M);
             auto itr = able_place.lower_bound({rnd_x, rnd_y});
             if (itr == able_place.end()) {
                 itr = able_place.begin();
@@ -138,8 +138,8 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
         } else if (t == 2) {
             assert(!lefts.empty());
             // leftsからランダムに選ぶ
-            int rnd_x = rnd.next(1L, N - 1);
-            int rnd_y = rnd.next(1L, M);
+            int rnd_x = rnd.next(int64_t(1), N - 1);
+            int rnd_y = rnd.next(int64_t(1), M);
             auto itr = lefts.lower_bound({rnd_x, rnd_y});
             if (itr == lefts.end()) {
                 itr = lefts.begin();
@@ -190,7 +190,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
 
             in.queries.emplace_back(t, x, y);
         } else { // t == 3
-            int s = rnd.next(1L, N);
+            int s = rnd.next(int64_t(1), N);
             in.queries.emplace_back(t, s, -1); // 3つめの引数は使わない
         }
     }
