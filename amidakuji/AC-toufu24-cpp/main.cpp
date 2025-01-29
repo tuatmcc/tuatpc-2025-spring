@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <atcoder/segtree> // AC-libraryに依存している．atcoder/以下に置いてあります．
+#include <atcoder/segtree> // AC-libraryに依存している．
 using namespace std;
 using namespace atcoder;
 
