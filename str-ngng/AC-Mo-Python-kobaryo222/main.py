@@ -1,4 +1,4 @@
-#!/usr/bin/env uv run --python pypy3.10.14
+#!/usr/bin/env uv run --python pypy3.10
 import math
 from functools import cmp_to_key
 

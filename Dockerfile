@@ -63,3 +63,10 @@ RUN echo "alias pypy=\"uv run --python pypy3.10 -q\"" >> /root/.zshrc
 RUN uv python install pypy-3.10.14
 RUN uv tool install rime
 RUN uv tool install statements-manager
+
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# CPython, PyPy の初回起動時の処理を行っておく
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WORKDIR /root/app
+RUN uv run --python python3.10 python -c 'exit(0)'
+RUN uv run --python pypy3.10 python -c 'exit(0)'
