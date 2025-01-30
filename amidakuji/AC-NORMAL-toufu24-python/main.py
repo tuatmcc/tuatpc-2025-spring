@@ -13,6 +13,10 @@ def op(a: List[int], b: List[int]) -> List[int]:
         res[i] = b[a[i]]
     return res
 
+
+if N * M > 10**9:
+    # なんかメモリを食いつぶすので強制終了
+    assert False
 e = [i for i in range(N)]
 v = [[i for i in range(N)] for _ in range(M)]
 seg = SegTree(op, e, v)
