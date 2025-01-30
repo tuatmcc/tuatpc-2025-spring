@@ -28,11 +28,13 @@ vector<int> compose(const vector<int> &a, const vector<int> &b) {
 int main() {
     int N, M;
     cin >> N >> M;
+    assert(2 <= N && N <= 20);
+    assert(1 <= M && M <= 100000);
 
     const int SQRT = sqrt(M);               // 平方分割のブロックサイズ
     int num_blocks = (M + SQRT - 1) / SQRT; // 必要なブロック数(ceil(√M))
 
-    vector<vector<int>> block_perms(num_blocks, identity_perm(N)); // 各ブロックの置換を管理する
+    vector<vector<int>> block_perms(num_blocks, identity_perm(N));                                          // 各ブロックの置換を管理する
     vector<vector<vector<int>>> block_inner_perms(num_blocks, vector<vector<int>>(SQRT, identity_perm(N))); // 各ブロック内の置換を管理する
 
     int Q;

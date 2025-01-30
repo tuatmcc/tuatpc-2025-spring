@@ -298,15 +298,6 @@ int32_t main(int32_t argc, char *argv[]) {
     // ------------------normal------------------
     {
         int t = 1;
-        // ランダム
-        for (int i = 0; i < 2; i++) {
-            string filename = std::format("21_normal{:02}.in", t++);
-            int N = rnd.next(NORMAL_MIN_N, NORMAL_MAX_N);
-            int M = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M);
-            int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
-            Input in = make_input_by_NMQ(N, M, Q);
-            write_output(filename, in);
-        }
         // Nが最小の場合
         {
             t = 1;
@@ -379,15 +370,6 @@ int32_t main(int32_t argc, char *argv[]) {
     // -------------------hard---------------------------
     {
         int t = 1;
-        // ランダム
-        for (int i = 0; i < 2; i++) {
-            string filename = std::format("31_hard{:02}.in", t++);
-            int N = rnd.next(HARD_MIN_N, HARD_MAX_N);
-            int M = rnd.next(HARD_MIN_M, HARD_MAX_M);
-            int Q = rnd.next(HARD_MIN_Q, HARD_MAX_Q);
-            Input in = make_input_by_NMQ(N, M, Q);
-            write_output(filename, in);
-        }
         // Nが最小の場合
         {
             t = 1;

@@ -13,6 +13,9 @@ int main() {
     int N, M;
     cin >> N >> M;
 
+    assert(2 <= N && N <= 20);
+    assert(1 <= M && M <= 100000);
+
     int Q;
     cin >> Q;
     dynamic_connectivity<int> dc(N * (M + 1));
