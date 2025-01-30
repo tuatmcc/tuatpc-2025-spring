@@ -1,6 +1,6 @@
 // 参考: https://yukicoder.me/wiki/offline_dsp
 
-// O((Q + N) log^2(Q + N)) で解けてると思っている
+// O(Q log^3(Q)) で解けてると思っている
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -50,11 +50,7 @@ int32_t main() {
     int Q;
     cin >> Q;
     vector<tuple<int, int, int>> queries;
-    vector<set<int>> need_node(N); // 構築が必要なノード
-    for (int i = 0; i < N; i++) {
-        need_node[i].insert(0);
-        need_node[i].insert(M + 1);
-    }
+    map<int, set<int>> require_height; // 縦線ごとの構築が必要な高さ
     for (int i = 0; i < Q; i++) {
         int t;
         cin >> t;
@@ -63,36 +59,46 @@ int32_t main() {
             cin >> x >> y;
             x--; // 0-based index
             queries.emplace_back(t, x, y);
-            need_node[x].insert(y);
-            need_node[x + 1].insert(y + 1);
-            need_node[x].insert(y + 1);
-            need_node[x + 1].insert(y);
+            // 横線で変化する頂点
+            require_height[x].insert(y);
+            require_height[x].insert(y + 1);
+            require_height[x + 1].insert(y);
+            require_height[x + 1].insert(y + 1);
+
+            // 端点の追加
+            require_height[x].insert(0);
+            require_height[x].insert(M + 1);
+            require_height[x + 1].insert(0);
+            require_height[x + 1].insert(M + 1);
         } else {
             int s;
             cin >> s;
             s--; // 0-based index
+
             queries.emplace_back(t, s, -1);
+            require_height[s].insert(0);
+            require_height[s].insert(M + 1);
         }
     }
 
+    // 辺の生存期間を記録
     // 辺の追加，削除のタイミングを記録
-    // 始めにN*Mの辺があって，そのうえでQ回の操作がある
     // {辺のインデックス, 追加時間}
     map<pair<int, int>, int> active_edges;
-    set<int> need_node_set;
-    for (int x = 0; x < N; x++) {
-        vector<int> y_vec(need_node[x].begin(), need_node[x].end());
+    set<int> require_node_set; // 構築が必要なノードの集合
+    // 縦線ごとに辺を張る
+    for (auto [x, ys] : require_height) {
+        vector<int> y_vec(ys.begin(), ys.end());
         for (int i = 0; i < y_vec.size() - 1; i++) {
             pair<int, int> edge = {x + y_vec[i] * N, x + y_vec[i + 1] * N};
             active_edges[edge] = 0;
-            need_node_set.insert(x + y_vec[i] * N);
-            need_node_set.insert(x + y_vec[i + 1] * N);
+            require_node_set.insert(x + y_vec[i] * N);
+            require_node_set.insert(x + y_vec[i + 1] * N);
         }
     }
 
     // {時間, 辺のインデックス}
     vector<pair<pair<int, int>, pair<int, int>>> edges_interval;
-
     // すべての時間にノードを持つセグメントツリーを構築
     for (int i = 0; i < Q + 2; i++) {
         edges_interval.push_back({{i, i}, {-1, -1}});
@@ -114,11 +120,6 @@ int32_t main() {
             pair<int, int> new_edge2 = {(x + 1) + y * N, x + (y + 1) * N};
             active_edges[new_edge1] = i;
             active_edges[new_edge2] = i;
-
-            need_node_set.insert(x + y * N);
-            need_node_set.insert(x + (y + 1) * N);
-            need_node_set.insert((x + 1) + y * N);
-            need_node_set.insert((x + 1) + (y + 1) * N);
         } else if (t == 2) {
             // 辺の追加，削除のタイミングを記録
             pair<int, int> edge1 = {x + y * N, (x + 1) + (y + 1) * N};
@@ -133,11 +134,6 @@ int32_t main() {
             pair<int, int> new_edge2 = {(x + 1) + y * N, (x + 1) + (y + 1) * N};
             active_edges[new_edge1] = i;
             active_edges[new_edge2] = i;
-
-            need_node_set.insert(x + y * N);
-            need_node_set.insert(x + (y + 1) * N);
-            need_node_set.insert((x + 1) + y * N);
-            need_node_set.insert((x + 1) + (y + 1) * N);
         }
     }
     // 残りの辺の削除のタイミングを記録
@@ -149,8 +145,8 @@ int32_t main() {
     map<int, int> convert;
     map<int, int> convert_rev;
     int idx = 0;
-    assert(need_node_set.size() <= N + 4 * (Q + 2));
-    for (int x : need_node_set) {
+    assert(require_node_set.size() <= 4 * Q);
+    for (int x : require_node_set) {
         convert[x] = idx++;
         convert_rev[convert[x]] = x;
     }
@@ -167,7 +163,7 @@ int32_t main() {
 
     // dfsでクエリを処理
     vector<int> ans(Q, -2);
-    RollbackUnionFindWithData uf(need_node_set.size());
+    RollbackUnionFindWithData uf(require_node_set.size());
 
     auto dfs = [&](SegmentTreeNode *node, auto &&dfs) -> void {
         int cnt = 0;
@@ -187,7 +183,7 @@ int32_t main() {
                 int s = get<1>(queries[t]);
                 assert(0 <= s && s < N);
                 // どの行に到達するか
-                ans[t] = convert_rev[uf.get_data(s)] - N * (M + 1);
+                ans[t] = convert_rev[uf.get_data(convert[s])] - N * (M + 1);
                 assert(ans[t] >= 0);
                 assert(ans[t] < N);
             }

@@ -1,4 +1,5 @@
 // https://nyaannyaan.github.io/library/data-structure/rollback-union-find.hpp.html から引用&改変
+#define int int64_t
 
 struct HistoryEntry {
     enum Type { UF_OPERATION,
