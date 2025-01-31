@@ -3,9 +3,9 @@ using namespace std;
 
 /*
     - 初期化: O(N)
-    - クエリ1, 2: O(logN)
-    - クエリ3: O(QlogN)
-    - 全体: O(N + Q^2 * logN)
+    - クエリ1, 2: O(logM)
+    - クエリ3: O(QlogM)
+    - 全体: O(N + Q^2 * logM)
 */
 
 int main() {
