@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     int Q = inf.readInt(MIN_Q, MAX_Q, "Q");
     inf.readEoln();
 
-    vector<vector<bool>> lines(M, vector<bool>(N - 1, false));
+    set<pair<int, int>> lines;
     while (Q--)
     {
         int t = inf.readInt(1, 3, "t");
@@ -23,30 +23,28 @@ int main(int argc, char *argv[])
             int x = inf.readInt(1, N - 1, "x");
             inf.readSpace();
             int y = inf.readInt(1, M, "y");
-            inf.readEoln();
             --x, --y;
-            ensuref(!lines[y][x], "line already exists");
+            ensuref(not lines.contains({y, x}), "line already exists");
             if (x > 0)
-                ensuref(!lines[y][x - 1], "line already exists left");
+                ensuref(not lines.contains({y, x - 1}), "line already exists"); 
             if (x < N - 2)
-                ensuref(!lines[y][x + 1], "line already exists right");
-            lines[y][x] = true;
+                ensuref(not lines.contains({y, x + 1}), "line already exists");
+            lines.insert({y, x});
         }
         else if (t == 2)
         {
             int x = inf.readInt(1, N - 1, "x");
             inf.readSpace();
             int y = inf.readInt(1, M, "y");
-            inf.readEoln();
             x--, y--;
-            assert(lines[y][x]);
-            lines[y][x] = false;
+            ensuref(lines.contains({y, x}), "line does not exist");
+            lines.erase({y, x});
         }
         else
         {
             int s = inf.readInt(1, N, "s");
-            inf.readEoln();
         }
+        inf.readEoln();
     }
     inf.readEof();
 }

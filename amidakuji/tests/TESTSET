@@ -11,7 +11,7 @@ cxx_generator(src='generator.cpp', flags=['-std=c++20', '-O2'], dependency=['tes
 ## Input validators.
 #c_validator(src='validator.c')
 cxx_validator(src='validator-toufu24.cpp', flags=['-std=c++20'], dependency=['testlib.h'])
-# cxx_validator(src='validator-sakasu.cpp', flags=['-std=c++20'], dependency=['testlib.h'])
+cxx_validator(src='validator-sakasu.cpp', flags=['-std=c++20'], dependency=['testlib.h'])
 cxx_validator(src='validator-kitashima.cpp', flags=['-std=c++20'], dependency=['testlib.h'])
 #java_validator(src='Validator.java', encoding='UTF-8',
 #               mainclass='tmp/validator/Validator')
