@@ -32,4 +32,4 @@ jobs:
         cache-to: type=gha,mode=max
 
     - name: Rime test and filename check and html check
-      run: docker run --rm -v $GITHUB_WORKSPACE:/root/app sakumon /bin/zsh -c "cd /root/app && rime test --keep_going && uv run --python python3.10 ./scripts/check_filename.py && uv run --python python3.10 ./scripts/check_html.py"
+      run: docker run --rm -v $GITHUB_WORKSPACE:/root/app sakumon /bin/zsh -c "cd /root/app && uv run -q --python pypy3.10 python -c 'exit(0)' && rime test --keep_going && uv run --python python3.10 ./scripts/check_filename.py && uv run --python python3.10 ./scripts/check_html.py"
