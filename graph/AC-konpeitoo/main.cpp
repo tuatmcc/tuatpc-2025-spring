@@ -1,6 +1,19 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+long long gcd(long long a, long long b){
+    while(true){
+        if(a % b == 0)break;
+        else{
+            long long tmp;
+            tmp = b;
+            b = a % b;
+            a = tmp;
+        }
+    }
+    return b;
+}
+
 int main(){
     int N;
     cin >> N;
@@ -29,62 +42,47 @@ int main(){
         bool flag = false;
         for(int i = 0; i < N; i++){
             if(X[i] == S[0]){
-                if(flag == false){
-                    cout << "1" << endl;
-                    flag = true;
-                }else cout << " ";
-                cout << i + 1;
+                cout << "1 1\n";
+            }else{
+                cout << "0 1\n";
             }
         }
-        if(flag == false){//存在しない場合
-            cout << "0" << endl;
-            for(int i = 0; i < N; i++){
-                if(i != 0)cout << " ";
-                cout << i + 1;
-            }
-        }
-        cout << endl;
         return 0;
     }
-    vector<vector<long double>> ans(S.size() - 1, vector<long double>(N, 0));
+    vector<vector<long long>> ans(S.size() - 1, vector<long long>(N, 0));
     for(int i = 0; i < S.size() - 1; i++){
         for(int j = 0; j < N; j++){
             if(X[j] != S[S.size() - 1 - i])continue;
             for(int k = 0; k < m[j].size(); k++){
                 if(X[m[j][k].first] == S[S.size() - 2 - i]){
                     if(i == 0){
-                        ans[i][m[j][k].first] += (long double)m[j][k].second / (long double)100;
+                        ans[i][m[j][k].first] += (long long)m[j][k].second;
                     }else{
-                        ans[i][m[j][k].first] += ans[i - 1][j] * (long double)m[j][k].second / (long double)100;
+                        ans[i][m[j][k].first] += ans[i - 1][j] * (long long)m[j][k].second;
                     }
-                }else{
-                    //cout << X[m[j][k].first] << " " << "S -> " << S[2 - i] << endl;
                 }
             }
         }
     }
-    cout << fixed << setprecision(20) << *max_element(ans[S.size() - 2].begin(), ans[S.size() - 2].end()) << endl;//fixedとかいる？
-    long double _m = *max_element(ans[S.size() - 2].begin(), ans[S.size() - 2].end());
-    bool flag = false;
+    /*約分*/
+
     for(int i = 0; i < N; i++){
-        if(abs(_m - ans[S.size() - 2][i]) < 0.0000000000000001){// && X[i] == S[0]){
-            if(flag == false)flag = true;
-            else cout << " ";
-            cout << i + 1;
+        long long a = ans[S.size() - 2][i];
+        long long b = pow(100, S.size() - 1);
+        if(a == 0){
+            cout << "0 1\n";
+        }else if(a == b){
+            cout << "1 1\n";
+        }else{
+            /*ユークリッドの互除法*/
+            long long e = -1;
+            while(e != 1){
+                e = gcd(a, b);
+                a /= e;
+                b /= e;
+            }
+            cout << a << " " << b << "\n";
         }
     }
-    //デバック用出力
-    for(int i = 0; i < N; i++){
-        if(i != 0)cout << " ";
-        cout << ans[S.size() - 2][i];
-    }
-    cout << endl;
-    /*if(flag == false){
-        for(int i = 0; i < N; i++){
-            if(i != 0)cout << " ";
-            cout << i + 1;
-        }
-    }*/
-    cout << endl;
     return 0;
 }
