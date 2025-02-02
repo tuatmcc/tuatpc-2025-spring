@@ -22,11 +22,15 @@ void makeSampleTestcase(){
     of << "100" << endl;
     of << "CDGD" << endl;
     of.close();
+    /**ans: 
+     * 0 1
+     * 0 1
+     * */
 }
 
-void makeEdgeTestcase(){
+void makeHandTestcase(){
     /*同じ文字を含む場合*/
-    ofstream of1(format("01_edge_01.in").c_str());
+    ofstream of1(format("01_hand_01.in").c_str());
     of1 << "4" << endl;
     of1 << "A A A B" << endl;
     of1 << "1" << endl;
@@ -34,18 +38,24 @@ void makeEdgeTestcase(){
     of1 << "100" << endl;
     of1 << "2" << endl;
     of1 << "1 3" << endl;
-    of1 << "45 55" << endl;
+    of1 << "20 80" << endl;
     of1 << "2" << endl;
-    of1 << "3 4" << endl;
-    of1 << "40 60" << endl;
+    of1 << "2 4" << endl;
+    of1 << "60 40" << endl;
     of1 << "1" << endl;
     of1 << "3" << endl;
     of1 << "100" << endl;
     of1 << "AAA" << endl;
     of1.close();
+    /**ans: 
+     * 1 1
+     * 17 25
+     * 3 5
+     * 0 1
+     * */
 
     /*L = 1の場合*/
-    ofstream of2(format("01_edge_02.in").c_str());
+    ofstream of2(format("01_hand_02.in").c_str());
     of2 << "1" << endl;
     of2 << "A" << endl;
     of2 << "1" << endl;
@@ -53,8 +63,11 @@ void makeEdgeTestcase(){
     of2 << "100" << endl;
     of2 << "A" << endl;
     of2.close();
+    /**ans: 
+     * 1 1
+     * */
 
-    ofstream of3(format("01_edge_03.in").c_str());
+    ofstream of3(format("01_hand_03.in").c_str());
     of3 << "1" << endl;
     of3 << "A" << endl;
     of3 << "1" << endl;
@@ -62,42 +75,84 @@ void makeEdgeTestcase(){
     of3 << "100" << endl;
     of3 << "B" << endl;
     of3.close();
+    /**ans: 
+     * 0 1
+     * */
 
-    /*全ての頂点が辺を持たないとき*/
-    ofstream of4(format("01_edge_04.in").c_str());
-    of4 << "3" << endl;
-    of4 << "A B C" << endl;
-    of4 << "1" << endl;
-    of4 << "1" << endl;
-    of4 << "100" << endl;
+    ofstream of4(format("01_hand_04.in").c_str());
+    of4 << "5" << endl;
+    of4 << "A B C B A" << endl;
     of4 << "1" << endl;
     of4 << "2" << endl;
     of4 << "100" << endl;
     of4 << "1" << endl;
     of4 << "3" << endl;
     of4 << "100" << endl;
-    of4 << "ABC" << endl;
+    of4 << "1" << endl;
+    of4 << "4" << endl;
+    of4 << "100" << endl;
+    of4 << "1" << endl;
+    of4 << "5" << endl;
+    of4 << "100" << endl;
+    of4 << "1" << endl;
+    of4 << "1" << endl;
+    of4 << "100" << endl;
+    of4 << "B" << endl;
     of4.close();
+    /**ans: 
+     * 0 1
+     * 1 1
+     * 0 1
+     * 1 1
+     * 0 1
+     * */
+
+    /*全ての頂点が辺を持たないとき*/
+    ofstream of5(format("01_hand_05.in").c_str());
+    of5 << "3" << endl;
+    of5 << "A B C" << endl;
+    of5 << "1" << endl;
+    of5 << "1" << endl;
+    of5 << "100" << endl;
+    of5 << "1" << endl;
+    of5 << "2" << endl;
+    of5 << "100" << endl;
+    of5 << "1" << endl;
+    of5 << "3" << endl;
+    of5 << "100" << endl;
+    of5 << "ABC" << endl;
+    of5.close();
+    /**ans: 
+     * 0 1
+     * 0 1
+     * 0 1
+     * */
 
     /*自己ループがあるとき*/
-    ofstream of5(format("01_edge_05.in").c_str());
-    of5 << "3" << endl;
-    of5 << "A A B" << endl;
-    of5 << "1" << endl;
-    of5 << "1" << endl;
-    of5 << "100" << endl;
-    of5 << "1" << endl;
-    of5 << "2" << endl;
-    of5 << "100" << endl;
-    of5 << "1" << endl;
-    of5 << "2" << endl;
-    of5 << "100" << endl;
-    of5 << "AA" << endl;
-    of5.close();
+    ofstream of6(format("01_hand_06.in").c_str());
+    of6 << "3" << endl;
+    of6 << "A A B" << endl;
+    of6 << "1" << endl;
+    of6 << "1" << endl;
+    of6 << "100" << endl;
+    of6 << "3" << endl;
+    of6 << "1 2 3" << endl;
+    of6 << "30 40 30" << endl;
+    of6 << "1" << endl;
+    of6 << "2" << endl;
+    of6 << "100" << endl;
+    of6 << "AA" << endl;
+    of6.close();
+    /**ans: 
+     * 1 1
+     * 7 10
+     * 0 1
+     * */
 }
 
 void makeRandomTestcase(){
-    for(int i = 0; i < 20; i++){
+    //for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 10; i++){
         ofstream of(format("02_random_%02d.in", i + 1).c_str());
         /*N*/
         int N = rnd.next(MIN_N, MAX_N);
@@ -155,9 +210,70 @@ void makeRandomTestcase(){
     }
 }
 
+void makeRandomTestcase2(){
+    //for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 10; i++){
+        ofstream of(format("03_random_%02d.in", i + 1).c_str());
+        /*N*/
+        int MAX_N_ = 1000;
+        int N = rnd.next(MIN_N, MAX_N_);
+        of << N << endl;
+        /*X*/
+        for(int j = 0; j < N; j++){
+            if(j != 0)of << " ";
+            of << (char)('A' + rnd.next(0, 6));
+        }
+        of << endl;
+        /*M*/
+        int MAX_MSUM_ = min((long long)pow(N, 2), (long long)100000);
+        int MAX_MSUM = rnd.next(N, MAX_MSUM_);
+        set<int> mset;
+        while(mset.size() < N){
+            mset.insert(rnd.next(1, MAX_MSUM));
+        }
+        int mPrev = 0;
+        for(auto m : mset){
+            int M = min(100, min(m - mPrev, N));
+            mPrev = m;
+            of << M << endl;
+            /*V*/
+            set<int> vset;
+            while(vset.size() < M){
+                vset.insert(rnd.next(1, N));
+            }
+            bool flag = false;
+            for(auto v : vset){
+                if(flag)of << " ";
+                else flag = true;
+                of << v;
+            }
+            of << endl;
+            /*W*/
+            set<int> wset;
+            while(wset.size() < M - 1){
+                wset.insert(rnd.next(1, 99));
+            }
+            int wPrev = 0;
+            for(auto w : wset){
+                int W = w - wPrev;
+                wPrev = w;
+                of << W << " ";
+            }
+            of << 100 - wPrev << endl;
+        }
+        /*S*/
+        int L = rnd.next(MIN_L, MAX_L);
+        for(int j = 0; j < L; j++){
+            of << (char)('A' + rnd.next(0, 6));
+        }
+        of << endl;
+        of.close();
+    }
+}
+
 void makeMaxTestcase(){
     /*Nが最大かつMiの総和が最大*/
-    ofstream of(format("03_max_01.in").c_str());
+    ofstream of(format("04_max_01.in").c_str());
     /*N*/
     int N = MAX_N;
     of << N << endl;
@@ -184,8 +300,8 @@ void makeMaxTestcase(){
     of << endl;
     of.close();  
 
-    /*dfsだとTLEする(?), N = 1000でThe sum of Mi = 100*/
-    ofstream of2(format("03_max_02.in").c_str());
+    /*dfsだとTLEする, N = 1000でThe sum of Mi = 100*/
+    ofstream of2(format("04_max_02.in").c_str());
     /*N*/
     N = MAX_N / 100;
     of2 << N << endl;
@@ -227,10 +343,12 @@ int main(int argc, char* argv[]){
     registerGen(argc, argv, 1);
     //サンプル
     makeSampleTestcase();
-    //エッジケース
-    makeEdgeTestcase();
+    //手動で作成したケース(要ります？)
+    makeHandTestcase();
     //ランダム
     makeRandomTestcase();
+    //ランダム
+    makeRandomTestcase2();
     //最大ケース
     makeMaxTestcase();
 }
