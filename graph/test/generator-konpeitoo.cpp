@@ -150,8 +150,7 @@ void makeHandTestcase(){
      * */
 }
 
-void makeRandomTestcase(){
-    //for(int i = 0; i < 20; i++){
+void makeRandomTestcaseEasy(){
     for(int i = 0; i < 10; i++){
         ofstream of(format("02_random_%02d.in", i + 1).c_str());
         /*N*/
@@ -172,7 +171,105 @@ void makeRandomTestcase(){
         }
         int mPrev = 0;
         for(auto m : mset){
-            int M = min(100, m - mPrev);
+            int M = min(10, min(m - mPrev, N));
+            mPrev = m;
+            of << M << endl;
+            /*V*/
+            set<int> vset;
+            while(vset.size() < M){
+                vset.insert(rnd.next(1, N));
+            }
+            bool flag = false;
+            for(auto v : vset){
+                if(flag)of << " ";
+                else flag = true;
+                of << v;
+            }
+            of << endl;
+            /*W*/
+            set<int> wset;
+            while(wset.size() < M - 1){
+                wset.insert(rnd.next(1, 99));
+            }
+            int wPrev = 0;
+            for(auto w : wset){
+                int W = w - wPrev;
+                wPrev = w;
+                of << W << " ";
+            }
+            of << 100 - wPrev << endl;
+        }
+        /*S*/
+        int MAX_L_EASY = 4;
+        int L = rnd.next(MIN_L, MAX_L_EASY);
+        for(int j = 0; j < L; j++){
+            of << (char)('A' + rnd.next(0, 6));
+        }
+        of << endl;
+        of.close();
+    }
+    //最大ケース
+    ofstream of2(format("02_max_01.in").c_str());
+    /*N*/
+    int N = MAX_N / 10;
+    of2 << N << endl;
+    /*X*/
+    for(int i = 0; i < N; i++){
+        if(i != 0)of2 << " ";
+        of2 << 'A';
+    } 
+    of2 << endl;
+
+    for(int i = 0; i < N; i++){
+        /*Mi*/
+        of2 << "10" << endl;
+        /*V*/
+        set<int> vset;
+        while(vset.size() < 10){
+            vset.insert(rnd.next(1, N));
+        }
+        bool flag = false;
+        for(auto v : vset){
+            if(flag)of2 << " ";
+            else flag = true;
+            of2 << v;
+        }
+        of2 << endl;
+        /*W*/
+        for(int j = 0; j < 10; j++){
+            if(j != 0)of2 << " ";
+            of2 << "10";
+        }
+        of2 << endl;
+    }
+    /*S*/
+    of2 << "AAAA" << endl;
+    of2.close();
+}
+
+void makeRandomTestcase(){
+    //for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 10; i++){
+        ofstream of(format("03_random_%02d.in", i + 1).c_str());
+        /*N*/
+        int N = rnd.next(MIN_N, MAX_N);
+        of << N << endl;
+        /*X*/
+        for(int j = 0; j < N; j++){
+            if(j != 0)of << " ";
+            of << (char)('A' + rnd.next(0, 6));
+        }
+        of << endl;
+        /*M*/
+        int MAX_MSUM_ = min((long long)pow(N, 2), (long long)100000);
+        int MAX_MSUM = rnd.next(N, MAX_MSUM_);
+        set<int> mset;
+        while(mset.size() < N){
+            mset.insert(rnd.next(1, MAX_MSUM));
+        }
+        int mPrev = 0;
+        for(auto m : mset){
+            int M = min(100, min(m - mPrev, N));
             mPrev = m;
             of << M << endl;
             /*V*/
@@ -210,9 +307,10 @@ void makeRandomTestcase(){
     }
 }
 
+/*分岐が多いテストケース*/
 void makeRandomTestcase2(){
     //for(int i = 0; i < 20; i++){
-    for(int i = 0; i < 10; i++){
+    for(int i = 10; i < 20; i++){
         ofstream of(format("03_random_%02d.in", i + 1).c_str());
         /*N*/
         int MAX_N_ = 1000;
@@ -273,7 +371,7 @@ void makeRandomTestcase2(){
 
 void makeMaxTestcase(){
     /*Nが最大かつMiの総和が最大*/
-    ofstream of(format("04_max_01.in").c_str());
+    ofstream of(format("03_max_01.in").c_str());
     /*N*/
     int N = MAX_N;
     of << N << endl;
@@ -301,7 +399,7 @@ void makeMaxTestcase(){
     of.close();  
 
     /*dfsだとTLEする, N = 1000でThe sum of Mi = 100*/
-    ofstream of2(format("04_max_02.in").c_str());
+    ofstream of2(format("03_max_02.in").c_str());
     /*N*/
     N = MAX_N / 100;
     of2 << N << endl;
@@ -345,6 +443,8 @@ int main(int argc, char* argv[]){
     makeSampleTestcase();
     //手動で作成したケース(要ります？)
     makeHandTestcase();
+    //部分点
+    makeRandomTestcaseEasy();
     //ランダム
     makeRandomTestcase();
     //ランダム
