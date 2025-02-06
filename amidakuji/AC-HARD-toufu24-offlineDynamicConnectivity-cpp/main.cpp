@@ -1,6 +1,6 @@
 // 参考: https://yukicoder.me/wiki/offline_dsp
 
-// O(Q log^3(Q)) で解けてると思っている
+// O(Q log^2(Q)) で解けてると思っている
 
 #include <bits/stdc++.h>
 using namespace std;
