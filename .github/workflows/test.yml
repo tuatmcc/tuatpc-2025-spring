@@ -23,7 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u USERNAME --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
       - name: Pull container image
         run: docker pull ghcr.io/tuatmcc/sakumon-image:sha256-229dc9b8e2a43d6a36acc35dfb77d91a2a3344b66dc2e8c1cf7d0fb5aa5b93bb
       - name: Rime test and filename check and html check
