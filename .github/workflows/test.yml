@@ -23,7 +23,6 @@ jobs:
       contents: read
       packages: read
       attestations: read
-      id-token: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
