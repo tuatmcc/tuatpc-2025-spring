@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/bin/pypy3
 import math
 from functools import cmp_to_key
 
