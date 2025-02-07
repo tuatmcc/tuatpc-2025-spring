@@ -55,21 +55,21 @@ int main(int argc, char* argv[])
     {
         // random
         for (int i = 0; i < 10; i++) {
-            random(format("10_small_{}.in", i + 1), small);
+            random(format("10_small_%02d.in", i + 1), small);
         }
     }
     // large
     {
         // random
         for (int i = 0; i < 10; i++) {
-            random(format("20_large_{}.in", i + 1), large);
+            random(format("20_large_%02d.in", i + 1), large);
         }
     }
     // max
     {
         // random
         for (int i = 0; i < 10; i++) {
-            random(format("30_max_{}.in", i + 1), max);
+            random(format("30_max_%02d.in", i + 1), max);
         }
     }
     return 0;
