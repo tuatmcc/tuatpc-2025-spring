@@ -15,6 +15,6 @@ on:
 jobs:
   Rime-and-HTML-test:
     runs-on: ghcr.io/tuatmcc/sakumon-image:sha256-229dc9b8e2a43d6a36acc35dfb77d91a2a3344b66dc2e8c1cf7d0fb5aa5b93bb
-
+    steps:
     - name: Rime test and filename check and html check
       run: docker run --rm -v $GITHUB_WORKSPACE:/root/app sakumon /bin/zsh -c "cd /root/app && rime test --keep_going && python3 ./scripts/check_filename.py && python3 ./scripts/check_html.py"
