@@ -33,7 +33,17 @@ void write_output(const string filename, const Input &in) {
 // N, M, Qからクエリを生成する
 // one_prob: t=1の確率, two_prob: t=2の確率, three_prob: t=3の確率 (確率は3つの総和で割ったものとして算出する)
 // use_vertical_lines: 使う縦線の位置を指定する(左側)
-Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1, const int two_prob = 1, const int three_prob = 1, const vector<int> use_vertical_lines = {}) {
+// random3query: クエリ3をある程度ランダムに選ぶかどうか
+struct random_query_config {
+    int one_prob = 1;
+    int two_prob = 1;
+    int three_prob = 1;
+    vector<int> use_vertical_lines = {};
+    bool random3query = true;
+};
+Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_config &config = random_query_config()) {
+    auto [one_prob, two_prob, three_prob, use_vertical_lines, random3query] = config;
+
     for (auto x : use_vertical_lines) {
         assert(1 <= x && x < N);
     }
@@ -215,7 +225,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const int one_prob = 1,
             if (use_vertical_lines.empty()) {
                 s = rnd.next(1, N);
             } else {
-                if (rnd.next(1, 5) <= 4) {
+                if (rnd.next(1, 5) <= 4 || !random3query) {
                     // 4/5の確率でuse_vertical_linesから選ぶ
                     s = use_vertical_lines[rnd.next(0, (int)use_vertical_lines.size() - 1)] + rnd.next(0, 1); // use_vertical_linesから選んで、左右どちらかを選ぶ
                 } else {
@@ -347,19 +357,40 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q, 10, 1, 2, {3});
+                random_query_config config;
+                config.use_vertical_lines = {3, 10};
+                config.one_prob = 10;
+                config.two_prob = 1;
+                config.three_prob = 2;
+                Input in = make_input_by_NMQ(N, M, Q, config);
                 write_output(filename, in);
             }
         }
+        // // Qが小さい場合
+        // {
+        //     t = 1;
+        //     {
+        //         string filename = std::format("25_normal_smallQ{:02}.in", t++);
+        //         int N = NORMAL_MAX_N;
+        //         int M = NORMAL_MAX_M;
+        //         int Q = 10;
+        //         Input in = make_input_by_NMQ(N, M, Q);
+        //         write_output(filename, in);
+        //     }
+        // }
         // クエリ1,2が多い場合
         {
             t = 1;
             {
-                string filename = std::format("25_normal_many12query{:02}.in", t++);
+                string filename = std::format("26_normal_many12query{:02}.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q, 5, 5, 1);
+                random_query_config config;
+                config.one_prob = 5;
+                config.two_prob = 5;
+                config.three_prob = 1;
+                Input in = make_input_by_NMQ(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -367,11 +398,30 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = std::format("26_normal_many3query{:02}.in", t++);
+                string filename = std::format("27_normal_many3query{:02}.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q, 1, 1, 10, {3, 4});
+                random_query_config config;
+                config.one_prob = 1;
+                config.two_prob = 1;
+                config.three_prob = 10;
+                config.use_vertical_lines = {3, 4};
+                Input in = make_input_by_NMQ(N, M, Q, config);
+                write_output(filename, in);
+            }
+            {
+                string filename = std::format("27_normal_many3query{:02}.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                random_query_config config;
+                config.one_prob = 2;
+                config.two_prob = 1;
+                config.three_prob = 15;
+                config.use_vertical_lines = {4, 5, 8, 9, 10, 14, 19};
+                config.random3query = false;
+                Input in = make_input_by_NMQ(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -395,7 +445,12 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q, 10, 1, 2, {100000000,100000002});
+                random_query_config config;
+                config.use_vertical_lines = {100000000, 100000002};
+                config.one_prob = 10;
+                config.two_prob = 1;
+                config.three_prob = 2;
+                Input in = make_input_by_NMQ(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -407,7 +462,11 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q, 5, 5, 1);
+                random_query_config config;
+                config.one_prob = 5;
+                config.two_prob = 5;
+                config.three_prob = 1;
+                Input in = make_input_by_NMQ(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -419,7 +478,12 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q, 1, 1, 10);
+                random_query_config config;
+                config.one_prob = 1;
+                config.two_prob = 1;
+                config.three_prob = 10;
+                config.use_vertical_lines = {3, 4};
+                Input in = make_input_by_NMQ(N, M, Q, config);
                 write_output(filename, in);
             }
         }
