@@ -146,7 +146,7 @@ int main() {
             int idx = comp_row.get(q.y);
             Perm p = seg.get(idx);
             // x番目とx+1番目の要素を入れ替える
-            swap(p.perm[comp_col.get(q.x)], p.perm[comp_col.get(q.x) + 1]);
+            swap(p.perm[comp_col.get(q.x)], p.perm[comp_col.get(q.x + 1)]);
             seg.set(idx, p);
         } else if (q.t == 3) {
             Perm result = seg.all_prod();
