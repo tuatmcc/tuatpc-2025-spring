@@ -60,14 +60,19 @@ int main(int argc, char *argv[]) {
 			random_case[i] = {a, h};
 		}
 
-		gen(format("00_random_%02d.in", t).c_str(), random_n, random_case);
+		gen(format("10_random_%02d.in", t).c_str(), random_n, random_case);
 	}
 
 	// N == 1
-	gen("00_special_01.in", 1, {{1700, 4300}});
+	gen("20_handmade_01.in", 1, {{1700, 4300}});
 
 	// N == 2
-	gen("00_special_02.in", 2, {{2000, 2000}, {5000, 5000}});
+	gen("20_handmade_02.in", 2, {{2000, 2000}, {5000, 5000}});
 
+	// Min
+	gen("30_min_01.in", 5, {{Ai_MIN, Hi_MIN}, {Ai_MIN, Hi_MIN}, {Ai_MIN, Hi_MIN}, {Ai_MIN, Hi_MIN}, {Ai_MIN, Hi_MIN}});
+
+	// Max
+	gen("30_max_01.in", 5, {{Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}});
 	return 0;
 }
