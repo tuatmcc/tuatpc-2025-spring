@@ -20,6 +20,7 @@ void makeSampleTestcase(){
     of << "1" << endl;
     of << "2" << endl;
     of << "100" << endl;
+    of << "4" << endl;
     of << "CDGD" << endl;
     of.close();
     /**ans: 
@@ -45,6 +46,7 @@ void makeHandTestcase(){
     of1 << "1" << endl;
     of1 << "3" << endl;
     of1 << "100" << endl;
+    of1 << "3" << endl;
     of1 << "AAA" << endl;
     of1.close();
     /**ans: 
@@ -61,6 +63,7 @@ void makeHandTestcase(){
     of2 << "1" << endl;
     of2 << "1" << endl;
     of2 << "100" << endl;
+    of2 << "1" << endl;
     of2 << "A" << endl;
     of2.close();
     /**ans: 
@@ -73,6 +76,7 @@ void makeHandTestcase(){
     of3 << "1" << endl;
     of3 << "1" << endl;
     of3 << "100" << endl;
+    of3 << "1" << endl;
     of3 << "B" << endl;
     of3.close();
     /**ans: 
@@ -97,6 +101,7 @@ void makeHandTestcase(){
     of4 << "1" << endl;
     of4 << "1" << endl;
     of4 << "100" << endl;
+    of4 << "1" << endl;
     of4 << "B" << endl;
     of4.close();
     /**ans: 
@@ -120,6 +125,7 @@ void makeHandTestcase(){
     of5 << "1" << endl;
     of5 << "3" << endl;
     of5 << "100" << endl;
+    of5 << "3" << endl;
     of5 << "ABC" << endl;
     of5.close();
     /**ans: 
@@ -141,6 +147,7 @@ void makeHandTestcase(){
     of6 << "1" << endl;
     of6 << "2" << endl;
     of6 << "100" << endl;
+    of6 << "2" << endl;
     of6 << "AA" << endl;
     of6.close();
     /**ans: 
@@ -202,6 +209,7 @@ void makeRandomTestcaseEasy(){
         /*S*/
         int MAX_L_EASY = 4;
         int L = rnd.next(MIN_L, MAX_L_EASY);
+        of << L << endl;
         for(int j = 0; j < L; j++){
             of << (char)('A' + rnd.next(0, 6));
         }
@@ -243,6 +251,7 @@ void makeRandomTestcaseEasy(){
         of2 << endl;
     }
     /*S*/
+    of2 << "4" << endl;
     of2 << "AAAA" << endl;
     of2.close();
 }
@@ -299,6 +308,7 @@ void makeRandomTestcase(){
         }
         /*S*/
         int L = rnd.next(MIN_L, MAX_L);
+        of << L << endl;
         for(int j = 0; j < L; j++){
             of << (char)('A' + rnd.next(0, 6));
         }
@@ -361,6 +371,7 @@ void makeRandomTestcase2(){
         }
         /*S*/
         int L = rnd.next(MIN_L, MAX_L);
+        of << L << endl;
         for(int j = 0; j < L; j++){
             of << (char)('A' + rnd.next(0, 6));
         }
@@ -392,6 +403,7 @@ void makeMaxTestcase(){
     }
     /*S*/
     int L = 8;
+    of << L << endl;
     for(int j = 0; j < L; j++){
         of << (char)('A' + rnd.next(0, 6));
     }
@@ -433,6 +445,7 @@ void makeMaxTestcase(){
         of2 << endl;
     }
     /*S*/
+    of2 << "8" << endl;
     of2 << "AAAAAAAA" << endl;
     of2.close();
 }
