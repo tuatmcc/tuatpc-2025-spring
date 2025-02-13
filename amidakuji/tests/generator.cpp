@@ -71,7 +71,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_conf
         for (int i = 0; i < 4 * Q; i++) {
             int x = rnd.next(1, N - 1);
             int y = rnd.next(1, M);
-            if (able_place.contains({x, y})) {
+            if (able_place.count({x, y})) {
                 i--;
                 continue;
             }
@@ -83,7 +83,7 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_conf
         for (int i = 0; i < 4 * Q; i++) {
             int x = rnd.next(0, (int)use_vertical_lines.size() - 1);
             int y = rnd.next(1, M);
-            if (able_place.contains({use_vertical_lines[x], y})) {
+            if (able_place.count({use_vertical_lines[x], y})) {
                 i--;
                 cnt++;
                 if (cnt > 100) {
@@ -156,12 +156,12 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_conf
             lines.insert({x + 1, y});
 
             // 置ける場所を更新
-            assert(able_place.contains({x, y}));
+            assert(able_place.count({x, y}));
             able_place.erase({x, y});
-            if (able_place.contains({x + 1, y})) {
+            if (able_place.count({x + 1, y})) {
                 able_place.erase({x + 1, y});
             }
-            if (able_place.contains({x - 1, y})) {
+            if (able_place.count({x - 1, y})) {
                 able_place.erase({x - 1, y});
             }
 
@@ -186,35 +186,35 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_conf
             lines.erase({x + 1, y});
 
             // 置ける場所を更新
-            assert(!able_place.contains({x, y}));
+            assert(!able_place.count({x, y}));
             able_place.insert({x, y});
             if (x > 1) {
                 bool ok = true;
                 // 左の左にも横線がある場合はだめ
-                if (lines.contains({x - 2, y})) {
+                if (lines.count({x - 2, y})) {
                     ok = false;
                 }
                 // 元のable_placeに含まれていない場合はだめ
-                if (!original_able_place.contains({x - 1, y})) {
+                if (!original_able_place.count({x - 1, y})) {
                     ok = false;
                 }
                 if (ok) {
-                    assert(!able_place.contains({x - 1, y}));
+                    assert(!able_place.count({x - 1, y}));
                     able_place.insert({x - 1, y});
                 }
             }
             if (x < N - 1) {
                 bool ok = true;
                 // 右の右にも横線がある場合はだめ
-                if (lines.contains({x + 2, y})) {
+                if (lines.count({x + 2, y})) {
                     ok = false;
                 }
                 // 元のable_placeに含まれていない場合はだめ
-                if (!original_able_place.contains({x + 1, y})) {
+                if (!original_able_place.count({x + 1, y})) {
                     ok = false;
                 }
                 if (ok) {
-                    assert(!able_place.contains({x + 1, y}));
+                    assert(!able_place.count({x + 1, y}));
                     able_place.insert({x + 1, y});
                 }
             }
@@ -345,7 +345,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = std::format("24_normal_max{:02}.in", t++);
+                string filename = format("24_normal_max%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -353,7 +353,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = std::format("24_normal_max{:02}.in", t++);
+                string filename = format("24_normal_max%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -382,7 +382,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = std::format("26_normal_many12query{:02}.in", t++);
+                string filename = format("26_normal_many12query%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -398,7 +398,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = std::format("27_normal_many3query{:02}.in", t++);
+                string filename = format("27_normal_many3query%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -411,7 +411,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = std::format("27_normal_many3query{:02}.in", t++);
+                string filename = format("27_normal_many3query%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -433,7 +433,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = std::format("34_hard_max{:02}.in", t++);
+                string filename = format("34_hard_max%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -441,7 +441,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = std::format("34_hard_max{:02}.in", t++);
+                string filename = format("34_hard_max%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -458,7 +458,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = std::format("35_hard_many12query{:02}.in", t++);
+                string filename = format("35_hard_many12query%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -474,7 +474,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = std::format("36_hard_many3query{:02}.in", t++);
+                string filename = format("36_hard_many3query%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;

@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
             inf.readSpace();
             int y = inf.readInt(1, M, "y");
             inf.readEoln();
-            ensuref(!lines_lefts.contains({x, y}), std::format("line does not exist at ({}, {}) when {}", x, y, i).c_str());
-            ensuref(!lines_lefts.contains({x - 1, y}), std::format("line already exists left at ({}, {}) when {}", x - 1, y, i).c_str());
-            ensuref(!lines_lefts.contains({x + 1, y}), std::format("line already exists right at ({}, {}) when {}", x + 1, y, i).c_str());
+            ensuref(!lines_lefts.contains({x, y}), format("line does not exist at (%d, %d) when %d", x, y, i).c_str());
+            ensuref(!lines_lefts.contains({x - 1, y}), format("line already exists left at (%d, %d) when %d", x - 1, y, i).c_str());
+            ensuref(!lines_lefts.contains({x + 1, y}), format("line already exists right at (%d, %d) when %d", x + 1, y, i).c_str());
             lines_lefts.insert({x, y});
         } else if (t == 2) {
             int x = inf.readInt(1, N - 1, "x");
