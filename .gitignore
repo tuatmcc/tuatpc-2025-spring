@@ -14,3 +14,4 @@ requirements.lock
 requirements-dev.lock
 !common/testlib.h
 *.lock
+.vscode/
