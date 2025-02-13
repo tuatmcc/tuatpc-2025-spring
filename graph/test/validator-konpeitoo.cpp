@@ -10,6 +10,8 @@ const int MAX_M = 100;
 const int MIN_V = 1;
 const int MIN_W = 1;
 const int MAX_W = 100;
+const int MIN_L = 1;
+const int MAX_L = 8;
 
 int main(int argc, char* argv[]){
     registerValidation(argc, argv);
@@ -58,9 +60,11 @@ int main(int argc, char* argv[]){
     int MAX_SUM_M = min((long long)pow((long long)N, 2), (long long)100000);
     ensuref(SUM_M <= MAX_SUM_M , "The sum of M is too large\n");
 
+    /*L*/
+    int L = inf.readInt(MIN_L, MAX_L, "L");
     /*S*/
     string S = inf.readToken("[A-G]+", "S");
-    ensuref(1 <= S.size() && S.size() <= 8, "S is too long\n");
+    ensuref(1 <= S.size() && S.size() <= 8, "S is invalid\n");
     inf.readEoln();
     inf.readEof();
 }
