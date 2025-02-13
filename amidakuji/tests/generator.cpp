@@ -264,7 +264,7 @@ void make_sample_testcase() {
         {3, 1, -1},
         {3, 3, -1},
     };
-    write_output("00sample01.in", in);
+    write_output("00_sample_01.in", in);
 
     // 7 3
     // 20
@@ -313,7 +313,7 @@ void make_sample_testcase() {
         {3, 6, -1},
         {1, 4, 2},
     };
-    write_output("00sample02.in", in);
+    write_output("00_sample_02.in", in);
 
     // 2 2
     // 3
@@ -328,7 +328,7 @@ void make_sample_testcase() {
         {2, 1, 1},
         {1, 1, 1},
     };
-    write_output("00sample03.in", in);
+    write_output("00_sample_03.in", in);
 }
 
 int32_t main(int32_t argc, char *argv[]) {
@@ -345,7 +345,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = format("24_normal_max%02d.in", t++);
+                string filename = format("24_normal_max_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -353,7 +353,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = format("24_normal_max%02d.in", t++);
+                string filename = format("24_normal_max_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -382,7 +382,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("26_normal_many12query%02d.in", t++);
+                string filename = format("26_normal_many12query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -398,7 +398,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("27_normal_many3query%02d.in", t++);
+                string filename = format("27_normal_many3query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -411,7 +411,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = format("27_normal_many3query%02d.in", t++);
+                string filename = format("27_normal_many3query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -433,7 +433,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = format("34_hard_max%02d.in", t++);
+                string filename = format("34_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -441,7 +441,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = format("34_hard_max%02d.in", t++);
+                string filename = format("34_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -458,7 +458,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("35_hard_many12query%02d.in", t++);
+                string filename = format("35_hard_many12query_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -474,7 +474,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("36_hard_many3query%02d.in", t++);
+                string filename = format("36_hard_many3query_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
