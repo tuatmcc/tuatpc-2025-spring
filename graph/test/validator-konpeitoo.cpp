@@ -62,6 +62,7 @@ int main(int argc, char* argv[]){
 
     /*L*/
     int L = inf.readInt(MIN_L, MAX_L, "L");
+    inf.readEoln();
     /*S*/
     string S = inf.readToken("[A-G]+", "S");
     ensuref(1 <= S.size() && S.size() <= 8, "S is invalid\n");
