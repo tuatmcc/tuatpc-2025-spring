@@ -1,60 +1,13 @@
 #include <bits/stdc++.h>
+#include <atcoder/modint>
 using namespace std;
+using namespace atcoder;
 
-// ----------有理数型----------
-struct Fraction {
-    int64_t numerator, denominator;
-
-    // 整数から作成（x → x/1）
-    Fraction(int64_t x) : numerator(x), denominator(1) {}
-
-    // 2つの整数から作成(a, b -> a/b)
-    Fraction(int64_t num, int64_t den) {
-        if (den == 0) {
-            throw invalid_argument("Denominator cannot be zero");
-        }
-        int64_t g = gcd(num, den);
-        numerator = num / g;
-        denominator = den / g;
-
-        // 分母を正に統一
-        if (denominator < 0) {
-            numerator = -numerator;
-            denominator = -denominator;
-        }
-    }
-
-    // 演算子オーバーロード
-    Fraction operator+(const Fraction &other) const {
-        return Fraction(numerator * other.denominator + other.numerator * denominator,
-                        denominator * other.denominator);
-    }
-
-    Fraction operator-(const Fraction &other) const {
-        return Fraction(numerator * other.denominator - other.numerator * denominator,
-                        denominator * other.denominator);
-    }
-
-    Fraction operator*(const Fraction &other) const {
-        return Fraction(numerator * other.numerator, denominator * other.denominator);
-    }
-
-    Fraction operator/(const Fraction &other) const {
-        if (other.numerator == 0) {
-            throw invalid_argument("Division by zero");
-        }
-        return Fraction(numerator * other.denominator, denominator * other.numerator);
-    }
-};
-
-ostream &operator<<(ostream &os, const Fraction &frac) {
-    return os << frac.numerator << "/" << frac.denominator;
-}
-
-// ----------エッジ（回路の抵抗）を表す構造体----------
+using mint = modint998244353;
+// エッジ（回路の抵抗）を表す構造体
 struct edge {
     int to;
-    Fraction resist;
+    mint resist;
 };
 
 /// @brief 入力からグラフを構築する
@@ -103,7 +56,7 @@ tuple<vector<vector<edge>>, int, int> make_graph(const vector<string> &s) {
                 for (int direction = 0; direction < 2; direction++) {
                     int ni = i + dx[direction];
                     int nj = j + dy[direction];
-                    int resist = 0;
+                    mint resist = 0;
                     while (ni >= 0 && ni < h && nj >= 0 && nj < w && !node_idx.contains({ni, nj})) {
                         if (s[ni][nj] == 'v' || s[ni][nj] == '^') { // 抵抗だった場合
                             resist++;
@@ -117,9 +70,10 @@ tuple<vector<vector<edge>>, int, int> make_graph(const vector<string> &s) {
                         ni += dx[direction];
                         nj += dy[direction];
                     }
+                    // エッジを追加
                     if (node_idx.contains({ni, nj})) {
-                        graph[node_idx[{i, j}]].push_back({node_idx[{ni, nj}], Fraction(resist)});
-                        graph[node_idx[{ni, nj}]].push_back({node_idx[{i, j}], Fraction(resist)});
+                        graph[node_idx[{i, j}]].push_back({node_idx[{ni, nj}], resist});
+                        graph[node_idx[{ni, nj}]].push_back({node_idx[{i, j}], resist});
                     }
                 }
             }
@@ -154,13 +108,13 @@ bool reduce_parallel(int n, vector<vector<edge>> &graph, vector<bool> &removed) 
             if (indices.size() > 1) {
                 changed = true;
                 // 各エッジの逆数を足し合わせる： Σ (1 / R)
-                Fraction inv_sum = {0, 1}; // 初期値は 0/1
+                mint inv_sum = 0; // 初期値は 0
                 for (int k : indices) {
-                    Fraction invR = Fraction(1, 1) / graph[i][k].resist;
+                    mint invR = mint(1) / graph[i][k].resist;
                     inv_sum = inv_sum + invR;
                 }
                 // 合成抵抗 = 1 / (Σ (1/R))
-                Fraction new_R = Fraction(1, 1) / inv_sum;
+                mint new_R = mint(1) / inv_sum;
 
                 // --- 既存の並列エッジを削除する処理 ---
                 // ノード i の隣接リストから、接続先が j のエッジを削除
@@ -176,7 +130,7 @@ bool reduce_parallel(int n, vector<vector<edge>> &graph, vector<bool> &removed) 
                               }),
                               edges_j.end());
 
-                // 新たに並列合成したエッジを追加
+                // 新たに並列合成したエッジを追加（双方向に追加）
                 edges_i.push_back({j, new_R});
                 edges_j.push_back({i, new_R});
             }
@@ -200,12 +154,12 @@ bool reduce_series(int start_idx, int end_idx, int n, vector<vector<edge>> &grap
         if (graph[u].size() == 2) {                   // 隣接エッジが 2 本なら直列とみなす
             changed = true;
             // ノード u に接続している2本のエッジを取得
-            int v = graph[u][0].to;           // 1本目の隣接ノード
-            int w = graph[u][1].to;           // 2本目の隣接ノード
-            Fraction R1 = graph[u][0].resist; // v - u の抵抗
-            Fraction R2 = graph[u][1].resist; // u - w の抵抗
+            int v = graph[u][0].to;       // 1本目の隣接ノード
+            int w = graph[u][1].to;       // 2本目の隣接ノード
+            mint R1 = graph[u][0].resist; // v - u の抵抗
+            mint R2 = graph[u][1].resist; // u - w の抵抗
             // 直列接続では抵抗値は単純加算
-            Fraction new_R = R1 + R2;
+            mint new_R = R1 + R2;
 
             // --- ノード u を経由しているエッジを、隣接ノード側からも削除 ---
             auto &edges_v = graph[v];
@@ -277,6 +231,6 @@ int main() {
         }
     }
 
-    Fraction ans = graph[start_idx][0].resist;
-    cout << ans << endl;
+    mint ans = graph[start_idx][0].resist;
+    cout << ans.val() << endl;
 }
