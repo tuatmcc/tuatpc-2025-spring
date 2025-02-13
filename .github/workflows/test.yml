@@ -15,21 +15,16 @@ on:
 jobs:
   Rime-and-HTML-test:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: read
+      attestations: read
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: false
-        tags: sakumon
-        load: true
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-
-    - name: Rime test and filename check and html check
-      run: docker run --rm -v $GITHUB_WORKSPACE:/root/app sakumon /bin/zsh -c "cd /root/app && rime test --keep_going && uv run --python python3.10 ./scripts/check_filename.py && uv run --python python3.10 ./scripts/check_html.py"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+      - name: Pull container image
+        run: docker pull ghcr.io/tuatmcc/sakumon-image:latest
+      - name: Rime test and filename check and html check
+        run: docker run --rm -v $GITHUB_WORKSPACE:/root/app ghcr.io/tuatmcc/sakumon-image:latest /bin/zsh -c "cd /root/app && rime test --keep_going && python3 ./scripts/check_filename.py && python3 ./scripts/check_html.py"
