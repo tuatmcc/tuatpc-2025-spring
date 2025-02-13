@@ -16,7 +16,7 @@ void gen(const string name, const int n, const vector<pair<long long, long long>
 	ofstream of(name);
 
 	for (int i = 0; i < n; ++i)
-		of << ah[i].first << " " << ah[i].second;
+		of << ah[i].first << " " << ah[i].second << endl;
 }
 
 
