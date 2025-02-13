@@ -35,6 +35,8 @@ int main(){
             m[V[j]].push_back({i, W[j]});//逆に入れる重みとともに
         }
     }
+    int L;
+    cin >> L;
     string S;
     cin >> S;
 
