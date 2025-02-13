@@ -15,6 +15,7 @@ const int Ai_MAX = 1000000000;
 void gen(const string name, const int n, const vector<pair<long long, long long>> ah) {
 	ofstream of(name);
 
+	of << n << endl;
 	for (int i = 0; i < n; ++i)
 		of << ah[i].first << " " << ah[i].second << endl;
 }
