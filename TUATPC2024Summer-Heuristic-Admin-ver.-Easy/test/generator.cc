@@ -74,5 +74,15 @@ int main(int argc, char *argv[]) {
 
 	// Max
 	gen("30_max_01.in", 5, {{Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}});
+
+	// N == N_MAX
+	vector<pair<long long, long long>> n_max_case(N_MAX);
+	for (int i = 0; i < N_MAX; ++i) {
+		long long a, h;
+		a = rnd.next(Ai_MIN, Ai_MAX);
+		h = rnd.next(Hi_MIN, Hi_MAX);
+		n_max_case[i] = {a ,h};
+	}
+	gen("30_max_02.in", N_MAX, n_max_case);
 	return 0;
 }
