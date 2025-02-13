@@ -11,6 +11,8 @@ using namespace std;
 int main() {
     int N, M;
     cin >> N >> M;
+    assert(2 <= N && N <= 20);
+    assert(1 <= M && M <= 100000);
 
     // 横線の有無を管理するあみだくじ
     vector<vector<bool>> grid(M, vector<bool>(N - 1, false));

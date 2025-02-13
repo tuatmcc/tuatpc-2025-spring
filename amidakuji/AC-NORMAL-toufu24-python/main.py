@@ -14,6 +14,9 @@ def op(a: List[int], b: List[int]) -> List[int]:
 N, M = map(int, input().split())
 Q = int(input())
 
+assert 2 <= N <= 20
+assert 1 <= M <= 10**5
+
 e = [i for i in range(N)]
 v = [[i for i in range(N)] for _ in range(M)]
 seg = SegTree(op, e, v)
