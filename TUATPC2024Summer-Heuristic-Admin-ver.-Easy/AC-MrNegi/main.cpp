@@ -14,7 +14,7 @@ int main() {
         ll a, h;
         cin >> a >> h;
         s += max(a, h);
-        b = max(b, a, h);
+        b = max({b, a, h});
         if(b >= 1600 && s >= 4200){
             cout << "No" << endl;
             return 0;
