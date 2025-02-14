@@ -50,7 +50,18 @@ int main(int argc, char* argv[]){
         else inf.readSpace();
 
         if(res_s == -1){
-            //不可能をどう判断するか。悪魔の証明。
+            ll le = 0, ri = 5e17;
+            while(le != ri){
+                ll c = (le + ri) / 2;
+                if(judge(ac_a, c, ac_kj[0], ac_kj[3]) <= i){
+                    ri = c;
+                }else{
+                    le = c + 1;
+                }
+            }
+            if(judge(ac_a, le, ac_kj[0], ac_kj[3]) != i){
+                quitf(_wa, "wa");
+            }
         }else if(res_s == 0){
             if(judge(ac_a, res_s, ac_kj[0], ac_kj[3]) == i + 1){
                 continue;
