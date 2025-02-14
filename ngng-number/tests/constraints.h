@@ -1,7 +1,4 @@
-#ifndef CONSTRAINTS_H
-#define CONSTRAINTS_H
+const int MIN_length_of_N = 1;
+const int MAX_length_of_N = 100000;
 
-constexpr int MIN_DIGIT = 1;
-constexpr int MAX_DIGIT = 100000;
-
-#endif
+const int MAX_length_of_N_subtask = 5;
