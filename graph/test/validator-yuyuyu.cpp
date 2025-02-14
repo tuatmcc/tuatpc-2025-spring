@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         inf.readEoln();
     }
 
-    ensuref(sum_m <= min(n * n, 100000), "sum of m is too large");
+    ensuref((long long)sum_m <= min((long long)n * n, (long long)100000), "sum of m is too large");
 
     int l = inf.readInt(MIN_L, MAX_L, "l");
     inf.readEoln();
