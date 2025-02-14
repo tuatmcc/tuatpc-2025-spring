@@ -23,6 +23,7 @@ int main(){
             cin >> W[i][j];
         }
     }
+    int L; cin >> L;
     string S; cin >> S;
 
     vector<vector<pair<int, int>>> G(N);
@@ -34,7 +35,6 @@ int main(){
     }
     reverse(S.begin(), S.end());
 
-    int L = S.size();
     vector dp(L, vector(N, ll{}));
     for(int i = 0; i < N; ++i) dp[0][i] = S[0] == X[i];
     for(int i = 1; i < L; ++i){
