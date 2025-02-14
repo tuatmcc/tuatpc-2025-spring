@@ -42,7 +42,10 @@ struct RollbackUnionFindWithData {
         history.push({HistoryEntry::UF_OPERATION, x, data[x]}); // xの変更前の値を記録
         history.push({HistoryEntry::UF_OPERATION, y, data[y]}); // yの変更前の値を記録
 
-        if (x == y) return false;
+        if (x == y) {
+            history.push({HistoryEntry::DATA_OPERATION, -1, -1}); // ダミーの操作を積む
+            return false;
+        }
         if (data[x] > data[y]) swap(x, y);
 
         // 各集合の最大値(下端を想定)を設定
