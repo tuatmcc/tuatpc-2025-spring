@@ -1,10 +1,8 @@
 #include "testlib.h"
 #include "bits/stdc++.h"
+#include "constrains.h"
 
 using namespace std;
-
-const int MIN_length_of_N = 1;
-const int MAX_length_of_N = 100000;
 
 int main(int argc, char* argv[]){
     registerGen(argc,argv,1);
