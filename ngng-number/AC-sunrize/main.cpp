@@ -4,6 +4,7 @@ using ll = long long int;
 typedef vector<ll> vll;
 typedef vector<vll> vvll;
 typedef vector<vvll> vvvll;
+typedef vector<vvvll> vvvvll;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef pair<ll,ll> pll;
@@ -46,4 +47,10 @@ int main(){
     //       l: ABABのどこまで完成しているか　0:A 1:AB 2:ABA 3:ABAB
     // 100000*2*100*4 = 8*10^7 状態
     // 
+    string s;
+    cin >> s;
+    ll n = s.size();
+    vvvvll dp(n+1,vvvll(2,vvll(100,vll(4,0))));
+    rep(i,10,100)dp[1][0][i][0] = 1;
+    
 } 
