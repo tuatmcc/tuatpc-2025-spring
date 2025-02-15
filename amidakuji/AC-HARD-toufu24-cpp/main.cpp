@@ -183,7 +183,6 @@ int32_t main() {
         if (node->tl + 1 == node->tr) {
             // 葉ノードの処理
             int t = node->tl - 1;
-            cerr << "t = " << t << endl;
             if (0 <= t && t < Q && get<0>(queries[t]) == 3) {
                 int s = get<1>(queries[t]);
                 assert(0 <= s && s < N);
