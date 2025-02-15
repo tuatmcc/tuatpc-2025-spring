@@ -13,5 +13,6 @@ int main(int argc, char *argv[]) {
             ensure(num[i] == '0');
         }
     }
+    inf.readEoln();
     inf.readEof();
 }
