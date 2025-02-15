@@ -153,6 +153,9 @@ int32_t main() {
 
     // edges_intervalもインデックスを振り直す
     for (auto &p : edges_interval) {
+        if (p.second.first == -1) {
+            continue;
+        }
         p.second.first = convert[p.second.first];
         p.second.second = convert[p.second.second];
     }
@@ -172,14 +175,16 @@ int32_t main() {
 
         // 辺を追加
         for (auto [u, v] : node->edges) {
+            if (u == -1 || v == -1) continue;
             if (uf.unite(u, v))
                 cnt++;
         }
 
         if (node->tl + 1 == node->tr) {
             // 葉ノードの処理
-            int t = node->tl;
-            if (t < Q && get<0>(queries[t]) == 3) {
+            int t = node->tl - 1;
+            cerr << "t = " << t << endl;
+            if (0 <= t && t < Q && get<0>(queries[t]) == 3) {
                 int s = get<1>(queries[t]);
                 assert(0 <= s && s < N);
                 // どの行に到達するか

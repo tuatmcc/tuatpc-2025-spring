@@ -100,8 +100,10 @@ int32_t main() {
 
     odc.build();
     odc.run([&](int i) -> void {
+        if (i == 0) return;
+        if (i == Q + 1) return;
         int t, x, y;
-        tie(t, x, y) = queries[i];
+        tie(t, x, y) = queries[i - 1];
         if (t == 3) {
             cout << rev_convert[odc.uf.get_data(convert[x + 0 * N])] - N * (M + 1) + 1 << endl;
         }
