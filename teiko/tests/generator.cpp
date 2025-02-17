@@ -482,6 +482,7 @@ int main(int argc, char* argv[]){
       for (int i = 1; i <= num; i++) {
          gen.source.append("[R");
       }
+      gen.source.append("R");
       gen.source += std::string(num, ']');
 
       auto s = gen.generate2D();
