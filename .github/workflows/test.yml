@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - 'main'
-
     paths-ignore:
     - '**.md'
     - 'docs/**'
@@ -16,42 +15,22 @@ on:
 jobs:
   Rime-and-HTML-test:
     runs-on: ubuntu-latest
-
+    container:
+      image: ghcr.io/tuatmcc/sakumon-image:latest
+      volumes:
+        - /github/workspace:/root/app
+    permissions:
+      contents: read
+      packages: read
+      attestations: read
     steps:
-    - uses: actions/checkout@v3
-
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '2.4'
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.8'
-
-    - name: Update package list
-      run: |
-        sudo apt update
-
-    - name: Install GCC
-      run: |
-        sudo apt install build-essential -y
-        sudo apt install gcc g++ -y
-
-    - name: Upgrade pip
-      run: python3 -m pip install --upgrade pip
-
-    - name: Install Rime
-      run: python3 -m pip install git+https://github.com/icpc-jag/rime
-
-    - name: Install BeautifulSoup
-      run: python3 -m pip install bs4
-
-    - name: Rime test
-      run: rime test --keep_going
-
-    - name: File Name test
-      run: python3 ./scripts/check_filename.py
-
-    - name: HTML test
-      run: python3 ./scripts/check_html.py
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set Working Directory
+        run: cd /root/app
+      - name: Rime test
+        run: rime test --keep_going
+      - name: Check filenames
+        run: python3 scripts/check_filename.py
+      - name: Check HTMLs
+        run: python3 scripts/check_html.py
