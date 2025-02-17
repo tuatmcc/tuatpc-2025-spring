@@ -91,49 +91,53 @@ tuple<vector<vector<edge>>, int, int> make_graph(const vector<string> &s) {
 bool reduce_parallel(int n, vector<vector<edge>> &graph, vector<bool> &removed) {
     bool changed = false; // 変更があったかどうかのフラグ
 
-    // ノード i と j の組み合わせを全探索
+    // 各ノード i について、隣接リスト内のエッジをグループ化して処理
     for (int i = 0; i < n; i++) {
         if (removed[i]) continue;
-        for (int j = i + 1; j < n; j++) {
+
+        // ノード i の隣接エッジを、宛先 j ごとにグループ化
+        map<int, vector<int>> grouped;
+        for (int k = 0; k < graph[i].size(); k++) {
+            int j = graph[i][k].to;
             if (removed[j]) continue;
-
-            // ノード i の隣接リストから、接続先が j であるエッジのインデックスを収集
-            vector<int> indices;
-            for (int k = 0; k < graph[i].size(); k++) {
-                if (graph[i][k].to == j) {
-                    indices.push_back(k);
-                }
+            // i < j のときだけ処理
+            if (i < j) {
+                grouped[j].push_back(k);
             }
-            // 複数のエッジが存在する場合は並列合成
-            if (indices.size() > 1) {
-                changed = true;
-                // 各エッジの逆数を足し合わせる： Σ (1 / R)
-                mint inv_sum = 0; // 初期値は 0
-                for (int k : indices) {
-                    mint invR = mint(1) / graph[i][k].resist;
-                    inv_sum = inv_sum + invR;
-                }
-                // 合成抵抗 = 1 / (Σ (1/R))
-                mint new_R = mint(1) / inv_sum;
+        }
 
-                // --- 既存の並列エッジを削除する処理 ---
-                // ノード i の隣接リストから、接続先が j のエッジを削除
-                auto &edges_i = graph[i];
-                edges_i.erase(remove_if(edges_i.begin(), edges_i.end(), [j](const edge &e) {
-                                  return e.to == j;
-                              }),
-                              edges_i.end());
-                // 同様に、ノード j の隣接リストから、接続先が i のエッジを削除
-                auto &edges_j = graph[j];
-                edges_j.erase(remove_if(edges_j.begin(), edges_j.end(), [i](const edge &e) {
-                                  return e.to == i;
-                              }),
-                              edges_j.end());
+        // グループごとに並列エッジが2本以上あれば合成
+        for (auto &entry : grouped) {
+            int j = entry.first;
+            vector<int> &indices = entry.second;
+            if (indices.size() < 2) continue;
 
-                // 新たに並列合成したエッジを追加（双方向に追加）
-                edges_i.push_back({j, new_R});
-                edges_j.push_back({i, new_R});
+            changed = true;
+            mint inv_sum = 0;
+            // 各エッジの逆数を足し合わせる
+            for (int idx : indices) {
+                inv_sum = inv_sum + mint(1) / graph[i][idx].resist;
             }
+            // 合成抵抗は 1 / (Σ (1/R))
+            mint new_R = mint(1) / inv_sum;
+
+            // --- 並列エッジの削除処理 ---
+            // ノード i の隣接リストから、接続先が j のエッジを削除
+            auto &edges_i = graph[i];
+            edges_i.erase(remove_if(edges_i.begin(), edges_i.end(), [j](const edge &e) {
+                              return e.to == j;
+                          }),
+                          edges_i.end());
+            // ノード j の隣接リストから、接続先が i のエッジを削除
+            auto &edges_j = graph[j];
+            edges_j.erase(remove_if(edges_j.begin(), edges_j.end(), [i](const edge &e) {
+                              return e.to == i;
+                          }),
+                          edges_j.end());
+
+            // 新たに並列合成したエッジを追加（双方向に追加）
+            edges_i.push_back({j, new_R});
+            edges_j.push_back({i, new_R});
         }
     }
     return changed;
