@@ -295,6 +295,23 @@ int main(int argc, char* argv[]){
 
    int max_hw = 0;
 
+
+   // 完全ランダム
+   for (int t = 1; t <= 20; t++) {
+      ofstream of(format("06_random_%02d.in", t).c_str());
+
+      Generator gen;
+      gen.gen_source(1000);
+      auto s = gen.generate2D();
+      chmax<int>(max_hw, s.size() * s[0].size());
+      of << s.size() << ' ' << s[0].size() << std::endl;
+      for (auto si : s) {
+         of << si << std::endl;
+      }
+
+      of.close();
+   }
+
    // 1. 直列だけ
    for (int t = 1; int num : {1, 2, 5, 20, 100, 5000}) {
       ofstream of(format("02_series_%02d.in", t).c_str());
@@ -313,7 +330,7 @@ int main(int argc, char* argv[]){
    }
 
    // 2. 並列だけ
-   for (int t = 1; int num : {1, 2, 5, 20, 100, 5000}) {
+   for (int t = 1; int num : {2, 5, 20, 100, 5000}) {
       ofstream of(format("03_para_%02d.in", t).c_str());
 
       Generator gen;
@@ -379,22 +396,6 @@ int main(int argc, char* argv[]){
 
       of.close();
       t++;
-   }
-
-   // 完全ランダム
-   for (int t = 1; t <= 20; t++) {
-      ofstream of(format("06_random_%02d.in", t).c_str());
-
-      Generator gen;
-      gen.gen_source(1000);
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
-      }
-
-      of.close();
    }
 
    // 適当手打ち

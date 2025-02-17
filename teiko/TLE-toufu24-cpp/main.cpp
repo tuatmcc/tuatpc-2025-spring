@@ -191,10 +191,12 @@ bool reduce_series(int start_idx, int end_idx, int n, vector<vector<edge>> &grap
 }
 
 int main() {
-    vector<string> s;
-    string tmp;
-    while (getline(cin, tmp)) {
-        s.push_back(tmp);
+    int h, w;
+    cin >> h >> w;
+    cin.ignore();
+    vector<string> s(h);
+    for (auto& si : s) {
+        getline(cin, si);
     }
 
     // 長さを揃える

@@ -11,24 +11,17 @@ int main() {
     //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     //  1. 入力
     //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    std::vector<std::string> s;
-    {
-        s.push_back({});  // 便宜上
-        std::string buff;
-        while (std::getline(std::cin, buff)) {
-            s.push_back(buff);
-        }
-        s.push_back({});  // 便宜上
+    int h, w;
+    std::cin >> h >> w;
+    std::cin.ignore();
+    std::vector<std::string> s(h + 2);
+    for (int i = 1; i <= h; i++) {
+        std::getline(std::cin, s[i]);
+    }
 
-        int width = 0;
-        for (const auto& si : s) {
-            width = std::max<int>(width, si.size());
-        }
-
-        for (auto& si : s) {
-            while (si.size() < width) {
-                si.push_back(' ');
-            }
+    for (auto& si : s) {
+        while (si.size() < w) {
+            si.push_back(' ');
         }
     }
 
@@ -111,7 +104,7 @@ int main() {
             }
             else {
                 Fp R = Fp(1);
-                int next_j = skip_wire(i, j + "^v^v^v"s.size()) + 1;
+                int next_j = skip_wire(i, j + "^v^v^v"s.size());
                 return { R, next_j };
             }
         }
@@ -148,6 +141,4 @@ int main() {
     } parser(s);
 
     std::cout << parser.parse().val() << std::endl;
-
-    std::cout << (Fp(5)/Fp(4)).val() << std::endl;
 }
