@@ -92,8 +92,8 @@ int main() {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 4; k++) {
                 dp[i][j][k] %= mod;
-                cout << "dp[" << i << "][" << j << "][" << k
-                     << "] = " << dp[i][j][k] << endl;
+                // cout << "dp[" << i << "][" << j << "][" << k
+                //      << "] = " << dp[i][j][k] << endl;
             }
         }
     }
