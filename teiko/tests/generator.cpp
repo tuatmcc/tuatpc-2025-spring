@@ -298,7 +298,7 @@ int main(int argc, char* argv[]){
 
    // 完全ランダム
    for (int t = 1; t <= 20; t++) {
-      ofstream of(format("06_random_%02d.in", t).c_str());
+      ofstream of(::format("06_random_%02d.in", t).c_str());
 
       Generator gen;
       gen.gen_source(1000);
@@ -314,7 +314,7 @@ int main(int argc, char* argv[]){
 
    // 1. 直列だけ
    for (int t = 1; int num : {1, 2, 5, 20, 100, 5000}) {
-      ofstream of(format("02_series_%02d.in", t).c_str());
+      ofstream of(::format("02_series_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "(" + std::string(num, 'R') + ")";
@@ -331,7 +331,7 @@ int main(int argc, char* argv[]){
 
    // 2. 並列だけ
    for (int t = 1; int num : {2, 5, 20, 100, 5000}) {
-      ofstream of(format("03_para_%02d.in", t).c_str());
+      ofstream of(::format("03_para_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "[" + std::string(num, 'R') + "]";
@@ -348,7 +348,7 @@ int main(int argc, char* argv[]){
 
    // 1, 2, ..., k のやつ
    for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
-      ofstream of(format("04_sum_%02d.in", t).c_str());
+      ofstream of(::format("04_sum_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "(R";
@@ -374,7 +374,7 @@ int main(int argc, char* argv[]){
 
    // 1, 2, ..., k のやつ（逆順）
    for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
-      ofstream of(format("05_revsum_%02d.in", t).c_str());
+      ofstream of(::format("05_revsum_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "(";
@@ -406,7 +406,7 @@ int main(int argc, char* argv[]){
       "([(R(RR[RR(RR[RR([RRR(RRR)RRRR(RR)]RRR(RRRRRRRR[RRR]R)RRRR)RR]R)RR]R)R)RR]RRR)",
       "[R[R[R[R[R[RR]]]]]]"
    }) {
-      ofstream of(format("07_handmaid_%02d.in", t).c_str());
+      ofstream of(::format("07_handmaid_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = hack;
@@ -423,7 +423,7 @@ int main(int argc, char* argv[]){
 
    // 1, 2, ..., k のやつ
    for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
-      ofstream of(format("08_sumpara_%02d.in", t).c_str());
+      ofstream of(::format("08_sumpara_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "[R";
@@ -449,7 +449,7 @@ int main(int argc, char* argv[]){
 
    // 1, 2, ..., k のやつ（逆順）
    for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
-      ofstream of(format("09_revsumpara_%02d.in", t).c_str());
+      ofstream of(::format("09_revsumpara_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "[";
@@ -475,7 +475,7 @@ int main(int argc, char* argv[]){
 
    // 入れ子
    for (int t = 1; int num : {10, 300, 299}) {
-      ofstream of(format("10_ireko_%02d.in", t).c_str());
+      ofstream of(::format("10_ireko_%02d.in", t).c_str());
 
       Generator gen;
       gen.source = "";
