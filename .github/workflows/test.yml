@@ -15,6 +15,10 @@ on:
 jobs:
   Rime-and-HTML-test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/tuatmcc/sakumon-image:latest
+      volumes:
+        - /github/workspace:/root/app
     permissions:
       contents: read
       packages: read
@@ -22,9 +26,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-      - name: Pull container image
-        run: docker pull ghcr.io/tuatmcc/sakumon-image:latest
-      - name: Rime test and filename check and html check
-        run: docker run --rm -v $GITHUB_WORKSPACE:/root/app ghcr.io/tuatmcc/sakumon-image:latest /bin/zsh -c "cd /root/app && rime test --keep_going && python3 ./scripts/check_filename.py && python3 ./scripts/check_html.py"
+      - name: Set Working Directory
+        run: cd /root/app
+      - name: Rime test
+        run: rime test --keep_going
+      - name: Check filenames
+        run: python3 scripts/check_filename.py
+      - name: Check HTMLs
+        run: python3 scripts/check_html.py
