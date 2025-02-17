@@ -59,8 +59,6 @@ int main() {
 				cout << "-1" << end;
 				flag = false;
 			}
-			// cout << new_is[0].first << new_is[1].first << new_is[2].first << new_is[3].first << "\n";
-			// cout << "low: " << low << ", mid: " << mid << ", high: " << high << "\n";
 		}
 		if (flag)
 			cout << high << end;
