@@ -98,19 +98,20 @@ int main() {
                     if (s[row][j] == '+') {
                         Fp R;
                         int b;
-                        std::tie(R, b) = series(row, j + 4);
+                        int nj = skip_wire(row, j + 1);
+                        std::tie(R, b) = series(row, nj);
                         next_j = std::max<int>(next_j, b);
                         G += Fp(1) / R;
                     }
                 }
-                
+
                 Fp R = Fp(1) / G;
-                next_j += 4;
-                return { R, next_j + 4 };
+                next_j = skip_wire(i, next_j);
+                return { R, next_j };
             }
             else {
                 Fp R = Fp(1);
-                int next_j = j + "^v^v^v---"s.size();
+                int next_j = skip_wire(i, j + "^v^v^v"s.size()) + 1;
                 return { R, next_j };
             }
         }
@@ -129,10 +130,24 @@ int main() {
             assert(false);
         }
 
+        //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  2.4. 導線
+        //
+        //  導線をスキップしたときの j の位置を返します
+        //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        int skip_wire(int r, int c) {
+            while (s[r][c] == '-') {
+                c++;
+            }
+            return c;
+        }
+
     private:
         std::vector<std::string> s;
         int height, width;
     } parser(s);
 
     std::cout << parser.parse().val() << std::endl;
+
+    std::cout << (Fp(5)/Fp(4)).val() << std::endl;
 }
