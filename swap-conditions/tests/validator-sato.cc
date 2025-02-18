@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	int J1, J2, J3;
 
 	K = inf.readInt(K_MIN, K_MAX, "K");
-	inf.readSpace();
+	inf.readEoln();
 
 	A1 = inf.readLong(A_MIN, A_MAX, "A_1");
 	inf.readSpace();
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
 	inf.readEof();
 
 	assert(K != J1 && K != J2 && K != J3);
+	assert(J1 != J2 && J1 != J3 && J2 != J3);
 
 	return 0;
 }
