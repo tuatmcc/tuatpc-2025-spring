@@ -28,7 +28,7 @@ int main() {
 	sort(idx_score.begin(), idx_score.end(), comp);
 
 	for (int r = 0; r < 4; ++r) {
-		char end = r == 3 ? '\n' : ' ';
+		const char end = '\n';
 		if (A[K] > idx_score[r].second) {
 			cout << "-1" << end;
 			continue;
