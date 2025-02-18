@@ -71,7 +71,7 @@ int main(){
         beki[i] %= mod;
     }
     rep(i,4,n){
-        ll cnt = beki[i-2] - i + 1 + mod;
+        ll cnt = beki[i-1] - beki[i-2] - i + 1 + mod;
         cnt %= mod;
         cnt *= 81;
         cnt %= mod;
@@ -80,12 +80,16 @@ int main(){
     }
 
     // N桁の条件を満たす数字の個数
-    ll cnt = beki[n-2] - n + 1 +mod; 
+    ll cnt = beki[n-1] - beki[n-2] - n + 1 + mod; 
     cnt %= mod;
-    cnt *= ll(s[0]-'1')*9;
+    ll by = ll(s[0]-'1')*9;
+    cnt *= by;
     cnt %= mod;
     ans += cnt;
     ans %= mod;
+
+
+    //cout << ans << endl;
 
     // S[0] = A かつN桁の整数がいくつあるか
     ll A = s[0] - '0';
@@ -99,18 +103,30 @@ int main(){
         rep(i,2,n+1){
             if(ll(s[i-1] - '0') == A)dp[i][1][0] = dp[i-1][1][0] + dp[i-1][1][1];
             if(ll(s[i-1] - '0') == idx)dp[i][1][1] = dp[i-1][1][1] + dp[i-1][1][0];
-            dp[i][0][0] = dp[i-1][0][0] + dp[i-1][0][1] + dp[i-1][1][0] + dp[i-1][1][1];
-            dp[i][0][1] = dp[i-1][0][1] + dp[i-1][0][0] + dp[i-1][1][0] + dp[i-1][1][1];
+            dp[i][0][0] = dp[i-1][0][0] + dp[i-1][0][1];
+            if(ll(s[i-1] - '0') > A)dp[i][0][0] += dp[i-1][1][0] + dp[i-1][1][1];
+            dp[i][0][1] = dp[i-1][0][1] + dp[i-1][0][0];
+            if(ll(s[i-1] - '0') > idx)dp[i][0][1] += dp[i-1][1][0] + dp[i-1][1][1];
             dp[i][0][0] %= mod;
             dp[i][0][1] %= mod;
         }
-        cnt = dp[n][0][1] + dp[n][1][1] + mod;
+        cnt = dp[n][0][1] + dp[n][1][1];
+
+        //cout << cnt << endl;
+
         string x(n,'0'+A);
         revrep(i,1,n){
             x[i] = '0' + idx;
-            if(x <= s)cnt--;
+
+            if(x <= s){
+                cnt--;
+            }
         }
         cnt %= mod;
+
+
+        //cout << cnt << endl;
+
         ans += cnt;
         ans %= mod;
     }
