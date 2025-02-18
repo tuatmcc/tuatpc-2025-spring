@@ -60,13 +60,10 @@ int main(){
             }
             
         }
-        if(i != 1)cout << " ";
-        cout << ans;
+        cout << ans << endl;
     }
     //inirank
-    if(iniRank != 1)cout << " ";
-    cout << "0";
-    for(int i = iniRank + 1; i <= 4; i++)cout << " " << "-1";
-    cout << endl;
+    cout << "0" << endl;
+    for(int i = iniRank + 1; i <= 4; i++)cout << "-1" << endl;
     return 0;
 }
