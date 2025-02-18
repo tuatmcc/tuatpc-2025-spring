@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include "testlib.h"
-#include "constrains.h"
+#include "constraints.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
     for(int i = 0; i < N; ++i){
         inf.readInt(MIN_A, MAX_A, format("A_%d", i + 1));
         inf.readSpace();
-        inf.readInt(MIN_B, MAX_B, format("B_%d", i + 1));
+        inf.readInt(MIN_H, MAX_H, format("B_%d", i + 1));
         inf.readEoln();
     }
     inf.readEof();

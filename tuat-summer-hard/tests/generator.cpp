@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include "testlib.h"
-#include "constrains.h"
+#include "constraints.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -61,9 +61,9 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             if(rnd.next(0, 1)) A = rnd.next(RATE_MAX, MAX_A);
-            else B = rnd.next(RATE_MAX, MAX_B);
+            else B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(RATE_MAX, MAX_A);
-            int B = rnd.next(RATE_MAX, MAX_B);
+            int B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
         int N = MAX_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_B, SUM_MAX - 1) << endl;
+            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
         }
         of.close();
     }
@@ -97,7 +97,7 @@ int main(int argc, char* argv[]){
         int N = MAX_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << MIN_A << ' ' << MIN_B << endl;
+            of << MIN_A << ' ' << MIN_H << endl;
         }
         of.close();
     }
@@ -113,7 +113,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -127,9 +127,9 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             if(rnd.next(0, 1)) A = rnd.next(RATE_MAX, MAX_A);
-            else B = rnd.next(RATE_MAX, MAX_B);
+            else B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -143,7 +143,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(RATE_MAX, MAX_A);
-            int B = rnd.next(RATE_MAX, MAX_B);
+            int B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -154,7 +154,7 @@ int main(int argc, char* argv[]){
         int N = MAX_SUBTASK_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_B, SUM_MAX - 1) << endl;
+            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
         }
         of.close();
     }
@@ -163,7 +163,7 @@ int main(int argc, char* argv[]){
         int N = MAX_SUBTASK_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << MIN_A << ' ' << MIN_B << endl;
+            of << MIN_A << ' ' << MIN_H << endl;
         }
         of.close();
     }
@@ -173,7 +173,7 @@ int main(int argc, char* argv[]){
         int N = MIN_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_B, SUM_MAX - 1) << endl;
+            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
         }
         of.close();
     }
