@@ -39,13 +39,24 @@ struct random_query_config {
     int two_prob = 1;
     int three_prob = 1;
     vector<int> use_vertical_lines = {};
-    bool random3query = true;
+    vector<int> use_horizontal_lines = {};
+    bool random3query = false;
 };
-Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_config &config = random_query_config()) {
-    auto [one_prob, two_prob, three_prob, use_vertical_lines, random3query] = config;
+Input make_input(const int N, const int M, int Q, const random_query_config &config = random_query_config()) {
+    auto [one_prob, two_prob, three_prob, use_vertical_lines, use_horizontal_lines, random3query] = config;
 
     for (auto x : use_vertical_lines) {
         assert(1 <= x && x < N);
+    }
+    for (auto x : use_horizontal_lines) {
+        assert(1 <= x && x <= M);
+    }
+    if (!use_vertical_lines.empty() && !use_horizontal_lines.empty()) {
+        assert(4 * Q <= (int)use_vertical_lines.size() * (int)use_horizontal_lines.size());
+    } else if (!use_vertical_lines.empty()) {
+        assert(4 * Q <= (int)use_vertical_lines.size() * M);
+    } else if (!use_horizontal_lines.empty()) {
+        assert(4 * Q <= (N - 1) * (int)use_horizontal_lines.size());
     }
 
     Input in;
@@ -53,21 +64,61 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_conf
     in.M = M;
     in.Q = Q;
 
-    // クエリをランダムに生成
-    set<pair<int, int>> lines; // 現在の横線の位置
-    set<pair<int, int>> lefts; // 現在の横線の左端の位置
-
-    // 4*Q個の位置をランダムに選んでそこからクエリを生成
-    // 4*Qは左右を考慮して多めに取っている
     set<pair<int, int>> able_place;
+    // 4*Q個の位置をランダムに選ぶ
     if (int64_t(N - 1) * M < 4 * Q) {
         for (int i = 1; i < N; i++) {
             for (int j = 1; j <= M; j++) {
                 able_place.insert({i, j});
             }
         }
-    } else if (use_vertical_lines.empty()) {
-        // 4*Q個の位置をランダムに選ぶ
+    } else if (!use_vertical_lines.empty() && !use_horizontal_lines.empty()) {
+        // 縦線と横線の交点から選ぶ
+        int cnt = 0;
+        for (int i = 0; i < 4 * Q; i++) {
+            int x = use_vertical_lines[rnd.next(0, (int)use_vertical_lines.size() - 1)];
+            int y = use_horizontal_lines[rnd.next(0, (int)use_horizontal_lines.size() - 1)];
+            if (able_place.count({x, y})) {
+                i--;
+                cnt++;
+                if (cnt > 100) break;
+                continue;
+            }
+            cnt = 0;
+            able_place.insert({x, y});
+        }
+    } else if (!use_vertical_lines.empty()) {
+        // 縦線のみを使う
+        int cnt = 0;
+        for (int i = 0; i < 4 * Q; i++) {
+            int x = use_vertical_lines[rnd.next(0, (int)use_vertical_lines.size() - 1)];
+            int y = rnd.next(1, M);
+            if (able_place.count({x, y})) {
+                i--;
+                cnt++;
+                if (cnt > 100) break;
+                continue;
+            }
+            cnt = 0;
+            able_place.insert({x, y});
+        }
+    } else if (!use_horizontal_lines.empty()) {
+        // 横線のみを使う
+        int cnt = 0;
+        for (int i = 0; i < 4 * Q; i++) {
+            int x = rnd.next(1, N - 1);
+            int y = use_horizontal_lines[rnd.next(0, (int)use_horizontal_lines.size() - 1)];
+            if (able_place.count({x, y})) {
+                i--;
+                cnt++;
+                if (cnt > 100) break;
+                continue;
+            }
+            cnt = 0;
+            able_place.insert({x, y});
+        }
+    } else {
+        // 完全ランダム
         for (int i = 0; i < 4 * Q; i++) {
             int x = rnd.next(1, N - 1);
             int y = rnd.next(1, M);
@@ -77,25 +128,12 @@ Input make_input_by_NMQ(const int N, const int M, int Q, const random_query_conf
             }
             able_place.insert({x, y});
         }
-    } else {
-        assert(use_vertical_lines.empty() == false);
-        int cnt = 0;
-        for (int i = 0; i < 4 * Q; i++) {
-            int x = rnd.next(0, (int)use_vertical_lines.size() - 1);
-            int y = rnd.next(1, M);
-            if (able_place.count({use_vertical_lines[x], y})) {
-                i--;
-                cnt++;
-                if (cnt > 100) {
-                    break;
-                }
-                continue;
-            }
-            cnt = 0;
-            able_place.insert({use_vertical_lines[x], y});
-        }
     }
     auto original_able_place = able_place;
+
+    // クエリをランダムに生成
+    set<pair<int, int>> lines; // 現在の横線の位置
+    set<pair<int, int>> lefts; // 現在の横線の左端の位置
 
     const int prob_sum = one_prob + two_prob + three_prob;
     assert(prob_sum > 0);
@@ -342,47 +380,80 @@ int32_t main(int32_t argc, char *argv[]) {
     // ------------------normal------------------
     {
         int t = 1;
+        // Nが最小の場合
+        {
+            {
+                string filename = ::format("21_normal_minN_%02d.in", t++);
+                int N = NORMAL_MIN_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // Mが最小の場合
+        {
+            {
+                string filename = ::format("22_normal_minM_%02d.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MIN_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // N,Mが最小の場合
+        {
+            {
+                string filename = ::format("23_normal_minNM_%02d.in", t++);
+                int N = NORMAL_MIN_N;
+                int M = NORMAL_MIN_M;
+                int Q = NORMAL_MAX_Q;
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
         // N,M,Qが最大の場合
         {
             {
-                string filename = format("24_normal_max_%02d.in", t++);
+                string filename = ::format("24_normal_max_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q);
+                Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
             {
-                string filename = format("24_normal_max_%02d.in", t++);
+                string filename = ::format("24_normal_max_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
                 random_query_config config;
-                config.use_vertical_lines = {3, 10};
+                config.use_vertical_lines = {3, 10, 11, 12};
                 config.one_prob = 10;
                 config.two_prob = 1;
                 config.three_prob = 2;
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
         }
-        // // Qが小さい場合
-        // {
-        //     t = 1;
-        //     {
-        //         string filename = std::format("25_normal_smallQ{:02}.in", t++);
-        //         int N = NORMAL_MAX_N;
-        //         int M = NORMAL_MAX_M;
-        //         int Q = 10;
-        //         Input in = make_input_by_NMQ(N, M, Q);
-        //         write_output(filename, in);
-        //     }
-        // }
+        // Qが小さい場合
+        {
+            t = 1;
+            {
+                string filename = ::format("25_normal_smallQ_%02d.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = 10;
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
         // クエリ1,2が多い場合
         {
             t = 1;
             {
-                string filename = format("26_normal_many12query_%02d.in", t++);
+                string filename = ::format("26_normal_many12query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -390,7 +461,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.one_prob = 5;
                 config.two_prob = 5;
                 config.three_prob = 1;
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -398,7 +469,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("27_normal_many3query_%02d.in", t++);
+                string filename = ::format("27_normal_many3query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -406,12 +477,13 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.one_prob = 1;
                 config.two_prob = 1;
                 config.three_prob = 10;
-                config.use_vertical_lines = {3, 4};
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                config.use_vertical_lines = {3, 4, 5, 6};
+                config.random3query = true;
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
             {
-                string filename = format("27_normal_many3query_%02d.in", t++);
+                string filename = ::format("27_normal_many3query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -420,8 +492,24 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.two_prob = 1;
                 config.three_prob = 15;
                 config.use_vertical_lines = {4, 5, 8, 9, 10, 14, 19};
-                config.random3query = false;
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+        }
+        // 上部に横線が多い場合
+        {
+            t = 1;
+            {
+                string filename = ::format("28_normal_upper_%02d.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q;
+                random_query_config config;
+                int init = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M - 25000);
+                for (int i = 0; i < 25000; i++) {
+                    config.use_horizontal_lines.push_back(rnd.next(MIN_M, M));
+                }
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -433,15 +521,17 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = format("34_hard_max_%02d.in", t++);
+                string filename = ::format("34_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
-                Input in = make_input_by_NMQ(N, M, Q);
+                random_query_config config;
+                config.random3query = true;
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
             {
-                string filename = format("34_hard_max_%02d.in", t++);
+                string filename = ::format("34_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -450,7 +540,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.one_prob = 10;
                 config.two_prob = 1;
                 config.three_prob = 2;
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -458,7 +548,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("35_hard_many12query_%02d.in", t++);
+                string filename = ::format("35_hard_many12query_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -466,7 +556,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.one_prob = 5;
                 config.two_prob = 5;
                 config.three_prob = 1;
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
         }
@@ -474,7 +564,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = format("36_hard_many3query_%02d.in", t++);
+                string filename = ::format("36_hard_many3query_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -483,7 +573,26 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.two_prob = 1;
                 config.three_prob = 10;
                 config.use_vertical_lines = {3, 4};
-                Input in = make_input_by_NMQ(N, M, Q, config);
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+        }
+        // 上部に横線が多い場合
+        {
+            t = 1;
+            {
+                string filename = ::format("37_hard_upper_%02d.in", t++);
+                int N = HARD_MAX_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                random_query_config config;
+                int init = rnd.next(HARD_MIN_M, HARD_MAX_M - 40001);
+                for (int i = 0; i < 40000; i++) {
+                    config.use_vertical_lines.push_back(rnd.next(MIN_M, M));
+                }
+
+                config.use_horizontal_lines = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
         }
