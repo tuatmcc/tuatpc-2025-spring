@@ -45,6 +45,8 @@ int main(){
         for(int j = 0; j < M; j++)cin >> W[j];
         for(int j = 0; j < M; j++)g[i].push_back({V[j] - 1, W[j]});
     }
+    int L;
+    cin >> L;
     cin >> S;
     vector<long long> ans(N, 0);
     for(int i = 0; i < N; i++){
