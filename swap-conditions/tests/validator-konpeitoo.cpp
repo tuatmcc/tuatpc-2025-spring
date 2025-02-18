@@ -10,8 +10,9 @@ const long long MAX_A = 1000000000000000000;
 int main(int argc, char *argv[]){
     registerValidation(argc, argv);
     int k = inf.readInt(MIN_K, MAX_K, "K");
+    inf.readEoln();
     for(int i = 0; i < 4; i++){
-        inf.readSpace();
+        if(i != 0)inf.readSpace();
         inf.readLong(MIN_A, MAX_A, format("A%d", i + 1).c_str());
     }
     inf.readEoln();
