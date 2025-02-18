@@ -130,6 +130,12 @@ public:
             break;
          }
       }
+
+      for (int i = 0; i < ret.size(); i++) {
+         while (ret[i].back() == ' ') {
+            ret[i].pop_back();
+         }
+      }
    }
 
    void clean_source() {
@@ -309,6 +315,47 @@ int main(int argc, char* argv[]){
 
    int max_hw = 0;
 
+   {
+      ofstream of(::format("01_sample_01.in").c_str());
+      of << "9" << std::endl;
+      of << "o---+---^v^v^v-----------+---^v^v^v---o" << std::endl;
+      of << "    |                    |" << std::endl;
+      of << "    +---+---^v^v^v---+---+" << std::endl;
+      of << "    |   |            |   |" << std::endl;
+      of << "    |   +---^v^v^v---+   |" << std::endl;
+      of << "    |                    |" << std::endl;
+      of << "    +---^v^v^v-----------+" << std::endl;
+      of << "    |                    |" << std::endl;
+      of << "    +---^v^v^v-----------+" << std::endl;
+      of.close();
+   }
+   {
+      ofstream of(::format("01_sample_02.in").c_str());
+      of << "21" << std::endl;
+      of << "o---+---^v^v^v---------------------------------------------------------------------------+---o" << std::endl;
+      of << "    |                                                                                    |" << std::endl;
+      of << "    +---+---^v^v^v-------------------------------------------------------------------+---+" << std::endl;
+      of << "        |                                                                            |" << std::endl;
+      of << "        +---+---^v^v^v-----------------------------------------------------------+---+" << std::endl;
+      of << "            |                                                                    |" << std::endl;
+      of << "            +---+---^v^v^v---------------------------------------------------+---+" << std::endl;
+      of << "                |                                                            |" << std::endl;
+      of << "                +---+---^v^v^v-------------------------------------------+---+" << std::endl;
+      of << "                    |                                                    |" << std::endl;
+      of << "                    +---+---^v^v^v-----------------------------------+---+" << std::endl;
+      of << "                        |                                            |" << std::endl;
+      of << "                        +---+---^v^v^v---------------------------+---+" << std::endl;
+      of << "                            |                                    |" << std::endl;
+      of << "                            +---+---^v^v^v-------------------+---+" << std::endl;
+      of << "                                |                            |" << std::endl;
+      of << "                                +---+---^v^v^v-----------+---+" << std::endl;
+      of << "                                    |                    |" << std::endl;
+      of << "                                    +---+---^v^v^v---+---+" << std::endl;
+      of << "                                        |            |" << std::endl;
+      of << "                                        +---^v^v^v---+" << std::endl;
+      of.close();
+   }
+
 
    // 完全ランダム
    for (int t = 1; t <= 20; t++) {
@@ -318,7 +365,7 @@ int main(int argc, char* argv[]){
       gen.gen_source(1000);
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -334,7 +381,7 @@ int main(int argc, char* argv[]){
       gen.source = "(" + std::string(num, 'R') + ")";
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -351,7 +398,7 @@ int main(int argc, char* argv[]){
       gen.source = "[" + std::string(num, 'R') + "]";
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -377,7 +424,7 @@ int main(int argc, char* argv[]){
 
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -403,7 +450,7 @@ int main(int argc, char* argv[]){
 
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -426,7 +473,7 @@ int main(int argc, char* argv[]){
       gen.source = hack;
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -452,7 +499,7 @@ int main(int argc, char* argv[]){
 
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -478,7 +525,7 @@ int main(int argc, char* argv[]){
 
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }
@@ -501,7 +548,7 @@ int main(int argc, char* argv[]){
 
       auto s = gen.generate2D();
       chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << ' ' << s[0].size() << std::endl;
+      of << s.size() << std::endl;
       for (auto si : s) {
          of << si << std::endl;
       }

@@ -11,12 +11,13 @@ int main() {
     //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     //  1. 入力
     //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    int h, w;
-    std::cin >> h >> w;
+    int h, w{};
+    std::cin >> h;
     std::cin.ignore();
     std::vector<std::string> s(h + 2);
     for (int i = 1; i <= h; i++) {
         std::getline(std::cin, s[i]);
+        w = std::max<int>(w, s[i].size());
     }
 
     for (auto& si : s) {
@@ -99,7 +100,7 @@ int main() {
                 }
 
                 Fp R = Fp(1) / G;
-                next_j = skip_wire(i, next_j);
+                next_j = skip_wire(i, next_j + 1);
                 return { R, next_j };
             }
             else {

@@ -9,14 +9,11 @@ const int MAX_HW = 1500000;
 int main(int argc, char* argv[]){
    registerValidation(argc, argv);
 
-   const int H = inf.readInt();
-   inf.readSpace();
-   const int W = inf.readInt();
+   const int N = inf.readInt();
    inf.readEoln();
-   inf.ensure(H * W <= MAX_HW);
-   std::vector<std::string> s = inf.readLines(H);
+   std::vector<std::string> s = inf.readLines(N);
    for (auto& si : s) {
-        inf.ensure(si.size() == W);
+       inf.ensure(N * (int)si.size() <= MAX_HW);
    }
    inf.readEof();
 

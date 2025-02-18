@@ -191,12 +191,13 @@ bool reduce_series(int start_idx, int end_idx, int n, vector<vector<edge>> &grap
 }
 
 int main() {
-    int h, w;
-    cin >> h >> w;
+    int h, w{};
+    cin >> h;
     cin.ignore();
     vector<string> s(h);
     for (auto& si : s) {
         getline(cin, si);
+        w = std::max<int>(w, si.size());
     }
 
     // 長さを揃える
