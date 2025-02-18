@@ -60,7 +60,7 @@ int main(){
 
     ll ans = 0;
 
-    if(s.size() < 4){
+    if(n < 4){
         cout << 0 << endl;
         return 0;
     }
