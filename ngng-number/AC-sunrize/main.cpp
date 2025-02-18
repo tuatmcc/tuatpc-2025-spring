@@ -60,10 +60,10 @@ int main(){
 
     ll ans = 0;
 
-    if(s.size() < 4){
-        cout << 0;
-        return 0;
-    }
+    //if(s.size() < 4){
+    //    cout << 0;
+    //    return 0;
+    //}
 
     vll beki(n+1,1);
     rep(i,1,n+1){
