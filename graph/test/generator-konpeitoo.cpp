@@ -27,11 +27,9 @@ void makeSampleTestcase(){
      * 0 1
      * 0 1
      * */
-}
 
-void makeHandTestcase(){
     /*同じ文字を含む場合*/
-    ofstream of1(format("01_hand_01.in").c_str());
+    ofstream of1(format("00_sample_02.in").c_str());
     of1 << "4" << endl;
     of1 << "A A A B" << endl;
     of1 << "1" << endl;
@@ -55,9 +53,11 @@ void makeHandTestcase(){
      * 3 5
      * 0 1
      * */
+}
 
+void makeHandTestcase(){
     /*L = 1の場合*/
-    ofstream of2(format("01_hand_02.in").c_str());
+    ofstream of2(format("01_hand_01.in").c_str());
     of2 << "1" << endl;
     of2 << "A" << endl;
     of2 << "1" << endl;
@@ -70,7 +70,7 @@ void makeHandTestcase(){
      * 1 1
      * */
 
-    ofstream of3(format("01_hand_03.in").c_str());
+    ofstream of3(format("01_hand_02.in").c_str());
     of3 << "1" << endl;
     of3 << "A" << endl;
     of3 << "1" << endl;
@@ -83,7 +83,7 @@ void makeHandTestcase(){
      * 0 1
      * */
 
-    ofstream of4(format("01_hand_04.in").c_str());
+    ofstream of4(format("01_hand_03.in").c_str());
     of4 << "5" << endl;
     of4 << "A B C B A" << endl;
     of4 << "1" << endl;
@@ -113,7 +113,7 @@ void makeHandTestcase(){
      * */
 
     /*全ての頂点が辺を持たないとき*/
-    ofstream of5(format("01_hand_05.in").c_str());
+    ofstream of5(format("01_hand_04.in").c_str());
     of5 << "3" << endl;
     of5 << "A B C" << endl;
     of5 << "1" << endl;
@@ -135,7 +135,7 @@ void makeHandTestcase(){
      * */
 
     /*自己ループがあるとき*/
-    ofstream of6(format("01_hand_06.in").c_str());
+    ofstream of6(format("01_hand_05.in").c_str());
     of6 << "3" << endl;
     of6 << "A A B" << endl;
     of6 << "1" << endl;
