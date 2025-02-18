@@ -132,11 +132,25 @@ public:
       }
    }
 
+   void clean_source() {
+      for (int i = 0; i < source.size() - 2; i++) {
+         auto s = source.substr(i, 3);
+         assert(s.size() == 3);
+         if (s == "(R)" || s == "[R]") {
+            source[i] = ' ';
+            source[i + 2] = ' ';
+         }
+      }
+
+      source.erase(std::remove(source.begin(), source.end(), ' '), source.end());
+   }
+
    int cur = 0;
 
    std::vector<std::string> generate2D() {
       // int H = require_size(0, source.size() - 1).height * 2;
       // int W = require_size(0, source.size() - 1).width * 2;
+      clean_source();
       int H = 1;
       int W = 1;
       ret.assign(H, std::string(W, '*'));
@@ -155,7 +169,7 @@ public:
       cur = 0;
       j = asgn(ret, 0, 0, "o---");
       auto [di, dj] = kairo(i, j);
-      asgn(ret, i, j + dj, "---o")  ;
+      asgn(ret, i, j + dj, "---o");
    }
 
    std::pair<int, int> kairo(int i, int j) {
