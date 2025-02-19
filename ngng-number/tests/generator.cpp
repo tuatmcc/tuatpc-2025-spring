@@ -38,6 +38,12 @@ int main(int argc, char* argv[]){
         of4.close();
     }
 
+    // sample2
+    string sample22 = "25500";
+    ofstream of22(format("001_subtask_%02d.in",11).c_str());
+    of22 << sample22 << endl;
+    of22.close();
+
     for(int i=0;i<20;i++){
         ofstream of5(format("002_random_rid_%02d.in",i+1).c_str());
         const int N = rnd.next(MIN_length_of_N,MAX_length_of_N);
