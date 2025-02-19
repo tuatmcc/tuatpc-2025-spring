@@ -16,10 +16,13 @@ int main(int argc, char *argv[]) {
   registerGen(argc, argv, 1);
 
   // sample1
-  gen("00_sample_01.in", 5, 2);
+  gen("00_sample_01.in", 2, 3);
 
   // sample2
-  gen("00_sample_02.in", 1, 45);
+  gen("00_sample_02.in", 5, 2);
+
+  // sample3
+  gen("00_sample_02.in", 5, 20);
 
   for (int t = 0; t < 20; t++) {
     gen(format("01_random_%02d.in", t + 1).c_str(), rnd.next(MIN_A, MAX_A),
