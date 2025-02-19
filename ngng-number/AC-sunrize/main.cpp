@@ -45,7 +45,7 @@ int main(){
         beki[i] %= mod;
     }
     rep(i,4,n){
-        ll cnt = beki[i-1] - beki[i-2] - i + 1 + mod;
+        ll cnt = beki[i-2] - i + 1 + mod;
         cnt %= mod;
         cnt *= 81;
         cnt %= mod;
@@ -54,7 +54,7 @@ int main(){
     }
 
     // N桁の条件を満たす数字の個数
-    ll cnt = beki[n-1] - beki[n-2] - n + 1 + mod; 
+    ll cnt = beki[n-2] - n + 1 + mod; 
     cnt %= mod;
     ll by = ll(s[0]-'1')*9;
     cnt *= by;
@@ -88,7 +88,6 @@ int main(){
         
 
         //cout << cnt << endl;
-
         string x(n,'0'+A);
         revrep(i,1,n){
             x[i] = '0' + idx;
