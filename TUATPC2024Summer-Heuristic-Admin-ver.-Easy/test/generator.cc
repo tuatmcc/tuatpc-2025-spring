@@ -49,19 +49,64 @@ int main(int argc, char *argv[]) {
 	};
 	gen("00_sample_03.in", 1, s3);
 
-	// Random
-	for (int t = 0; t < 20; ++t) {
+	// Random Ai >= 1600 && Hi >= 4200
+	for (int t = 0; t < 10; ++t) {
 		int random_n = rnd.next(N_MIN, N_MAX);
 		vector<pair<long long, long long>> random_case(random_n);
 
 		for (int i = 0; i < random_n; ++i) {
 			long long a, h;
-			a = rnd.next(Ai_MIN, Ai_MAX);
-			h = rnd.next(Hi_MIN, Hi_MAX);
+			a = rnd.next(1600, Ai_MAX);
+			h = rnd.next(4200, Hi_MAX);
 			random_case[i] = {a, h};
 		}
 
-		gen(format("10_random_%02d.in", t).c_str(), random_n, random_case);
+		gen(format("10_random_large_%02d.in", t).c_str(), random_n, random_case);
+	}
+
+	// Random Ai <= 1600 && Hi <= 4200
+	for (int t = 0; t < 10; ++t) {
+		int random_n = rnd.next(N_MIN, N_MAX);
+		vector<pair<long long, long long>> random_case(random_n);
+
+		for (int i = 0; i < random_n; ++i) {
+			long long a, h;
+			a = rnd.next(Ai_MIN, 1600);
+			h = rnd.next(Hi_MIN, 4200);
+			random_case[i] = {a, h};
+		}
+
+		gen(format("11_random_small_%02d.in", t).c_str(), random_n, random_case);
+	}
+	
+	// Random Ai <= 1600 && Hi >= 4200
+	for (int t = 0; t < 10; ++t) {
+		int random_n = rnd.next(N_MIN, N_MAX);
+		vector<pair<long long, long long>> random_case(random_n);
+
+		for (int i = 0; i < random_n; ++i) {
+			long long a, h;
+			a = rnd.next(Ai_MIN, 1600);
+			h = rnd.next(4200, Hi_MAX);
+			random_case[i] = {a, h};
+		}
+
+		gen(format("12_random_mixed_%02d.in", t).c_str(), random_n, random_case);
+	}
+
+	// Random Ai >= 1600 && Hi <= 4200
+	for (int t = 0; t < 10; ++t) {
+		int random_n = rnd.next(N_MIN, N_MAX);
+		vector<pair<long long, long long>> random_case(random_n);
+
+		for (int i = 0; i < random_n; ++i) {
+			long long a, h;
+			a = rnd.next(1600, Ai_MAX);
+			h = rnd.next(Hi_MIN, 4200);
+			random_case[i] = {a, h};
+		}
+
+		gen(format("13_random_mixed_%02d.in", t).c_str(), random_n, random_case);
 	}
 
 	// N == 1
@@ -77,13 +122,15 @@ int main(int argc, char *argv[]) {
 	gen("30_max_01.in", 5, {{Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}});
 
 	// N == N_MAX
-	vector<pair<long long, long long>> n_max_case(N_MAX);
-	for (int i = 0; i < N_MAX; ++i) {
-		long long a, h;
-		a = rnd.next(Ai_MIN, Ai_MAX);
-		h = rnd.next(Hi_MIN, Hi_MAX);
-		n_max_case[i] = {a ,h};
+	for (int i = 0; i < 10; ++i) {
+		vector<pair<long long, long long>> n_max_case(N_MAX);
+		for (int i = 0; i < N_MAX; ++i) {
+			long long a, h;
+			a = rnd.next(Ai_MIN, Ai_MAX);
+			h = rnd.next(Hi_MIN, Hi_MAX);
+			n_max_case[i] = {a, h};
+		}
+		gen(format("40_max_%02d.in", t).c_str(), N_MAX, random_case);
 	}
-	gen("30_max_02.in", N_MAX, n_max_case);
 	return 0;
 }
