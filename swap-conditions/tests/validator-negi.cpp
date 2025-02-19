@@ -12,7 +12,7 @@ int main(int argc, char* argv[]){
     registerValidation(argc, argv);
     vector<ll> kj;
     kj.push_back(inf.readInt(MIN_K, MAX_K, "K"));
-    inf.readSpace();
+    inf.readEoln();
     for(int i = 0; i < 4; i++){
         inf.readLong(MIN_A, MAX_A, "A");
         if(i == 3)inf.readEoln();

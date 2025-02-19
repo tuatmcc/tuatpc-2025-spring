@@ -30,7 +30,7 @@ int main() {
             r[i - 1] = -1;
             continue;
         }
-        ll le = 0, ri = 5e17;
+        ll le = 0, ri = 2e18;
         while(le != ri){
             ll c = (le + ri) / 2;
             if(judge(a, c, k, j) <= i){
@@ -46,8 +46,6 @@ int main() {
         }
     }
     for(int i = 0; i < 4; i++){
-        cout << r[i];
-        if(i == 3) cout << endl;
-        else cout << " ";
+        cout << r[i] << endl;
     }
 }
