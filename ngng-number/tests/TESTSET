@@ -10,6 +10,7 @@ cxx_generator(src='generator.cpp', flags=[], dependency=['testlib.h'])
 
 ## Input validators.
 #c_validator(src='validator.c')
+cxx_validator(src='validator_sunrize.cpp', flags=[], dependency=['testlib.h'])
 cxx_validator(src='validator-kitashima.cpp', flags=[], dependency=['testlib.h'])
 #java_validator(src='Validator.java', encoding='UTF-8',
 #               mainclass='tmp/validator/Validator')
@@ -44,7 +45,7 @@ cxx_validator(src='validator-kitashima.cpp', flags=[], dependency=['testlib.h'])
 #gcj_merger(output_replace=casenum_replace('Case 1', 'Case {0}'))
 id='X'
 #merged_testset(name=id + '_Merged', input_pattern='*.in')
-subtask_testset(name='Easy', score=1, input_patterns=['002*'])
+subtask_testset(name='Easy', score=1, input_patterns=['001*'])
 subtask_testset(name='All', score=99, input_patterns=['*'])
 # subtask_testset(name='Sample', score=0, input_patterns=['0*'])
 # subtask_testset(name='Normal', score=100, input_patterns=['2*'])
