@@ -43,11 +43,12 @@ int main() {
 		// 二分探索するらしい
 		ll low = -1, high = 2 * idx_score[0].second + 1;
 		bool flag = true;
+		int new_rank;
+		vpil new_is;
 		while (high - low > 1) {
 			ll mid = low + (high - low) / 2;
 			ll new_score = A[K] + 4 * mid;
-			int new_rank;
-			vpil new_is = {{K, A[K] + 4 * mid}, {J[0], A[J[0]] - mid}, {J[1], A[J[1]] - mid}, {J[2], A[J[2]] - 2 * mid}};
+			new_is = {{K, A[K] + 4 * mid}, {J[0], A[J[0]] - mid}, {J[1], A[J[1]] - mid}, {J[2], A[J[2]] - 2 * mid}};
 			sort(new_is.begin(), new_is.end(), comp);
 			for (int i = 0; i < 4; ++i) if(new_is[i].first == K) new_rank = i;
 			if (new_rank <= r) {
@@ -60,8 +61,29 @@ int main() {
 				flag = false;
 			}
 		}
-		if (flag)
-			cout << high << end;
+		if (flag) {
+			vpil h, l;
+			bool ch, cl;
+			if (high < low) {
+				ll tmp = high;
+				high = low;
+				low = tmp;
+			}
+			h = {{K, A[K] + 4 * high}, {J[0], A[J[0]] - high}, {J[1], A[J[1]] - high}, {J[2], A[J[2]] - 2 * high}};
+			l = {{K, A[K] + 4 * low}, {J[0], A[J[0]] - low}, {J[1], A[J[1]] - low}, {J[2], A[J[2]] - 2 * low}};
+			sort(h.begin(), h.end(), comp);
+			sort(l.begin(), l.end(), comp);
+			ch = h[r].first == K;
+			cl = l[r].first == K;
+			if (cl)
+				cout << low << end;
+			else if (ch)
+				cout << high << end;
+			else
+				cout << "-1" << end;
+		}
+		// if (flag)
+			// cout << high << end;
 	}
 
 	return 0;
