@@ -59,7 +59,7 @@ int main(){
     ll ans = 0;
 
     if(s < 1000){
-        cout << 0;
+        cout << 0 << endl;
         return 0;
     }
 
