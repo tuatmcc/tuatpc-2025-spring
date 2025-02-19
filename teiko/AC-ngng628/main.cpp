@@ -61,11 +61,14 @@ int main() {
             Fp R = 0;
             std::tie(R, j) = parallel(i, j);
             while (s[i][j] == '+' || s[i][j] == '^') {
-                if (s[i][j] == '+' && s[i][j + 1] == ' ') {
-                    break;
-                }
-                if (s[i][j] == '+' && (s[i - 1][j] == '|' || s[i + 1][j] == '|')) {
-                    break;
+                if (s[i][j] == '+') {
+                    int bottom = i;
+                    while (s[bottom + 1][j] != ' ') {
+                        bottom++;
+                    }
+                    if (s[bottom][j + 1] == ' ') {
+                        break;
+                    }
                 }
                 Fp R2 = 0;
                 std::tie(R2, j) = parallel(i, j);
