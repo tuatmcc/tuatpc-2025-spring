@@ -67,8 +67,7 @@ int main(int argc, char* argv[]){
     ofstream of7(format("004_max-1_%02d.in",1).c_str());
     string S_max_minus_one(999999,'.');
     for(int j=0;j<999999;j++){
-        if(j == 0)S_max_minus_one[j] = (char)('0' + rnd.next(1,9));
-        else S_max_minus_one[j] = (char)('0' + rnd.next(0,9));
+        S_max_minus_one[j] = '9';
     }
     of7 << S_max_minus_one << endl;
     of7.close();
@@ -77,8 +76,8 @@ int main(int argc, char* argv[]){
     ofstream of8(format("005_max_%02d.in",1).c_str());
     string S_max(1000000,'.');
     for(int j=0;j<1000000;j++){
-        if(j == 0)S_max[j] = (char)('0' + rnd.next(1,9));
-        else S_max[j] = (char)('0' + rnd.next(0,9));
+        if(j == 0)S_max[j] = '1';
+        else S_max[j] = '0';
     }
     of8 << S_max << endl;
     of8.close();
