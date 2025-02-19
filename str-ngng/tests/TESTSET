@@ -10,6 +10,7 @@ cxx_generator(src='generator.cpp', flags=['-std=c++17'], dependency=['testlib.h'
 
 ## Input validators.
 #c_validator(src='validator.c')
+cxx_validator(src='validator-sunrize.cpp', flags=['-std=c++17'], dependency=['testlib.h'])
 cxx_validator(src='validator-kobaryo222.cpp', flags=['-std=c++17'], dependency=['testlib.h'])
 cxx_validator(src='validator-logK.cpp', flags=['-std=c++17', '-O2'], dependency=['testlib.h'])
 #java_validator(src='Validator.java', encoding='UTF-8',
