@@ -155,6 +155,195 @@ void makeHandTestcase(){
      * 7 10
      * 0 1
      * */
+
+    /*分母が最大になるケース1*/
+    ofstream of7(format("01_hand_06.in").c_str());
+    /*N*/
+    int _MAX_N = 10000;
+    int N = rnd.next(MIN_N, _MAX_N);
+    of7 << N << endl;
+    /*X*/
+    for(int j = 0; j < N; j++){
+        if(j != 0)of7 << " ";
+        of7 << (char)('A' + rnd.next(0, 6));
+    }
+    of7 << endl;
+
+    for(int j = 0; j < N; j++){
+        /*M*/
+        of7 << "10" << endl;
+
+        /*V*/
+        set<int> vset;
+        while(vset.size() < 10){
+            vset.insert(rnd.next(1, N));
+        }
+        bool flag = false;
+        for(auto v : vset){
+            if(flag)of7 << " ";
+            else flag = true;
+            of7 << v;
+        }
+        of7 << endl;
+
+        /*W*/
+        for(int k = 0; k < 10; k++){
+            if(k == 0)of7 << "1";
+            else of7 << " 11";
+        }
+        of7 << endl;
+    }
+
+    /*L*/
+    of7 << "8" << endl;
+
+    /*S*/
+    for(int j = 0; j < 8; j++){
+        of7 << (char)('A' + rnd.next(0, 6));
+    }
+    of7 << endl;
+    of7.close();
+
+    /*分母が最大になるケース2*/
+    ofstream of8(format("01_hand_07.in").c_str());
+    /*N*/
+    N = rnd.next(MIN_N, _MAX_N);
+    of8 << N << endl;
+    /*X*/
+    for(int j = 0; j < N; j++){
+        if(j != 0)of8 << " ";
+        of8 << (char)('A' + rnd.next(0, 6));
+    }
+    of8 << endl;
+
+    for(int j = 0; j < N; j++){
+        /*M*/
+        of8 << "8" << endl;
+
+        /*V*/
+        set<int> vset;
+        while(vset.size() < 8){
+            vset.insert(rnd.next(1, N));
+        }
+        bool flag = false;
+        for(auto v : vset){
+            if(flag)of8 << " ";
+            else flag = true;
+            of8 << v;
+        }
+        of8 << endl;
+
+        /*W*/
+        for(int k = 0; k < 8; k++){
+            if(k == 0)of8 << "9";
+            else of8 << " 13";
+        }
+        of8 << endl;
+    }
+
+    /*L*/
+    of8 << "8" << endl;
+
+    /*S*/
+    for(int j = 0; j < 8; j++){
+        of8 << (char)('A' + rnd.next(0, 6));
+    }
+    of8 << endl;
+    of8.close();
+
+    /*約分が必要になるケース1*/
+    ofstream of9(format("01_hand_08.in").c_str());
+    /*N*/
+    N = rnd.next(MIN_N, _MAX_N);
+    of9 << N << endl;
+    /*X*/
+    for(int j = 0; j < N; j++){
+        if(j != 0)of9 << " ";
+        of9 << (char)('A' + rnd.next(0, 6));
+    }
+    of9 << endl;
+
+    for(int j = 0; j < N; j++){
+        /*M*/
+        of9 << "10" << endl;
+
+        /*V*/
+        set<int> vset;
+        while(vset.size() < 10){
+            vset.insert(rnd.next(1, N));
+        }
+        bool flag = false;
+        for(auto v : vset){
+            if(flag)of9 << " ";
+            else flag = true;
+            of9 << v;
+        }
+        of9 << endl;
+
+        /*W*/
+        for(int k = 0; k < 10; k++){
+            if(k == 0)of9 << "10";
+            else of9 << " 10";
+        }
+        of9 << endl;
+    }
+
+    /*L*/
+    of9 << "8" << endl;
+
+    /*S*/
+    for(int j = 0; j < 8; j++){
+        of9 << (char)('A' + rnd.next(0, 6));
+    }
+    of9 << endl;
+    of9.close();
+
+    /*約分が必要になるケース2*/
+    ofstream of10(format("01_hand_09.in").c_str());
+    /*N*/
+    N = rnd.next(MIN_N, _MAX_N);
+    of10 << N << endl;
+    /*X*/
+    for(int j = 0; j < N; j++){
+        if(j != 0)of10 << " ";
+        of10 << (char)('A' + rnd.next(0, 6));
+    }
+    of10 << endl;
+
+    for(int j = 0; j < N; j++){
+        /*M*/
+        of10 << "9" << endl;
+
+        /*V*/
+        set<int> vset;
+        while(vset.size() < 9){
+            vset.insert(rnd.next(1, N));
+        }
+        bool flag = false;
+        for(auto v : vset){
+            if(flag)of10 << " ";
+            else flag = true;
+            of10 << v;
+        }
+        of10 << endl;
+
+        /*W*/
+        for(int k = 0; k < 9; k++){
+            if(k == 0)of10 << "4";
+            else of10 << " 12";
+        }
+        of10 << endl;
+    }
+
+    /*L*/
+    of10 << "8" << endl;
+
+    /*S*/
+    for(int j = 0; j < 8; j++){
+        of10 << (char)('A' + rnd.next(0, 6));
+    }
+    of10 << endl;
+    of10.close();
 }
 
 void makeRandomTestcaseEasy(){
