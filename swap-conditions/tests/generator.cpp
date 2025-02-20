@@ -21,9 +21,9 @@ int main(int argc, char* argv[]){
         ofstream of(format("04_random_%02d.in", t+1).c_str());
         vector<int> v = {1, 2, 3, 4}, kj;
         for(int i = 0; i < 4; i++){
-            int t = rnd.next(0, 3 - i);
-            kj.push_back(v[t]);
-            v.erase(v.begin() + t);
+            int u = rnd.next(0, 3 - i);
+            kj.push_back(v[u]);
+            v.erase(v.begin() + u);
         }
         of << kj[0] << endl;
         for(int i = 0; i < 4; i++){
@@ -43,9 +43,9 @@ int main(int argc, char* argv[]){
         ofstream of(format("04_random-huge_%02d.in", t+1).c_str());
         vector<int> v = {1, 2, 3, 4}, kj;
         for(int i = 0; i < 4; i++){
-            int t = rnd.next(0, 3 - i);
-            kj.push_back(v[t]);
-            v.erase(v.begin() + t);
+            int u = rnd.next(0, 3 - i);
+            kj.push_back(v[u]);
+            v.erase(v.begin() + u);
         }
         of << kj[0] << endl;
         for(int i = 0; i < 4; i++){
@@ -66,9 +66,9 @@ int main(int argc, char* argv[]){
         ofstream of(format("04_random_tie_%02d.in", t+1).c_str());
         vector<int> v = {1, 2, 3, 4}, kj;
         for(int i = 0; i < 4; i++){
-            int t = rnd.next(0, 3 - i);
-            kj.push_back(v[t]);
-            v.erase(v.begin() + t);
+            int u = rnd.next(0, 3 - i);
+            kj.push_back(v[u]);
+            v.erase(v.begin() + u);
         }
         of << kj[0] << endl;
         ll tokoko = rnd.next(MIN_A, (ll)2e17);
@@ -88,5 +88,26 @@ int main(int argc, char* argv[]){
         }
         of.close();
     }
+    ofstream of(format("04_max.in").c_str());
+    vector<int> v = {1, 2, 3, 4}, kj;
+    for(int i = 0; i < 4; i++){
+        int t = rnd.next(0, 3 - i);
+        kj.push_back(v[t]);
+        v.erase(v.begin() + t);
+    }
+    of << kj[0] << endl;
+    ll tokoko = MAX_A;
+    for(int i = 0; i < 4; i++){
+        of << tokoko;
+        if(i == 3) of << endl;
+        else of << " ";
+    }
+    for(int i = 1; i < 4; i++){
+        of << kj[i];
+        if(i == 3) of << endl;
+        else of << " ";
+    }
+    of.close();
+
     return 0;
 }
