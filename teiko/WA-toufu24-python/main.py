@@ -187,50 +187,52 @@ def create_admittance_matrix(graph, n):
     return Y
 
 
-def inverse_matrix_mod(Y):
-    """
-    Y の逆行列を modint を用いて求める（ガウスの消去法）
-    """
+def solve_matrix(Y, b):
     n = len(Y)
-    Y_inv = [[ModInt(1 if i == j else 0) for j in range(n)] for i in range(n)]
-
     for i in range(n):
-        # 対角成分を 1 にする
         inv = ModInt(1) / Y[i][i]
-        for j in range(n):
-            Y[i][j] *= inv
-            Y_inv[i][j] *= inv
+        for j in range(i, n):
+            Y[i][j] = Y[i][j] * inv
+        b[i] = b[i] * inv
 
-        # 他の行をゼロにする
         for k in range(n):
-            if i != k:
+            if k != i:
                 factor = Y[k][i]
-                for j in range(n):
-                    Y[k][j] -= factor * Y[i][j]
-                    Y_inv[k][j] -= factor * Y_inv[i][j]
-
-    return Y_inv
+                for j in range(i, n):
+                    Y[k][j] = Y[k][j] - factor * Y[i][j]
+                b[k] = b[k] - factor * b[i]
+    return b
 
 
 def compute_equivalent_resistance(Y, start, goal):
-    """
-    アドミタンス行列 Y から start から goal までの合成抵抗を求める
-    """
     n = len(Y)
-
-    # ノード "goal" を基準点として固定 (該当する行と列を削除)
+    # goal に対応する行・列を削除して縮約行列を作成する
     Y_reduced = [
-        [Y[i][j] for j in range(n) if j != goal] for i in range(n) if i != goal
+        [ModInt(Y[i][j].val()) for j in range(n) if j != goal]
+        for i in range(n)
+        if i != goal
     ]
 
-    # 逆行列を求める
-    try:
-        Y_inv = inverse_matrix_mod(Y_reduced)
-    except ZeroDivisionError:
-        return ModInt(0)  # 逆行列が求まらない場合は 0
+    # 元のインデックス → 縮約後のインデックスの対応付け
+    mapping = {}
+    idx = 0
+    for i in range(n):
+        if i == goal:
+            continue
+        mapping[i] = idx
+        idx += 1
 
-    # 合成抵抗は start の自己アドミタンスの逆数
-    return Y_inv[start][start]
+    # 入力電流ベクトル b
+    # start ノードに 1 を注入（その他は 0 ）、goal は削除済みなので電位 0 固定
+    b = [ModInt(0) for _ in range(n - 1)]
+    b[mapping[start]] = ModInt(1)
+
+    # Y_reduced * V = b を解く
+    V_reduced = solve_matrix(Y_reduced, b)
+
+    # 電流を1A流したので，合成抵抗は電位差として求めることができる
+    # goal ノードは 0 に固定しているので、合成抵抗は start ノードの電位差として V[start] - 0 = V[start] として求められる
+    return V_reduced[mapping[start]]
 
 
 def main():
