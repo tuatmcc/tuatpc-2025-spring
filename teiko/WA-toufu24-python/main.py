@@ -1,13 +1,8 @@
-import sys
-from collections import defaultdict
-from functools import reduce
-
+#!/usr/bin/env pypy3
 MOD = 998244353
 
 
 class ModInt:
-    """998244353 における modint クラス"""
-
     def __init__(self, value):
         self.value = value % MOD
 
@@ -30,8 +25,6 @@ class ModInt:
 
 
 class DSU:
-    """Disjoint Set Union（Union-Find）"""
-
     def __init__(self, n):
         self.parent = list(range(n))
         self.rank = [1] * n
@@ -39,7 +32,7 @@ class DSU:
 
     def find(self, x):
         if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])  # 経路圧縮
+            self.parent[x] = self.find(self.parent[x])
         return self.parent[x]
 
     def union(self, x, y):
@@ -143,7 +136,12 @@ def make_graph(s):
                     ni, nj = i + dx[direction], j + dy[direction]
                     resist = ModInt(0)
 
-                    while 0 <= ni < h and 0 <= nj < w and (ni, nj) not in node_idx:
+                    while (
+                        0 <= ni < h
+                        and 0 <= nj < w
+                        and (ni, nj) not in node_idx
+                        and s[ni][nj] not in {" ", "."}
+                    ):
                         if s[ni][nj] in {"v", "^"}:
                             resist += ModInt(1)
                             while (
@@ -157,7 +155,11 @@ def make_graph(s):
 
                     if (ni, nj) in node_idx:
                         graph[node_idx[(i, j)]].append(Edge(node_idx[(ni, nj)], resist))
-                        graph[node_idx[(ni, nj)]].append(Edge(node_idx[(i, j)], resist))
+
+    # print(len(graph), file=sys.stderr)
+    # for i in range(len(graph)):
+    #     for e in graph[i]:
+    #         print(i, e.to, e.resist.val(), file=sys.stderr)
 
     return reduce_zero_edge(graph, start_idx, goal_idx)
 
@@ -167,22 +169,47 @@ import numpy as np
 
 def create_admittance_matrix(graph, n):
     """
-    グラフからアドミタンス行列 Y を作成する
+    グラフからアドミタンス行列 Y を作成
     """
-    Y = np.zeros((n, n))
+    Y = [[ModInt(0) for _ in range(n)] for _ in range(n)]
 
     for i in range(n):
         for edge in graph[i]:
             j = edge.to
-            r = edge.resist.val()
-            if r > 0:
-                g = 1 / r  # アドミタンス = 1 / 抵抗
+            r = edge.resist
+            if r.val() > 0:
+                g = ModInt(1) / r  # アドミタンス = 1 / 抵抗
                 Y[i][j] -= g  # 非対角成分
                 Y[j][i] -= g
                 Y[i][i] += g  # 対角成分
                 Y[j][j] += g
 
     return Y
+
+
+def inverse_matrix_mod(Y):
+    """
+    Y の逆行列を modint を用いて求める（ガウスの消去法）
+    """
+    n = len(Y)
+    Y_inv = [[ModInt(1 if i == j else 0) for j in range(n)] for i in range(n)]
+
+    for i in range(n):
+        # 対角成分を 1 にする
+        inv = ModInt(1) / Y[i][i]
+        for j in range(n):
+            Y[i][j] *= inv
+            Y_inv[i][j] *= inv
+
+        # 他の行をゼロにする
+        for k in range(n):
+            if i != k:
+                factor = Y[k][i]
+                for j in range(n):
+                    Y[k][j] -= factor * Y[i][j]
+                    Y_inv[k][j] -= factor * Y_inv[i][j]
+
+    return Y_inv
 
 
 def compute_equivalent_resistance(Y, start, goal):
@@ -192,22 +219,21 @@ def compute_equivalent_resistance(Y, start, goal):
     n = len(Y)
 
     # ノード "goal" を基準点として固定 (該当する行と列を削除)
-    Y_reduced = np.delete(Y, goal, axis=0)
-    Y_reduced = np.delete(Y_reduced, goal, axis=1)
+    Y_reduced = [
+        [Y[i][j] for j in range(n) if j != goal] for i in range(n) if i != goal
+    ]
 
-    # Y_reduced を逆行列化
+    # 逆行列を求める
     try:
-        Y_inv = np.linalg.inv(Y_reduced)
-    except np.linalg.LinAlgError:
-        return float("inf")  # 逆行列が求まらない（孤立ノードなど）
+        Y_inv = inverse_matrix_mod(Y_reduced)
+    except ZeroDivisionError:
+        return ModInt(0)  # 逆行列が求まらない場合は 0
 
     # 合成抵抗は start の自己アドミタンスの逆数
-    return Y_inv[start, start]
+    return Y_inv[start][start]
 
 
 def main():
-    import sys
-
     h = int(input())
     s = [input().rstrip() for _ in range(h)]
 
@@ -215,12 +241,12 @@ def main():
     s = [line.ljust(max_len, ".") for line in s]
 
     graph, start_idx, goal_idx = make_graph(s)
-    print(len(graph), file=sys.stderr)
-    for i in range(len(graph)):
-        for e in graph[i]:
-            print(i, e.to, e.resist.val(), file=sys.stderr)
+    # print(len(graph), file=sys.stderr)
+    # for i in range(len(graph)):
+    #     for e in graph[i]:
+    #         print(i, e.to, e.resist.val(), file=sys.stderr)
 
-    print(start_idx, goal_idx, file=sys.stderr)
+    # print(start_idx, goal_idx, file=sys.stderr)
 
     # アドミタンス行列を構築
     Y = create_admittance_matrix(graph, len(graph))
@@ -229,7 +255,7 @@ def main():
     R_eq = compute_equivalent_resistance(Y, start_idx, goal_idx)
 
     # 結果を出力
-    print(f"合成抵抗: {R_eq}")
+    print(R_eq.val())
 
 
 if __name__ == "__main__":
