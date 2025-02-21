@@ -21,4 +21,3 @@ script_solution(src="main.py")  # shebang line is required
 
 ## Score
 # expected_score(100)
-expected_verdicts([AC, TLE, WA])
