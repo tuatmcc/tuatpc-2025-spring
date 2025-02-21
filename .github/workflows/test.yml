@@ -31,7 +31,7 @@ jobs:
         run: cd /root/app
 
       - name: Rime test
-        run: rime test
+        run: rime test --keep-going
 
       - name: Check filenames
         run: python3 scripts/check_filename.py
