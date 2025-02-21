@@ -164,56 +164,70 @@ def make_graph(s):
     return reduce_zero_edge(graph, start_idx, goal_idx)
 
 
-import numpy as np
-
-
 def create_admittance_matrix(graph, n):
     """
-    グラフからアドミタンス行列 Y を作成
+    グラフからアドミタンス行列 Y を作成する。
     """
-    Y = [[ModInt(0) for _ in range(n)] for _ in range(n)]
-
+    Y = [dict() for _ in range(n)]
+    for i in range(n):
+        # 対角成分は初期的に0
+        Y[i][i] = ModInt(0)
     for i in range(n):
         for edge in graph[i]:
             j = edge.to
             r = edge.resist
             if r.val() > 0:
                 g = ModInt(1) / r  # アドミタンス = 1 / 抵抗
-                Y[i][j] -= g  # 非対角成分
-                Y[j][i] -= g
-                Y[i][i] += g  # 対角成分
-                Y[j][j] += g
-
+                # 非対角成分
+                Y[i][j] = Y[i].get(j, ModInt(0)) - g
+                Y[j][i] = Y[j].get(i, ModInt(0)) - g
+                # 対角成分
+                Y[i][i] = Y[i].get(i, ModInt(0)) + g
+                Y[j][j] = Y[j].get(j, ModInt(0)) + g
     return Y
 
 
-def solve_matrix(Y, b):
+def solve_sparse(Y, b):
+    """
+    疎行列表現の Y と右辺ベクトル b に対して、Gaussian消去法を行う。
+    """
     n = len(Y)
     for i in range(n):
-        inv = ModInt(1) / Y[i][i]
-        for j in range(i, n):
-            Y[i][j] = Y[i][j] * inv
-        b[i] = b[i] * inv
+        # ピボット要素が 0 でないことを確認
+        if i not in Y[i] or Y[i][i].val() == 0:
+            raise Exception("Zero pivot encountered!")
+        inv_pivot = ModInt(1) / Y[i][i]
+        # 行 i を正規化
+        for j in list(Y[i].keys()):
+            Y[i][j] = Y[i][j] * inv_pivot
+            if Y[i][j].val() == 0:
+                del Y[i][j]
+        b[i] = b[i] * inv_pivot
 
+        # 他の行 k に対して消去
         for k in range(n):
-            if k != i:
+            if k == i:
+                continue
+            if i in Y[k]:
                 factor = Y[k][i]
-                for j in range(i, n):
-                    Y[k][j] = Y[k][j] - factor * Y[i][j]
+                for j, pivot_val in Y[i].items():
+                    Y[k][j] = Y[k].get(j, ModInt(0)) - factor * pivot_val
+                    if Y[k][j].val() == 0:
+                        del Y[k][j]
+                # 消去後、列 i は0になるはず
+                if i in Y[k]:
+                    del Y[k][i]
                 b[k] = b[k] - factor * b[i]
     return b
 
 
 def compute_equivalent_resistance(Y, start, goal):
+    """
+    goal に対応する行・列を削除して縮約行列を作成し、
+    疎行列用のGaussian消去法で連立一次方程式 Y * V = b を解く。
+    """
     n = len(Y)
-    # goal に対応する行・列を削除して縮約行列を作成する
-    Y_reduced = [
-        [ModInt(Y[i][j].val()) for j in range(n) if j != goal]
-        for i in range(n)
-        if i != goal
-    ]
-
-    # 元のインデックス → 縮約後のインデックスの対応付け
+    # goalに対応する行・列を削除した際のインデックスの対応付け
     mapping = {}
     idx = 0
     for i in range(n):
@@ -221,17 +235,26 @@ def compute_equivalent_resistance(Y, start, goal):
             continue
         mapping[i] = idx
         idx += 1
+    m = n - 1  # 縮約後のサイズ
 
-    # 入力電流ベクトル b
-    # start ノードに 1 を注入（その他は 0 ）、goal は削除済みなので電位 0 固定
-    b = [ModInt(0) for _ in range(n - 1)]
+    # 縮約行列 Y_reduced を疎行列形式で作成
+    Y_reduced = [dict() for _ in range(m)]
+    for i in range(n):
+        if i == goal:
+            continue
+        new_i = mapping[i]
+        for j, val in Y[i].items():
+            if j == goal:
+                continue
+            new_j = mapping[j]
+            Y_reduced[new_i][new_j] = Y_reduced[new_i].get(new_j, ModInt(0)) + val
+
+    # 入力電流ベクトル b（startに1, それ以外は0、goalは削除済み）
+    b = [ModInt(0) for _ in range(m)]
     b[mapping[start]] = ModInt(1)
 
-    # Y_reduced * V = b を解く
-    V_reduced = solve_matrix(Y_reduced, b)
-
-    # 電流を1A流したので，合成抵抗は電位差として求めることができる
-    # goal ノードは 0 に固定しているので、合成抵抗は start ノードの電位差として V[start] - 0 = V[start] として求められる
+    V_reduced = solve_sparse(Y_reduced, b)
+    # goalの電位は0に固定しているので、startの電位が合成抵抗となる
     return V_reduced[mapping[start]]
 
 
@@ -240,7 +263,7 @@ def main():
     s = [input().rstrip() for _ in range(h)]
 
     max_len = max(len(line) for line in s)
-    s = [line.ljust(max_len, ".") for line in s]
+    s = [line.ljust(max_len, " ") for line in s]
 
     graph, start_idx, goal_idx = make_graph(s)
     # print(len(graph), file=sys.stderr)
