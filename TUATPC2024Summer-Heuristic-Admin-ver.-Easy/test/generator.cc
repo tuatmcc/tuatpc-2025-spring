@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 	gen("30_max_01.in", 5, {{Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}, {Ai_MAX, Hi_MAX}});
 
 	// N == N_MAX
-	for (int i = 0; i < 10; ++i) {
+	for (int t = 0; t < 10; ++t) {
 		vector<pair<long long, long long>> n_max_case(N_MAX);
 		for (int i = 0; i < N_MAX; ++i) {
 			long long a, h;
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 			h = rnd.next(Hi_MIN, Hi_MAX);
 			n_max_case[i] = {a, h};
 		}
-		gen(format("40_max_%02d.in", t).c_str(), N_MAX, random_case);
+		gen(format("40_max_%02d.in", t).c_str(), N_MAX, n_max_case);
 	}
 	return 0;
 }
