@@ -2,7 +2,7 @@
 
 ## Input generators.
 #c_generator(src='generator.c')
-cxx_generator(src='generator.cpp', flags=['-std=c++23'], dependency=['testlib.h'])
+cxx_generator(src='generator.cpp', flags=['-std=c++23'])
 #java_generator(src='Generator.java', encoding='UTF-8', mainclass='Generator')
 #rust_generator(src='generator.rs')
 #go_generator(src='generator.go')
@@ -10,9 +10,9 @@ cxx_generator(src='generator.cpp', flags=['-std=c++23'], dependency=['testlib.h'
 
 ## Input validators.
 #c_validator(src='validator.c')
-cxx_validator(src='validator-sunrize.cpp', flags=['-std=c++17'], dependency=['testlib.h'])
-cxx_validator(src='validator-kobaryo222.cpp', flags=['-std=c++17'], dependency=['testlib.h'])
-cxx_validator(src='validator-logK.cpp', flags=['-std=c++17', '-O2'], dependency=['testlib.h'])
+cxx_validator(src='validator-sunrize.cpp', flags=['-std=c++17'])
+cxx_validator(src='validator-kobaryo222.cpp', flags=['-std=c++17'])
+cxx_validator(src='validator-logK.cpp', flags=['-std=c++17', '-O2'])
 #java_validator(src='Validator.java', encoding='UTF-8',
 #               mainclass='tmp/validator/Validator')
 #rust_validator(src='validator.rs')
