@@ -4,6 +4,6 @@
 #pragma once
 
 const long long int MIN_N = 4;
-const long long int MAX_N = 30000;
+const long long int MAX_N = 40000;
 const long long int MIN_Q = 1;
-const long long int MAX_Q = 50000;
+const long long int MAX_Q = 40000;
