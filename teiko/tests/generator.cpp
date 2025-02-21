@@ -55,39 +55,43 @@ public:
       return (c == '(') ? ')' : ']';
    }
 
-   string generate_bracket_sequence(int N, int bracket_count = -1) {
+   string generate_bracket_sequence(int N, int bracket_count = -1, int depth = 0) {
       if (N == 1) return "R";
-
+  
       if (bracket_count == -1) {
-         bracket_count = rnd.next(1, N / 2);
-         // bracket_count = 1 + rand() % (N / 2);  // Random bracket count between 1 and N/2
+          bracket_count = rnd.next(1, max(1, N / 3));  // Adjusted bracket count range
       }
-
+  
       string result;
       vector<int> partitions;
       int remaining = N;
-
+  
       while (remaining > 0) {
-         if (remaining <= 2) {
-            partitions.push_back(remaining);
-            break;
-         }
-         int part = rnd.next(2, min(remaining, max(2, N / bracket_count)) + 1);
-         // int part = 2 + rand() % min(remaining, max(2, N / bracket_count));
-         if (part > remaining) part = remaining;
-         partitions.push_back(part);
-         remaining -= part;
+          if (remaining <= 2) {
+              partitions.push_back(remaining);
+              break;
+          }
+          int part = rnd.next(2, min(remaining, max(2, N / bracket_count)));
+          if (part > remaining) part = remaining;
+          partitions.push_back(part);
+          remaining -= part;
       }
-
+  
       result += open_bracket();
       for (int i = 0; i < (int)partitions.size(); i++) {
-         char ob = open_bracket();
-         result += ob;
-         result += string(partitions[i], 'R');
-         result += close_bracket(ob);
+          char ob = open_bracket();
+          result += ob;
+          
+          int nest_probability = max(10, 50 - depth * 5);  // Decreasing probability as depth increases
+          if (partitions[i] > 2 && rnd.next(1, 100) <= nest_probability) {
+              result += generate_bracket_sequence(partitions[i], -1, depth + 1);
+          } else {
+              result += string(partitions[i], 'R');
+          }
+          
+          result += close_bracket(ob);
       }
       result += close_bracket(result[0]);
-
       return result;
    }
 
@@ -139,16 +143,55 @@ public:
    }
 
    void clean_source() {
-      for (int i = 0; i < source.size() - 2; i++) {
-         auto s = source.substr(i, 3);
-         assert(s.size() == 3);
-         if (s == "(R)" || s == "[R]") {
-            source[i] = ' ';
-            source[i + 2] = ' ';
+      while (source.size() > 3) {
+         std::vector<int> v(source.size(), -1);
+         std::stack<int> stk;
+         for (int i = 0; i < source.size(); i++) {
+            if (source[i] == '(' || source[i] == '[') {
+               stk.emplace(i);
+            }
+            else if (source[i] == ')' || source[i] == ']') {
+               assert(not stk.empty());
+               int left = stk.top();
+               stk.pop();
+               assert(flip(source[left]) == source[i]);
+               v[left] = i;
+            }
          }
-      }
 
-      source.erase(std::remove(source.begin(), source.end(), ' '), source.end());
+         bool ok = true;
+         for (int i = 0; i < source.size() - 2; i++) {
+            auto s = source.substr(i, 3);
+            assert(s.size() == 3);
+            if (s == "(R)" || s == "[R]") {
+               source[i] = ' ';
+               source[i + 2] = ' ';
+               ok = false;
+            }
+            if (s == "(R)" || s == "[R]") {
+               source[i] = ' ';
+               source[i + 2] = ' ';
+               ok = false;
+            }
+            if ((source[i] == '(' || source[i] == '[') && (source[i + 1] == '(') || source[i] == '[') {
+               int r1 = v[i];
+               int r2 = v[i + 1];
+               if (std::abs(r2 - r1) == 1) {
+                  source[i] = ' ';
+                  source[i + 1] = ' ';
+                  source[r1] = ' ';
+                  source[r2] = ' ';
+                  ok = false;
+               }
+            }
+         }
+
+         if (ok) {
+            break;
+         }
+
+         source.erase(std::remove(source.begin(), source.end(), ' '), source.end());
+      }
    }
 
    int cur = 0;
