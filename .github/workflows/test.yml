@@ -43,6 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rime-out
+          retention-days: 7
           path: |
             **/rime-out/
             !**/rime-out/**/**.exe
