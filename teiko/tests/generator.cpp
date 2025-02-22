@@ -22,7 +22,7 @@ bool chmin(T& a, const T& b) {
 }
 
 const int R_NUM_MIN = 1;
-const int R_NUM_MAX = 100;
+const int R_NUM_MAX = 10000;
 
 // 1.
 // これを生成する。
@@ -417,7 +417,7 @@ int main(int argc, char* argv[]){
    }
 
    // 1. 直列だけ
-   for (int t = 1; int num : {1, 2, 5, 20, 100, 5000}) {
+   for (int t = 1; int num : {1, 2, 5000}) {
       ofstream of(::format("02_series_%02d.in", t).c_str());
 
       Generator gen;
@@ -434,7 +434,7 @@ int main(int argc, char* argv[]){
    }
 
    // 2. 並列だけ
-   for (int t = 1; int num : {2, 5, 20, 100, 5000}) {
+   for (int t = 1; int num : {2, 5, 5000}) {
       ofstream of(::format("03_para_%02d.in", t).c_str());
 
       Generator gen;
@@ -451,7 +451,7 @@ int main(int argc, char* argv[]){
    }
 
    // 1, 2, ..., k のやつ
-   for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
+   for (int t = 1; int num : {2, 11, 20, 30}) {
       ofstream of(::format("04_sum_%02d.in", t).c_str());
 
       Generator gen;
@@ -477,7 +477,7 @@ int main(int argc, char* argv[]){
    }
 
    // 1, 2, ..., k のやつ（逆順）
-   for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
+   for (int t = 1; int num : {2, 11, 30}) {
       ofstream of(::format("05_revsum_%02d.in", t).c_str());
 
       Generator gen;
@@ -508,6 +508,9 @@ int main(int argc, char* argv[]){
       "([RRRRRRRRRRRRRR]RR[RRRRRRRRRRRRR]R(RRRRR)R(RRR)(RRR)[RRR]RR(RRRR)R)",
       "(([RRR]R[RR])[RRRRRRRRRRRRR]R([RRR][RRRR][RRRRRR]RRR)((RRRR)[RR](RR[RR]R)RR)[RRR])",
       "([(R(RR[RR(RR[RR([RRR(RRR)RRRR(RR)]RRR(RRRRRRRR[RRR]R)RRRR)RR]R)RR]R)R)RR]RRR)",
+      "[[(RR)R](RR)]",
+      "[(RRR)[RR]]",
+      "[R(R[R(RR)])]",
       "[R[R[R[R[R[RR]]]]]]"
    }) {
       ofstream of(::format("07_handmaid_%02d.in", t).c_str());
@@ -526,7 +529,7 @@ int main(int argc, char* argv[]){
    }
 
    // 1, 2, ..., k のやつ
-   for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
+   for (int t = 1; int num : {2, 11, 30}) {
       ofstream of(::format("08_sumpara_%02d.in", t).c_str());
 
       Generator gen;
@@ -552,7 +555,7 @@ int main(int argc, char* argv[]){
    }
 
    // 1, 2, ..., k のやつ（逆順）
-   for (int t = 1; int num : {2, 10, 11, 12, 20, 30}) {
+   for (int t = 1; int num : {2, 11, 30}) {
       ofstream of(::format("09_revsumpara_%02d.in", t).c_str());
 
       Generator gen;
@@ -598,6 +601,30 @@ int main(int argc, char* argv[]){
 
       of.close();
       t++;
+   }
+
+   // toufu hack
+   {
+      ofstream of(::format("11_toufu_01.in").c_str());
+
+      Generator gen;
+      std::string unit = "[RR]";
+
+      gen.source = "(";
+      for (int i = 0; i < R_NUM_MAX; i++) {
+         gen.source.append(unit);
+      }
+      gen.source += ")";
+
+
+      auto s = gen.generate2D();
+      chmax<int>(max_hw, s.size() * s[0].size());
+      of << s.size() << std::endl;
+      for (auto si : s) {
+         of << si << std::endl;
+      }
+
+      of.close();
    }
 
    std::cout << max_hw << std::endl;
