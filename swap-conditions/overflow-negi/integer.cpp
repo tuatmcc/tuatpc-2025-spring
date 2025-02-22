@@ -1,7 +1,7 @@
 # include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-using vl = vector<int>;
+using vl = vector<ll>;
 
 int judge(vl a, int s, int k, int j){
     vector<pair<ll, ll>> p(4);
@@ -20,26 +20,25 @@ int judge(vl a, int s, int k, int j){
 
 
 int main() {
-    int k, j;
+    int x, y;
     vl a(4), r(4);
-    cin >> k;
+    cin >> x >> y;
     for(int i = 0; i < 4; i++) cin >> a[i];
-    for(int i = 0; i < 3; i++) cin >> j;
     for(int i = 1; i <= 4; i++){
-        if(judge(a, 0, k, j) < i){
+        if(judge(a, 0, x, y) < i){
             r[i - 1] = -1;
             continue;
         }
         int le = 0, ri = 2e18;//オーバーフロー
         while(le != ri){
-            ll c = (le + ri) / 2;
-            if(judge(a, c, k, j) <= i){
+            int c = (le + ri) / 2;
+            if(judge(a, c, x, y) <= i){
                 ri = c;
             }else{
                 le = c + 1;
             }
         }
-        if(judge(a, le, k, j) != i){
+        if(judge(a, le, x, y) != i){
             r[i - 1] = -1;
         }else{
             r[i - 1] = le;
