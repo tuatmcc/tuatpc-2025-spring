@@ -9,6 +9,8 @@ using ll = long long;
 
 int main(){
     int N; cin >> N;
+    int L; cin >> L;
+    string S; cin >> S;
     vector<char> X(N);
     for(int i = 0; i < N; ++i) cin >> X[i];
     vector<vector<int>> V(N), W(N);
@@ -23,8 +25,6 @@ int main(){
             cin >> W[i][j];
         }
     }
-    int L; cin >> L;
-    string S; cin >> S;
 
     vector<vector<pair<int, int>>> G(N);
     for(int i = 0; i < N; ++i){
