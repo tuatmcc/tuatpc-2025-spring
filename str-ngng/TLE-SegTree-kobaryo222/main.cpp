@@ -4,6 +4,7 @@
 #include <tuple>
 #include <cmath>
 #include <algorithm>
+#include <cassert>
 
 #include <atcoder/segtree>
 
@@ -47,6 +48,12 @@ int main()
     cin >> N >> Q;
     string S;
     cin >> S;
+
+    long long Nsigma2 = 26LL * 26 * N * N;
+    if (Nsigma2 > 100000000) {
+        assert(false);
+    }
+
     const int M = 26;
     vector<vector<atcoder::segtree<Monoid, op, e>>> seg(M, vector<atcoder::segtree<Monoid, op, e>>(M));
     for (int i = 0; i < M; i++) {

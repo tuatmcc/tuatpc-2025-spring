@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cassert>
 
 using namespace std;
 
@@ -10,6 +11,10 @@ int main()
     string S;
     cin >> S;
     // O(QN^4)
+    long long QN4 = 1LL * Q * N * N * N * N;
+    if (QN4 > 100000000) {
+        assert(false);
+    }
     for (int i = 0; i < Q; i++) {
         int l, r;
         cin >> l >> r;
