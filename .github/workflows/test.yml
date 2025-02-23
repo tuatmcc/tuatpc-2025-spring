@@ -38,6 +38,9 @@ jobs:
 
       - name: Check HTMLs
         run: python3 scripts/check_html.py
+      
+      - name: Make testcases for MOFE
+        run: python3 scripts/pack_testcases.py
 
       - name: Upload Rime Output
         uses: actions/upload-artifact@v4
@@ -47,3 +50,11 @@ jobs:
           path: |
             **/rime-out/
             !**/rime-out/**/**.exe
+      
+      - name: Upload testcases for MOFE
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted_testcases
+          retention-days: 7
+          path: |
+            **.zip
