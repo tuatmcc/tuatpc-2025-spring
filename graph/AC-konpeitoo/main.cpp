@@ -17,12 +17,18 @@ long long gcd(long long a, long long b){
 int main(){
     int N;
     cin >> N;
-    vector<char> X(N);
-    for(int i = 0; i < N; i++)cin >> X[i];
+    int L;
+    cin >> L;
+    //string S;
+    vector<int> S(L);
+    //cin >> S;
+    for(int i = 0; i < L; i++)cin >> S[i];
+    vector<int> X(N);
+    //for(int i = 0; i < N; i++)cin >> X[i];
     map<int, vector<pair<int, int>>> m;//mapにする必要なんてない
     for(int i = 0; i < N; i++){
         int M;
-        cin >> M;
+        cin >> M >> X[i];
         vector<int> V(M), W(M);
         int v;
         for(int j = 0; j < M; j++){
@@ -35,10 +41,6 @@ int main(){
             m[V[j]].push_back({i, W[j]});//逆に入れる重みとともに
         }
     }
-    int L;
-    cin >> L;
-    string S;
-    cin >> S;
 
     if(S.size() == 1){
         bool flag = false;

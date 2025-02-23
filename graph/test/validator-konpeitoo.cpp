@@ -12,26 +12,43 @@ const int MIN_W = 1;
 const int MAX_W = 100;
 const int MIN_L = 1;
 const int MAX_L = 8;
+const int MIN_A = 1;
 
 int main(int argc, char* argv[]){
     registerValidation(argc, argv);
     /*N*/
     int N = inf.readInt(MIN_N, MAX_N, "N");
+    inf.readSpace();
+    /*L*/
+    int L = inf.readInt(MIN_L, MAX_L, "L");
+    inf.readEoln();
+    /*A*/
+    //string S = inf.readToken("[A-G]+", "S");
+    //ensuref(1 <= S.size() && S.size() <= 8, "S is invalid\n");
+    vector<int> A(N);
+    for(int i = 0; i < L; i++){
+        if(i != 0)inf.readSpace();
+        A[i] = inf.readInt(MIN_A, N, format("A(%d)", i + 1).c_str());
+    }
     inf.readEoln();
 
     /*X*/
-    for(int i = 0; i < N; i++){
+    vector<int> X(N);
+    /*for(int i = 0; i < N; i++){
         if(i != 0)inf.readSpace();
         char c = inf.readChar();
         ensure('A' <= c && c <= 'G');
-    }
-    inf.readEoln();
+    }*/
+    //inf.readEoln();
 
     int SUM_M = 0;
     for(int i = 0; i < N; i++){
         /*M*/
-        int M = inf.readInt(MIN_M, MAX_M, format("M%d", i + 1));
+        int M = inf.readInt(MIN_M, MAX_M, format("M(%d)", i + 1));
         SUM_M += M;
+        inf.readSpace();
+        /*X*/
+        X[i] = inf.readInt(MIN_A, N, format("X(%d)", i + 1).c_str());
         inf.readEoln();
 
         /*V*/
@@ -60,12 +77,5 @@ int main(int argc, char* argv[]){
     int MAX_SUM_M = min((long long)pow((long long)N, 2), (long long)100000);
     ensuref(SUM_M <= MAX_SUM_M , "The sum of M is too large\n");
 
-    /*L*/
-    int L = inf.readInt(MIN_L, MAX_L, "L");
-    inf.readEoln();
-    /*S*/
-    string S = inf.readToken("[A-G]+", "S");
-    ensuref(1 <= S.size() && S.size() <= 8, "S is invalid\n");
-    inf.readEoln();
     inf.readEof();
 }
