@@ -14,7 +14,8 @@ struct Edge{
 
 using Graph = vector<vector<Edge>>;
 int main(){
-    int n; cin >> n;
+    int n, l; cin >> n >> l;
+    string s; cin >> s;
     Graph G(n);
     vector<char> x(n);
     for(int i=0; i<n; i++) cin >> x[i];
@@ -26,7 +27,6 @@ int main(){
         for(int j=0; j<m; j++) cin >> w[j];
         for(int j=0; j<m; j++) G[i].emplace_back(Edge(i, v[j], w[j]));
     }    
-    ll l; string s; cin >> l >> s;
     if (l == 1){
         for (int i = 0; i < n; i++){
             if (x[i] == s[0]) cout << "1 1\n";
