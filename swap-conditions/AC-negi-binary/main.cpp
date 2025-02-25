@@ -40,10 +40,10 @@ int main() {
                 le = c + 1;
             }
         }
-        if(judge(a, le, x, y) != r){
-            cout << -1 << endl;
-        }else{
+        if(judge(a, le, x, y) == r){
             cout << le << endl;
+        }else{
+            cout << -1 << endl;
         }
     }
 }

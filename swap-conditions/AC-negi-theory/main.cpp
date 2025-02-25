@@ -21,19 +21,17 @@ int main() {
         }
         for(int i = 0; i < 4; i++){
             delta[i] = a[i] - a[x];
-            if(delta[i] < 0){
+            
+            if(i == x) continue;
+            if(i < x) delta[i]++;
+            if(delta[i] <= 0){
                 r--;//r人抜かせばよい
                 continue;
             }
-            if(i == x) continue;
-            if(i < x) delta[i]++;
-            if(i == y) s.push_back((delta[i] + 1) / 6 + 1);
-            else s.push_back((delta[i] + 1) / 5 + 1);
+            if(i == y) s.push_back((delta[i] - 1) / 6 + 1);
+            else s.push_back((delta[i] - 1) / 5 + 1);
         }
         sort(s.begin(), s.end());//一人抜かすために必要なsの値
-        if(r < 0){
-            cout << -1 << endl;
-        }
         if(r == 0){
             cout << 0 << endl;
             continue;
