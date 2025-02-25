@@ -3,10 +3,6 @@
 using namespace std;
 using ll = long long;
 
-#define min(a, b) (a) < (b) ? (a) : (b)
-#define min3(a, b, c) min(min((a), (b)), (c))
-#define min4(a, b, c, d) min(min((a), (b)), min((c), (d)))
-
 using pil = pair<int, ll>;
 using vpil = vector<pil>;
 
@@ -16,51 +12,52 @@ bool comp(pil &a, pil &b) {
 }
 
 int main() {
-	int K;
-	ll A[4], J[3];
-	cin >> K; --K;
-	cin >> A[0] >> A[1] >> A[2] >> A[3];
-	cin >> J[0] >> J[1] >> J[2];
-	--J[0]; --J[1]; --J[2];
+	int T; cin >> T;
 
-	vpil idx_score = {{K, A[K]}, {J[0], A[J[0]]}, {J[1], A[J[1]]}, {J[2], A[J[2]]}};
-	// 降順ソート
-	sort(idx_score.begin(), idx_score.end(), comp);
+	while (T--) {
+		int X, Y, Z[2], R; cin >> X >> Y >> R; --X; --Y; --R;
+		ll A[4]; cin >> A[0] >> A[1] >> A[2] >> A[3];
+		for (int i = 0, k = 0; i < 4; ++i) {
+			if (i == X || i == Y) continue;
+			Z[k] = i;
+			++k;
+		}
+		vpil idx_score = {{X, A[X]}, {Y, A[Y]}, {Z[0], A[Z[0]]}, {Z[1], A[Z[1]]}};
+		sort(idx_score.begin(), idx_score.end(), comp);
 
-	for (int r = 0; r < 4; ++r) {
-		const char end = '\n';
-		if (A[K] > idx_score[r].second) {
-			cout << "-1" << end;
+		// 元からR位なら0
+		if (idx_score[R].first == X) {
+			cout << "0\n";
 			continue;
 		}
 
-		// そのままでいいなら探索しない
-		if (idx_score[r].first == K && idx_score[r].second == A[K]) {
-			cout << "0" << end;
+		// 元から目標スコアを超えてたら-1
+		if (A[X] > idx_score[R].second) {
+			cout << "-1\n";
 			continue;
 		}
 
-		// 二分探索するらしい
+		// 二分探索
 		ll low = -1, high = 2 * idx_score[0].second + 1;
 		bool flag = true;
 		int new_rank;
 		vpil new_is;
 		while (high - low > 1) {
 			ll mid = low + (high - low) / 2;
-			ll new_score = A[K] + 4 * mid;
-			new_is = {{K, A[K] + 4 * mid}, {J[0], A[J[0]] - mid}, {J[1], A[J[1]] - mid}, {J[2], A[J[2]] - 2 * mid}};
+			new_is = {{X, A[X] + 4 * mid}, {Y, A[Y] - 2 * mid}, {Z[0], A[Z[0]] - mid}, {Z[1], A[Z[1]] - mid}};
 			sort(new_is.begin(), new_is.end(), comp);
-			for (int i = 0; i < 4; ++i) if(new_is[i].first == K) new_rank = i;
-			if (new_rank <= r) {
+			for (int i = 0; i < 4; ++i) if(new_is[i].first == X) new_rank = i;
+			if (new_rank <= R) {
 				high = mid;
-			} else if (new_rank > r) {
+			} else if (new_rank > R) {
 				low = mid;
 			}
-			if (high <= 1 && new_rank != r) {
-				cout << "-1" << end;
+			if (high <= 1 && new_rank != R) {
+				cout << "-1\n";
 				flag = false;
 			}
 		}
+
 		if (flag) {
 			vpil h, l;
 			bool ch, cl;
@@ -69,21 +66,19 @@ int main() {
 				high = low;
 				low = tmp;
 			}
-			h = {{K, A[K] + 4 * high}, {J[0], A[J[0]] - high}, {J[1], A[J[1]] - high}, {J[2], A[J[2]] - 2 * high}};
-			l = {{K, A[K] + 4 * low}, {J[0], A[J[0]] - low}, {J[1], A[J[1]] - low}, {J[2], A[J[2]] - 2 * low}};
+			h = {{X, A[X] + 4 * high}, {Y, A[Y] - 2 * high}, {Z[0], A[Z[0]] - high}, {Z[1], A[Z[1]] - high}};
+			l = {{X, A[X] + 4 * low}, {Y, A[Y] - 2 * low}, {Z[0], A[Z[0]] - low}, {Z[1], A[Z[1]] - low}};
 			sort(h.begin(), h.end(), comp);
 			sort(l.begin(), l.end(), comp);
-			ch = h[r].first == K;
-			cl = l[r].first == K;
+			ch = h[R].first == X;
+			cl = l[R].first == X;
 			if (cl)
-				cout << low << end;
+				cout << low << '\n';
 			else if (ch)
-				cout << high << end;
+				cout << high << '\n';
 			else
-				cout << "-1" << end;
+				cout << "-1\n";
 		}
-		// if (flag)
-			// cout << high << end;
 	}
 
 	return 0;
