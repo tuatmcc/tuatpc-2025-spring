@@ -28,7 +28,7 @@ int main() {
         cin >> x >> y >> r;
         for(int i = 0; i < 4; i++) cin >> a[i];
         if(judge(a, 0, x, y) < r){
-            cout << r << endl;
+            cout << -1 << endl;
             continue;
         }
         ll le = 0, ri = 2e18;

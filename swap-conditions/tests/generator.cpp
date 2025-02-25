@@ -7,7 +7,7 @@ const int MAX_XYR = 4;
 const ll MIN_A = -1e18;
 const ll MAX_A = 1e18;
 const ll MIN_T = 1;
-const ll MAX_T = 1e5;
+const ll MAX_T = 1e4;
 
 
 void vec_fileout(ofstream &f, vector<ll> x){
