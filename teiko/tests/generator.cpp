@@ -57,39 +57,39 @@ public:
 
    string generate_bracket_sequence(int N, int bracket_count = -1, int depth = 0) {
       if (N == 1) return "R";
-  
+
       if (bracket_count == -1) {
-          bracket_count = rnd.next(1, max(1, N / 3));  // Adjusted bracket count range
+         bracket_count = rnd.next(1, max(1, N / 3));  // Adjusted bracket count range
       }
-  
+
       string result;
       vector<int> partitions;
       int remaining = N;
-  
+
       while (remaining > 0) {
-          if (remaining <= 2) {
-              partitions.push_back(remaining);
-              break;
-          }
-          int part = rnd.next(2, min(remaining, max(2, N / bracket_count)));
-          if (part > remaining) part = remaining;
-          partitions.push_back(part);
-          remaining -= part;
+         if (remaining <= 2) {
+            partitions.push_back(remaining);
+            break;
+         }
+         int part = rnd.next(2, min(remaining, max(2, N / bracket_count)));
+         if (part > remaining) part = remaining;
+         partitions.push_back(part);
+         remaining -= part;
       }
-  
+
       result += open_bracket();
       for (int i = 0; i < (int)partitions.size(); i++) {
-          char ob = open_bracket();
-          result += ob;
-          
-          int nest_probability = max(10, 50 - depth * 5);  // Decreasing probability as depth increases
-          if (partitions[i] > 2 && rnd.next(1, 100) <= nest_probability) {
-              result += generate_bracket_sequence(partitions[i], -1, depth + 1);
-          } else {
-              result += string(partitions[i], 'R');
-          }
-          
-          result += close_bracket(ob);
+         char ob = open_bracket();
+         result += ob;
+
+         int nest_probability = max(10, 50 - depth * 5);  // Decreasing probability as depth increases
+         if (partitions[i] > 2 && rnd.next(1, 100) <= nest_probability) {
+            result += generate_bracket_sequence(partitions[i], -1, depth + 1);
+         } else {
+            result += string(partitions[i], 'R');
+         }
+
+         result += close_bracket(ob);
       }
       result += close_bracket(result[0]);
       return result;
@@ -339,16 +339,16 @@ private:
 
    char flip(char c) {
       switch (c) {
-      case '(':
-         return ')';
-      case ')':
-         return '(';
-      case '[':
-         return ']';
-      case ']':
-         return '[';
-      default:
-         return '?';
+         case '(':
+            return ')';
+         case ')':
+            return '(';
+         case '[':
+            return ']';
+         case ']':
+            return '[';
+         default:
+            return '?';
       }
    }
 };
@@ -625,6 +625,40 @@ int main(int argc, char* argv[]){
       }
 
       of.close();
+   }
+   // toufu hack
+   {
+      // [R, (R, [R, (R, [R, R)])])]
+      for (int par = 0; par <= 1; par++) {
+         ofstream of(::format("11_toufu_%02d.in", 2 + par).c_str());
+
+         Generator gen;
+         gen.source = "";
+         std::stack<char> stk;
+         char br = '[';
+         for (int i = 0; i < 400 - par; i++) {
+            gen.source.push_back(br);
+            gen.source.push_back('R');
+            stk.push(br);
+            br = (br == '[') ? '(' : '[';
+         }
+         gen.source.push_back('R');
+         while (not stk.empty()) {
+            gen.source.push_back(stk.top() == '[' ? ']' : ')');
+            stk.pop();
+         }
+
+
+         auto s = gen.generate2D();
+         chmax<int>(max_hw, s.size() * s[0].size());
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
+
+         of.close();
+
+      }
    }
 
    std::cout << max_hw << std::endl;
