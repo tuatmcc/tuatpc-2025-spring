@@ -2,7 +2,7 @@
 
 ## Input generators.
 #c_generator(src='generator.c')
-cxx_generator(src='generator.cpp', flags=['-std=c++17', '-O2'], dependency=['testlib.h'])
+cxx_generator(src='generator.cpp', flags=['-std=c++20', '-O2'], dependency=['testlib.h'])
 #java_generator(src='Generator.java', encoding='UTF-8', mainclass='Generator')
 #rust_generator(src='generator.rs')
 #go_generator(src='generator.go')
@@ -49,7 +49,7 @@ id='X'
 #subtask_testset(name='All', score=100, input_patterns=['*'])
 subtask_testset(name='Sample', score=0, input_patterns=['0*'])
 # subtask_testset(name='Easy', score=100, input_patterns=['1*'])
-subtask_testset(name='Normal', score=100, input_patterns=['2*'])
-subtask_testset(name='Hard', score=100, input_patterns=['3*'])
+subtask_testset(name='Normal', score=1, input_patterns=['1*'])
+subtask_testset(name='Hard', score=99, input_patterns=['2*'])
 # precisely scored by judge program like Jiyukenkyu (KUPC 2013)
 #scoring_judge()

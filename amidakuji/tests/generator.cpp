@@ -81,7 +81,8 @@ Input make_input(const int N, const int M, int Q, const random_query_config &con
             if (able_place.count({x, y})) {
                 i--;
                 cnt++;
-                if (cnt > 100) break;
+                if (cnt > 100)
+                    break;
                 continue;
             }
             cnt = 0;
@@ -96,7 +97,8 @@ Input make_input(const int N, const int M, int Q, const random_query_config &con
             if (able_place.count({x, y})) {
                 i--;
                 cnt++;
-                if (cnt > 100) break;
+                if (cnt > 100)
+                    break;
                 continue;
             }
             cnt = 0;
@@ -111,7 +113,8 @@ Input make_input(const int N, const int M, int Q, const random_query_config &con
             if (able_place.count({x, y})) {
                 i--;
                 cnt++;
-                if (cnt > 100) break;
+                if (cnt > 100)
+                    break;
                 continue;
             }
             cnt = 0;
@@ -277,6 +280,104 @@ Input make_input(const int N, const int M, int Q, const random_query_config &con
     return in;
 }
 
+Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
+    Input in;
+    in.N = N;
+    in.M = M;
+    in.Q = Q;
+
+    int init_height = rnd.next(1, M);
+    int init_width = rnd.next(1, N - 1);
+    int height = init_height;
+    int width = init_width;
+    set<pair<int, int>> used;
+    set<int> used_yokobou;
+    bool hantenn = false;
+    int i = 0;
+    for (; i < Q / 2; i++) {
+        if (used.contains({width, height})) {
+            i--;
+            height = rnd.next(1, M);
+            width = rnd.next(1, N - 1);
+            continue;
+        }
+        in.queries.emplace_back(1, width, height);
+        used_yokobou.insert(width);
+        used.insert({width, height});
+        height++;
+        if (rnd.next(1, 100) == 1) {
+            if (height <= M - 2) {
+                used.insert({width, height});
+                in.queries.emplace_back(1, width, height++);
+                i++;
+                used.insert({width, height});
+                in.queries.emplace_back(1, width, height++);
+                i++;
+            }
+        }
+        if (hantenn) {
+            width--;
+        } else {
+            width++;
+        }
+        if (height > M) {
+            height = 1;
+        }
+        if (width > N - 1) {
+            width = rnd.next(1, N - 1);
+        }
+        if (width < 1) {
+            width = rnd.next(1, N - 1);
+        }
+
+        if (rnd.next(1, 100) == 1) {
+            hantenn = !hantenn;
+        }
+    }
+
+    for (int i = Q / 2; i < Q; i++) {
+        if (random3query) {
+            int rnd_x = rnd.next(1, N);
+            int rnd_y = rnd.next(1, M);
+            auto itr = used_yokobou.lower_bound(rnd_x);
+            if (itr != used_yokobou.end()) {
+                in.queries.emplace_back(3, *itr, -1);
+            } else {
+                in.queries.emplace_back(3, rnd_x, -1);
+            }
+
+            // 1/1000の確率で挿入/削除
+            if (rnd.next(1, 1000) == 1) {
+                if (rnd.next(0, 1) == 0) {
+                    int rnd_x = rnd.next(1, N - 1);
+                    int rnd_y = rnd.next(1, M);
+                    while (used.contains({rnd_x, rnd_y}) || used.contains({rnd_x + 1, rnd_y}) || used.contains({rnd_x - 1, rnd_y})) {
+                        rnd_x = rnd.next(1, N - 1);
+                        rnd_y = rnd.next(1, M);
+                    }
+                    in.queries.emplace_back(1, rnd_x, rnd_y);
+                    used_yokobou.insert(rnd_x);
+                    used.insert({rnd_x, rnd_y});
+                    i++;
+                } else {
+                    int rnd_x = rnd.next(1, N - 1);
+                    int rnd_y = rnd.next(1, M);
+                    auto itr = used.lower_bound({rnd_x, rnd_y});
+                    if (itr != used.end()) {
+                        in.queries.emplace_back(2, itr->first, itr->second);
+                        used.erase(itr);
+                        i++;
+                    }
+                }
+            }
+        } else {
+            in.queries.emplace_back(3, init_width, -1);
+        }
+    }
+
+    return in;
+}
+
 void make_sample_testcase() {
     // 5 4
     // 8
@@ -383,7 +484,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // Nが最小の場合
         {
             {
-                string filename = ::format("21_normal_minN_%02d.in", t++);
+                string filename = ::format("11_normal_minN_%02d.in", t++);
                 int N = NORMAL_MIN_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -393,8 +494,9 @@ int32_t main(int32_t argc, char *argv[]) {
         }
         // Mが最小の場合
         {
+            t = 1;
             {
-                string filename = ::format("22_normal_minM_%02d.in", t++);
+                string filename = ::format("12_normal_minM_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MIN_M;
                 int Q = NORMAL_MAX_Q;
@@ -404,8 +506,9 @@ int32_t main(int32_t argc, char *argv[]) {
         }
         // N,Mが最小の場合
         {
+            t = 1;
             {
-                string filename = ::format("23_normal_minNM_%02d.in", t++);
+                string filename = ::format("13_normal_minNM_%02d.in", t++);
                 int N = NORMAL_MIN_N;
                 int M = NORMAL_MIN_M;
                 int Q = NORMAL_MAX_Q;
@@ -416,7 +519,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = ::format("24_normal_max_%02d.in", t++);
+                string filename = ::format("14_normal_max_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -424,7 +527,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("24_normal_max_%02d.in", t++);
+                string filename = ::format("14_normal_max_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -441,7 +544,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("25_normal_smallQ_%02d.in", t++);
+                string filename = ::format("15_normal_smallQ_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = 10;
@@ -453,7 +556,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("26_normal_many12query_%02d.in", t++);
+                string filename = ::format("16_normal_many12query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -469,7 +572,7 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("27_normal_many3query_%02d.in", t++);
+                string filename = ::format("17_normal_many3query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -483,7 +586,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("27_normal_many3query_%02d.in", t++);
+                string filename = ::format("17_normal_many3query_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
@@ -496,20 +599,23 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
         }
-        // 上部に横線が多い場合
+        // 階段状の入力
         {
             t = 1;
             {
-                string filename = ::format("28_normal_upper_%02d.in", t++);
+                string filename = ::format("18_normal_stairs_%02d.in", t++);
+                int N = NORMAL_MAX_N;
+                int M = NORMAL_MAX_M;
+                int Q = NORMAL_MAX_Q - 1;
+                Input in = make_stairs_input(N, M, Q);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("18_normal_stairs_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
-                random_query_config config;
-                int init = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M - 25000);
-                for (int i = 0; i < 25000; i++) {
-                    config.use_horizontal_lines.push_back(rnd.next(MIN_M, M));
-                }
-                Input in = make_input(N, M, Q, config);
+                Input in = make_stairs_input(N, M, Q, true);
                 write_output(filename, in);
             }
         }
@@ -517,11 +623,35 @@ int32_t main(int32_t argc, char *argv[]) {
 
     // -------------------hard---------------------------
     {
+        // Nが最小の場合
         int t = 1;
-        // N,M,Qが最大の場合
         {
             {
-                string filename = ::format("34_hard_max_%02d.in", t++);
+                string filename = ::format("21_hard_minN_%02d.in", t++);
+                int N = HARD_MIN_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // Mが最小の場合
+        {
+            t = 1;
+            {
+                string filename = ::format("22_hard_minM_%02d.in", t++);
+                int N = HARD_MAX_N;
+                int M = HARD_MIN_M;
+                int Q = HARD_MAX_Q;
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // N,M,Qが最大の場合
+        {
+            t = 1;
+            {
+                string filename = ::format("24_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -531,7 +661,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("34_hard_max_%02d.in", t++);
+                string filename = ::format("24_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
                 int M = HARD_MAX_M;
                 int Q = HARD_MAX_Q;
@@ -548,9 +678,9 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("35_hard_many12query_%02d.in", t++);
-                int N = HARD_MAX_N;
-                int M = HARD_MAX_M;
+                string filename = ::format("25_hard_many12query_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
                 int Q = HARD_MAX_Q;
                 random_query_config config;
                 config.one_prob = 5;
@@ -564,9 +694,9 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("36_hard_many3query_%02d.in", t++);
-                int N = HARD_MAX_N;
-                int M = HARD_MAX_M;
+                string filename = ::format("26_hard_many3query_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
                 int Q = HARD_MAX_Q;
                 random_query_config config;
                 config.one_prob = 1;
@@ -577,22 +707,23 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
         }
-        // 上部に横線が多い場合
+        // 階段状の入力
         {
             t = 1;
             {
-                string filename = ::format("37_hard_upper_%02d.in", t++);
-                int N = HARD_MAX_N;
-                int M = HARD_MAX_M;
+                string filename = ::format("28_hard_stairs_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
                 int Q = HARD_MAX_Q;
-                random_query_config config;
-                int init = rnd.next(HARD_MIN_M, HARD_MAX_M - 40001);
-                for (int i = 0; i < 40000; i++) {
-                    config.use_vertical_lines.push_back(rnd.next(MIN_M, M));
-                }
-
-                config.use_horizontal_lines = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-                Input in = make_input(N, M, Q, config);
+                Input in = make_stairs_input(N, M, Q);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("28_hard_stairs_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
+                int Q = HARD_MAX_Q;
+                Input in = make_stairs_input(N, M, Q, true);
                 write_output(filename, in);
             }
         }
