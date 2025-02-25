@@ -6,14 +6,14 @@ using vl = vector<ll>;
 int judge(vl a, ll s, int x, int y){
     vector<pair<ll, ll>> p(4);
     for(int i = 0; i < 4; i++){
-        if((i + 1) == x) p[i] = make_pair(a[i] + 4 * s, 4 - (i + 1));
-        else if((i + 1) == y) p[i] = make_pair(a[i] - 2 * s, 4 - (i + 1));
-        else p[i] = make_pair(a[i] - s, 4 - (i + 1));
+        if((i + 1) == x) p[i] = make_pair(a[i] + 4 * s, i);
+        else if((i + 1) == y) p[i] = make_pair(a[i] - 2 * s, i);
+        else p[i] = make_pair(a[i] - s, i);
     }
     sort(p.begin(), p.end());
     reverse(p.begin(), p.end());
     for(int i = 0; i < 4; i++){
-        if(p[i].second == 4 - x) return (i + 1);
+        if(p[i].second == x) return (i + 1);
     }
     return 0;
 }
