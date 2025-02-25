@@ -20,4 +20,4 @@ cxx_solution(src="main.cpp", flags=["-std=c++20", "-O2"])  # -std=c++11 -O2 as d
 # cs_solution(src='main.cs') # C# (mono)
 
 ## Score
-expected_score(200)
+expected_score(100)

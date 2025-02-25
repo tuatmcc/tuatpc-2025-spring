@@ -20,4 +20,4 @@ script_solution(src='main.py') # shebang line is required
 # cs_solution(src='main.cs') # C# (mono)
 
 ## Score
-expected_score(200)
+expected_score(100)
