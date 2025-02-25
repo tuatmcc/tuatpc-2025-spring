@@ -196,7 +196,7 @@ public:
 
    int cur = 0;
 
-   std::vector<std::string> generate2D() {
+   std::vector<std::string> generate2D(bool should_kasamashi = false) {
       // int H = require_size(0, source.size() - 1).height * 2;
       // int W = require_size(0, source.size() - 1).width * 2;
       clean_source();
@@ -208,7 +208,29 @@ public:
 
       totonoe();
 
+      if (should_kasamashi) {
+         kasamashi();
+      }
+
       return ret;
+   }
+
+   void kasamashi() {
+      for (int i = 0; i < ret.size(); i++) {
+         for (int j = 0; j + 18 < ret[i].size(); j++) {
+            auto sub = ret[i].substr(j, "^v^v^v^v--------------"s.size());
+            if (sub == "^v^v^v^v--------------") {
+               ret[i][j + 11] = '^';
+               ret[i][j + 12] = 'v';
+               ret[i][j + 13] = '^';
+               ret[i][j + 14] = 'v';
+               ret[i][j + 15] = '^';
+               ret[i][j + 16] = 'v';
+               ret[i][j + 17] = '^';
+               ret[i][j + 18] = 'v';
+            }
+         }
+      }
    }
 
    // 回路 ::= 直列 | 並列 | 抵抗
@@ -406,7 +428,7 @@ int main(int argc, char* argv[]){
 
       Generator gen;
       gen.gen_source(1000);
-      auto s = gen.generate2D();
+      auto s = gen.generate2D(true);
       chmax<int>(max_hw, s.size() * s[0].size());
       of << s.size() << std::endl;
       for (auto si : s) {
@@ -592,7 +614,7 @@ int main(int argc, char* argv[]){
       gen.source.append("R");
       gen.source += std::string(num, ']');
 
-      auto s = gen.generate2D();
+      auto s = gen.generate2D(true);
       chmax<int>(max_hw, s.size() * s[0].size());
       of << s.size() << std::endl;
       for (auto si : s) {
@@ -617,7 +639,7 @@ int main(int argc, char* argv[]){
       gen.source += ")";
 
 
-      auto s = gen.generate2D();
+      auto s = gen.generate2D(true);
       chmax<int>(max_hw, s.size() * s[0].size());
       of << s.size() << std::endl;
       for (auto si : s) {
@@ -649,7 +671,7 @@ int main(int argc, char* argv[]){
          }
 
 
-         auto s = gen.generate2D();
+         auto s = gen.generate2D(true);
          chmax<int>(max_hw, s.size() * s[0].size());
          of << s.size() << std::endl;
          for (auto si : s) {
