@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 	 */
 
 	int T;
-	inf.readInt(T_MIN, T_MAX, "T");
+	T = inf.readInt(T_MIN, T_MAX, "T");
 	inf.readEoln();
 
 	while (T--) {
