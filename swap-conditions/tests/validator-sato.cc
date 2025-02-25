@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
 
 		assert(X != Y);
 	}
+	inf.readEof();
 
 	return 0;
 }
