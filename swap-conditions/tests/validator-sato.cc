@@ -7,42 +7,52 @@ int main(int argc, char *argv[]) {
 
 	/**
 	 * Input
-	 * K A_1 A_2 A_3 A_4
-	 * J_1 J_2 J_3
+	 *
+	 * T
+	 * case_1
+	 * ...
+	 * case_T
+	 */
+	
+	/**
+	 * Testcase
+	 *
+	 * X Y R
+	 * A_1 A_2 A_3 A_4
 	 */
 
-	int K;
-	long long A1, A2, A3, A4;
-	int J1, J2, J3;
-
-	K = inf.readInt(K_MIN, K_MAX, "K");
+	int T;
+	inf.readInt(T_MIN, T_MAX, "T");
 	inf.readEoln();
 
-	A1 = inf.readLong(A_MIN, A_MAX, "A_1");
-	inf.readSpace();
-	A2 = inf.readLong(A_MIN, A_MAX, "A_2");
-	inf.readSpace();
-	A3 = inf.readLong(A_MIN, A_MAX, "A_3");
-	inf.readSpace();
-	A4 = inf.readLong(A_MIN, A_MAX, "A_4");
-	inf.readEoln();
+	while (T--) {
+		int X, Y, R;
+		long long A_1, A_2, A_3, A_4;
 
-	J1 = inf.readInt(J_MIN, J_MAX, "J_1");
-	inf.readSpace();
-	J2 = inf.readInt(J_MIN, J_MAX, "J_2");
-	inf.readSpace();
-	J3 = inf.readInt(J_MIN, J_MAX, "J_3");
-	inf.readEoln();
+		X = inf.readInt(X_MIN, X_MAX, "X");
+		inf.readSpace();
+		Y = inf.readInt(Y_MIN, Y_MAX, "Y");
+		inf.readSpace();
+		R = inf.readInt(R_MIN, R_MAX, "R");
+		inf.readEoln();
 
-	inf.readEof();
+		A_1 = inf.readInt(A_MIN, A_MAX, "A_1");
+		inf.readSpace();
+		A_2 = inf.readInt(A_MIN, A_MAX, "A_2");
+		inf.readSpace();
+		A_3 = inf.readInt(A_MIN, A_MAX, "A_3");
+		inf.readSpace();
+		A_4 = inf.readInt(A_MIN, A_MAX, "A_4");
+		inf.readEoln();
 
-	assert(K != J1 && K != J2 && K != J3);
-	assert(J1 != J2 && J1 != J3 && J2 != J3);
+		assert(X != Y);
+	}
 
 	return 0;
 }
 
 #ifdef input_style
-K A1 A2 A3 A4
-J1 J2 J3
+T
+X Y R
+A_1 A_2 A_3 A_4
 #endif
