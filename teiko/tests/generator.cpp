@@ -682,6 +682,29 @@ int main(int argc, char* argv[]){
 
       }
    }
+   // toufu hack
+   {
+      ofstream of(::format("11_toufu_04.in").c_str());
+
+      Generator gen;
+      gen.source = "[";
+      const int mx = std::sqrt((long)1.5e6);
+      auto unit = "(" + std::string(mx / "^v^v^v^v---"s.size() - 20, 'R') + ")";
+      char br = '[';
+      for (int i = 0; i < mx / 2 - 2; i++) {
+         gen.source.append(unit);
+      }
+      gen.source.push_back(']');
+
+      auto s = gen.generate2D(true);
+      chmax<int>(max_hw, s.size() * s[0].size());
+      of << s.size() << std::endl;
+      for (auto si : s) {
+         of << si << std::endl;
+      }
+
+      of.close();
+   }
 
    std::cout << max_hw << std::endl;
 
