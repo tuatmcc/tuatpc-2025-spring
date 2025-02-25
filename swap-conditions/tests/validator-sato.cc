@@ -36,13 +36,13 @@ int main(int argc, char *argv[]) {
 		R = inf.readInt(R_MIN, R_MAX, "R");
 		inf.readEoln();
 
-		A_1 = inf.readInt(A_MIN, A_MAX, "A_1");
+		A_1 = inf.readLong(A_MIN, A_MAX, "A_1");
 		inf.readSpace();
-		A_2 = inf.readInt(A_MIN, A_MAX, "A_2");
+		A_2 = inf.readLong(A_MIN, A_MAX, "A_2");
 		inf.readSpace();
-		A_3 = inf.readInt(A_MIN, A_MAX, "A_3");
+		A_3 = inf.readLong(A_MIN, A_MAX, "A_3");
 		inf.readSpace();
-		A_4 = inf.readInt(A_MIN, A_MAX, "A_4");
+		A_4 = inf.readLong(A_MIN, A_MAX, "A_4");
 		inf.readEoln();
 
 		assert(X != Y);
