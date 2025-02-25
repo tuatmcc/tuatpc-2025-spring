@@ -21,4 +21,4 @@ script_solution(src="main.py", challenge_cases=[])  # shebang line is required
 
 ## Score
 # expected_score(100)
-expected_verdicts([AC, WA])
+expected_verdicts([AC, WA, TLE])
