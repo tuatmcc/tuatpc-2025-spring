@@ -21,4 +21,8 @@ def make_zip(problem_path: Path):
 for path in Path('./').glob('*'):
     if path.is_dir() and (path / 'PROBLEM').exists():
         make_zip(path)
+<<<<<<< HEAD
         print(f'Converted testcases for {path.name}')
+=======
+        print(f'Converted testcases for {path.name}')
+>>>>>>> main
