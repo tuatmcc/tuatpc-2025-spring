@@ -23,7 +23,7 @@ void gen(const string name, const int n, const vector<pair<long long, long long>
 
 int main(int argc, char *argv[]) {
 	registerGen(argc, argv, 1);
-	vector<pair<long long, long long>> s1, s2, s3;
+	vector<pair<long long, long long>> s1, s2, s3, s4, s5;
 
 	// Sample 1
 	s1 = {
@@ -45,9 +45,25 @@ int main(int argc, char *argv[]) {
 
 	// Sample 3
 	s3 = {
+		{2000, 2000},
+		{300, 300},
+		{300, 300},
+	};
+	gen("00_sample_03.in", 3, s3);
+
+	// Sample 4
+	s4 = {
 		{1000000000, 1000000000},
 	};
-	gen("00_sample_03.in", 1, s3);
+	gen("00_sample_04.in", 1, s4);
+
+	// Sample 5
+	s5 = {
+		{4229, 2383},
+		{4229, 2383},
+		{4229, 2383},
+	};
+	gen("00_sample_05.in", 3, s5);
 
 	// Random Ai >= 1600 && Hi >= 4200
 	for (int t = 0; t < 10; ++t) {
