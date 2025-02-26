@@ -8,7 +8,7 @@ $A^4 + B^2 - 1$ を求めてください。
 
 ## 制約
 
-- ${@constraints.MIN_A} \leq A, B \leq ${@constraints.MAX_A}$
+- ${@constraints.MIN_A} \leq A, B \leq {@constraints.MAX_A}$
 - 入力は全て整数
 
 ## 入力
