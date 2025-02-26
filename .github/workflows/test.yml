@@ -51,10 +51,8 @@ jobs:
             **/rime-out/
             !**/rime-out/**/**.exe
       
-      - name: Upload testcases for MOFE
-        uses: actions/upload-artifact@v4
-        with:
-          name: converted_testcases
-          retention-days: 7
-          path: |
-            **.zip
+      - name: Embed constraints and testcases to statements
+        run: ss-manager run -o md
+
+      - name: Upload testcases and statements to MOFE
+        run: python3 scripts/upload_statement_and_testcases.py kobaryo222 ${{ secrets.MOFE_PASSWORD }}
