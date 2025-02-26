@@ -38,7 +38,7 @@ int main() {
 		}
 
 		// 二分探索
-		ll low = -1, high = 2 * idx_score[0].second + 1;
+		ll low = -1, high = 1e18+1;
 		bool flag = true;
 		int new_rank;
 		vpil new_is;
