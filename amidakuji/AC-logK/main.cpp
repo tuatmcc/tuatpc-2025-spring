@@ -170,17 +170,20 @@ int main(){
         // cerr << endl;
         if(k >= q){
             int i = k - q;
-            auto [t, x, y] = query[i];
-            if(t == 3){
-                // auto C = uf.Group();
-                // cerr << endl << "UF" << endl;
-                // for(auto &vs : C){
-                //     for(auto &v : vs) cerr << V[v] << ' ';
-                //     cerr << endl;
-                // }
-                // cerr << endl;
-                ans[i] = uf.Get(find(conv(x, 0)));
-                // cerr << i << ' ' << x << ' ' << ans[i] << endl;
+            // cerr << k << ' ' << q << ' ' << i << endl;
+            if(i < Q){
+                const auto &[t, x, y] = query[i];
+                if(t == 3){
+                    // auto C = uf.Group();
+                    // cerr << endl << "UF" << endl;
+                    // for(auto &vs : C){
+                    //     for(auto &v : vs) cerr << V[v] << ' ';
+                    //     cerr << endl;
+                    // }
+                    // cerr << endl;
+                    ans[i] = uf.Get(find(conv(x, 0)));
+                    // cerr << i << ' ' << x << ' ' << ans[i] << endl;
+                }
             }
         }
         else{
