@@ -1,5 +1,6 @@
 # TUATPC2024Summer (Heuristic) (Admin ver.) (Easy)]
 
+## 問題文
 
 長さ $N$ の整数列 $A = (A_1, A_2, \dots, A_N), H = (H_1, H_2, \dots, H_N)$ が与えられます。
 
