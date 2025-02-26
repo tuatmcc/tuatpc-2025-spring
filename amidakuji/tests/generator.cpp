@@ -326,13 +326,13 @@ Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
             height = 1;
         }
         if (width > N - 1) {
-            width = rnd.next(1, N - 1);
-        }
-        if (width < 1) {
-            width = rnd.next(1, N - 1);
-        }
-
-        if (rnd.next(1, 100) == 1) {
+            width = N - 1;
+            hantenn = true;
+        } else if (width < 1) {
+            width = 1;
+            hantenn = false;
+        } else if (rnd.next(1, 100) == 1) {
+            width = hantenn ? width + 1 : width - 1;
             hantenn = !hantenn;
         }
     }
@@ -483,6 +483,34 @@ int32_t main(int32_t argc, char *argv[]) {
     // ------------------normal------------------
     {
         int t = 1;
+
+        // hackcase
+        {
+            string filename = ::format("19_normal_random_%02d.in", t++);
+            ifstream ifs("hackcase.txt");
+            int N, M, Q;
+            ifs >> N >> M;
+            ifs >> Q;
+            Input in;
+            in.N = N;
+            in.M = M;
+            in.Q = Q;
+            for (int i = 0; i < Q; i++) {
+                int t;
+                ifs >> t;
+                if (t == 1 || t == 2) {
+                    int x, y;
+                    ifs >> x >> y;
+                    in.queries.emplace_back(t, x, y);
+                } else {
+                    assert(t == 3);
+                    int x;
+                    ifs >> x;
+                    in.queries.emplace_back(t, x, -1);
+                }
+            }
+            write_output(filename, in);
+        }
         // Nが最小の場合
         {
             {
@@ -606,6 +634,46 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("18_normal_stairs_%02d.in", t++);
+                int N = NORMAL_MAX_N - 2;
+                int M = NORMAL_MAX_M - 2;
+                int Q = NORMAL_MAX_Q - 2;
+                Input in = make_stairs_input(N, M, Q);
+                vector<tuple<int, int, int>> prev_in, next_in;
+                for (int i = 0; i < Q / 2; i++) {
+                    prev_in.push_back(in.queries[i]);
+                    next_in.push_back(in.queries[i + Q / 2]);
+                }
+                in.queries.clear();
+                for (int i = 0; i < Q / 2; i++) {
+                    in.queries.push_back(prev_in[i]);
+                    in.queries.push_back(next_in[i]);
+                }
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("18_normal_stairs_%02d.in", t++);
+                int N = NORMAL_MAX_N - 2;
+                int M = NORMAL_MAX_M - 2;
+                int Q = NORMAL_MAX_Q - 2;
+                Input in = make_stairs_input(N, M, Q);
+                vector<tuple<int, int, int>> prev_in, next_in;
+                for (int i = 0; i < Q / 2; i++) {
+                    prev_in.push_back(in.queries[i]);
+                    next_in.push_back(in.queries[i + Q / 2]);
+                }
+                in.queries.clear();
+                // prev_inをシャッフル
+                for (int i = 0; i < Q / 2; i++) {
+                    swap(prev_in[i], prev_in[rnd.next(i, Q / 2 - 1)]);
+                }
+                for (int i = 0; i < Q / 2; i++) {
+                    in.queries.push_back(prev_in[i]);
+                    in.queries.push_back(next_in[i]);
+                }
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("18_normal_stairs_%02d.in", t++);
                 int N = NORMAL_MAX_N - 1;
                 int M = NORMAL_MAX_M - 3;
                 int Q = NORMAL_MAX_Q - 1;
@@ -614,18 +682,14 @@ int32_t main(int32_t argc, char *argv[]) {
             }
             {
                 string filename = ::format("18_normal_stairs_%02d.in", t++);
-                int N = NORMAL_MAX_N - 2;
-                int M = NORMAL_MAX_M - 2;
-                int Q = NORMAL_MAX_Q - 2;
-                Input in = make_stairs_input(N, M, Q, true);
-                write_output(filename, in);
-            }
-            {
-                string filename = ::format("18_normal_stairs_%02d.in", t++);
                 int N = NORMAL_MAX_N;
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
                 Input in = make_stairs_input(N, M, Q, true);
+                // 1~Q/2をシャッフル
+                for (int i = 0; i < Q / 2; i++) {
+                    swap(in.queries[i], in.queries[rnd.next(i, Q / 2 - 1)]);
+                }
                 write_output(filename, in);
             }
         }
@@ -758,16 +822,52 @@ int32_t main(int32_t argc, char *argv[]) {
                 string filename = ::format("28_hard_stairs_%02d.in", t++);
                 int N = HARD_MAX_N - rnd.next(0, 100);
                 int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q;
+                int Q = HARD_MAX_Q - rnd.next(1, 100);
+                if (Q % 2 == 1)
+                    Q++;
                 Input in = make_stairs_input(N, M, Q);
+                vector<tuple<int, int, int>> prev_in, next_in;
+                for (int i = 0; i < Q / 2; i++) {
+                    prev_in.push_back(in.queries[i]);
+                    next_in.push_back(in.queries[i + Q / 2]);
+                }
+                in.queries.clear();
+                for (int i = 0; i < Q / 2; i++) {
+                    in.queries.push_back(prev_in[i]);
+                    in.queries.push_back(next_in[i]);
+                }
                 write_output(filename, in);
             }
             {
                 string filename = ::format("28_hard_stairs_%02d.in", t++);
                 int N = HARD_MAX_N - rnd.next(0, 100);
                 int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q;
-                Input in = make_stairs_input(N, M, Q, true);
+                int Q = HARD_MAX_Q - rnd.next(1, 100);
+                if (Q % 2 == 1)
+                    Q++;
+                Input in = make_stairs_input(N, M, Q);
+                vector<tuple<int, int, int>> prev_in, next_in;
+                for (int i = 0; i < Q / 2; i++) {
+                    prev_in.push_back(in.queries[i]);
+                    next_in.push_back(in.queries[i + Q / 2]);
+                }
+                in.queries.clear();
+                // prev_inをシャッフル
+                for (int i = 0; i < Q / 2; i++) {
+                    swap(prev_in[i], prev_in[rnd.next(i, Q / 2 - 1)]);
+                }
+                for (int i = 0; i < Q / 2; i++) {
+                    in.queries.push_back(prev_in[i]);
+                    in.queries.push_back(next_in[i]);
+                }
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("28_hard_stairs_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
+                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                Input in = make_stairs_input(N, M, Q);
                 write_output(filename, in);
             }
             {
@@ -776,6 +876,10 @@ int32_t main(int32_t argc, char *argv[]) {
                 int M = HARD_MAX_M - rnd.next(0, 100);
                 int Q = HARD_MAX_Q - rnd.next(0, 100);
                 Input in = make_stairs_input(N, M, Q, true);
+                // 1~Q/2をシャッフル
+                for (int i = 0; i < Q / 2; i++) {
+                    swap(in.queries[i], in.queries[rnd.next(i, Q / 2 - 1)]);
+                }
                 write_output(filename, in);
             }
         }
