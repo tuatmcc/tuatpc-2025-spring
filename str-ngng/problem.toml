@@ -16,3 +16,17 @@ MIN_N = 4
 MAX_N = 20000
 MIN_Q = 1
 MAX_Q = 20000
+
+[mofe]
+problem_id = 303
+difficulty = "ผักชี" # "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี"
+submission_limit_1 = 5
+submission_limit_2 = 60
+
+[[mofe.testcase_sets.sample]]
+regex = "00_sample_\\d+"
+points = 0
+
+[[mofe.testcase_sets.all]]
+regex = "."
+points = 100
