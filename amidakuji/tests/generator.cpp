@@ -483,36 +483,9 @@ int32_t main(int32_t argc, char *argv[]) {
     // ------------------normal------------------
     {
         int t = 1;
-
-        // hackcase
-        {
-            string filename = ::format("19_normal_random_%02d.in", t++);
-            ifstream ifs("hackcase.txt");
-            int N, M, Q;
-            ifs >> N >> M;
-            ifs >> Q;
-            Input in;
-            in.N = N;
-            in.M = M;
-            in.Q = Q;
-            for (int i = 0; i < Q; i++) {
-                int t;
-                ifs >> t;
-                if (t == 1 || t == 2) {
-                    int x, y;
-                    ifs >> x >> y;
-                    in.queries.emplace_back(t, x, y);
-                } else {
-                    assert(t == 3);
-                    int x;
-                    ifs >> x;
-                    in.queries.emplace_back(t, x, -1);
-                }
-            }
-            write_output(filename, in);
-        }
         // Nが最小の場合
         {
+            t = 1;
             {
                 string filename = ::format("11_normal_minN_%02d.in", t++);
                 int N = NORMAL_MIN_N;
@@ -702,6 +675,34 @@ int32_t main(int32_t argc, char *argv[]) {
                 int M = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M);
                 int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
                 Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+
+            // hackcase
+            {
+                string filename = ::format("19_normal_random_%02d.in", t++);
+                ifstream ifs("hackcase.txt");
+                int N, M, Q;
+                ifs >> N >> M;
+                ifs >> Q;
+                Input in;
+                in.N = N;
+                in.M = M;
+                in.Q = Q;
+                for (int i = 0; i < Q; i++) {
+                    int t;
+                    ifs >> t;
+                    if (t == 1 || t == 2) {
+                        int x, y;
+                        ifs >> x >> y;
+                        in.queries.emplace_back(t, x, y);
+                    } else {
+                        assert(t == 3);
+                        int x;
+                        ifs >> x;
+                        in.queries.emplace_back(t, x, -1);
+                    }
+                }
                 write_output(filename, in);
             }
         }
