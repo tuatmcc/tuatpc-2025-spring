@@ -14,11 +14,13 @@ int main() {
     int n_index = 0, ng_index = 0;
     char n = S[0], g;  // n'とg'の値
     int i = 0;
-    while (S[i] == n) i++;
+    while (i < S.length() && S[i] == n) i++;
     n_index = i;
-    g = S[i];
-    while (S[i] == g) i++;
-    ng_index = i;
+    if (i != S.length()) {
+        g = S[i];
+        while (i < S.length() && S[i] == g) i++;
+        ng_index = i;
+    }
 
     // dp[i][j][k]
     // i: 上からi+1桁目
