@@ -1,0 +1,37 @@
+# documents: https://statements-manager.readthedocs.io/ja/stable/problem_config.html
+
+id = "A" # コンテスト内での問題の ID
+params_path = "./tests/constraints.hpp"
+#assets_path = "./statement/assets/"
+sample_path = "./tests/"
+ignore_samples = []
+
+[[statements]]
+path = "./statement/statement.md"
+lang = "ja"
+markdown_extensions = ["md_in_html", "tables", "fenced_code"]
+
+[constraints]
+MIN_A = 1
+MAX_A = 1000
+MIN_B = 1
+MAX_B = 1000
+
+[mofe]
+problem_id = 303 # MOFE 上の問題番号
+difficulty = "Milk" # 難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" のいずれかに設定する
+execution_time_limit = 1000 # 実行時間制限 (ms)
+submission_limit_1 = 5 # 1 回前の提出からの間隔 (秒)
+submission_limit_2 = 60 # 2 回前の提出からの間隔 (秒)
+
+[[mofe.testcase_sets.sample]] 
+regex = "00_sample_\\d+" # テストケースセットの正規表現
+points = 0 # テストケースセットの配点
+
+[[mofe.testcase_sets.all]]
+regex = "."
+points = 100
+
+# [[mofe.testcase_sets.subtask]]
+# regex = "20_large_\\d+"
+# points = 20
