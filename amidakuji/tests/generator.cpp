@@ -335,7 +335,7 @@ Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
         }
     }
 
-    for (int i = Q / 2; i < Q; i++) {
+    for (; i < Q; i++) {
         if (random3query) {
             int rnd_x = rnd.next(1, N);
             int rnd_y = rnd.next(1, M);
