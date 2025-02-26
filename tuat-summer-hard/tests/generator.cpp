@@ -18,11 +18,19 @@ int main(int argc, char* argv[]){
     }
     {
         ofstream of(format("00_sample_02.in").c_str());
-        // of << "10" << endl; // check 2025-01-29
+        of << "5" << endl;
+        of << "314 159" << endl;
+        of << "265 358" << endl;
+        of << "979 323" << endl;
+        of << "846 264" << endl;
+        of << "338 327" << endl;
+        of.close();
+    }
+    {
+        ofstream of(format("00_sample_03.in").c_str());
         of << "9" << endl; // check 2025-01-29
         of << "1264 1297" << endl; // ngng628
         of << "1862 1278" << endl; // new_textfile
-        // of << "1715 0" << endl; // kobaryo222 ...を入れようと思ったが制約違反になるらしい
         of << "1748 1230" << endl; // lX57
         of << "1286 1357" << endl; // sunrize
         of << "972 891" << endl; // Sakasu
