@@ -50,7 +50,6 @@ int main(int argc, char* argv[]){
         /*X*/
         X[i] = inf.readInt(MIN_A, N, format("X(%d)", i + 1).c_str());
         inf.readEoln();
-
         /*V*/
         const int MAX_V = N;
         int prev_V;

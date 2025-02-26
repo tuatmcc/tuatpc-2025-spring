@@ -11,8 +11,8 @@ cxx_generator(src='generator-konpeitoo.cpp', dependency=['testlib.h'])
 ## Input validators.
 #c_validator(src='validator.c')
 cxx_validator(src='validator-konpeitoo.cpp', dependency=['testlib.h'])
-cxx_validator(src='validator-yuyuyu.cpp', dependency=['testlib.h'])
-cxx_validator(src='validator-logK.cpp', dependency=['testlib.h'], flags=['-std=c++17'])
+# cxx_validator(src='validator-yuyuyu.cpp', dependency=['testlib.h'])
+# cxx_validator(src='validator-logK.cpp', dependency=['testlib.h'], flags=['-std=c++17'])
 cxx_validator(src='validator-sakasu.cpp', dependency=['testlib.h'], flags=['-std=c++17'])
 #java_validator(src='Validator.java', encoding='UTF-8',
 #               mainclass='tmp/validator/Validator')
