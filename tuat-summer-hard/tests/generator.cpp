@@ -109,6 +109,24 @@ int main(int argc, char* argv[]){
         }
         of.close();
     }
+    for(int t = 5; t <= 5; ++t){
+        ofstream of(format("11_max_%02d.in", t).c_str());
+        int N = SUM_MAX;
+        of << N << endl;
+        for(int i = 0; i < N; ++i){
+            of << MIN_A << ' ' << MIN_H << endl;
+        }
+        of.close();
+    }
+    for(int t = 6; t <= 6; ++t){
+        ofstream of(format("11_max_%02d.in", t).c_str());
+        int N = SUM_MAX + 1;
+        of << N << endl;
+        for(int i = 0; i < N; ++i){
+            of << MIN_A << ' ' << MIN_H << endl;
+        }
+        of.close();
+    }
 
     // 2* ... subtask
     // 20 ... random
