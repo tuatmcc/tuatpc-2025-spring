@@ -1,6 +1,6 @@
 # documents: https://statements-manager.readthedocs.io/ja/stable/problem_config.html
 
-id = "G"
+id = "F"
 params_path = "./tests/constraints.hpp"
 #assets_path = "./statement/assets/"
 sample_path = "./tests/"
@@ -18,10 +18,11 @@ MIN_Q = 1
 MAX_Q = 20000
 
 [mofe]
-problem_id = 303
+problem_id = 296
 difficulty = "ผักชี" # "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี"
 submission_limit_1 = 5
 submission_limit_2 = 60
+execution_time_limit = 4000
 
 [[mofe.testcase_sets.sample]]
 regex = "00_sample_\\d+"
