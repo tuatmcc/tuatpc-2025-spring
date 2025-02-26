@@ -10,6 +10,7 @@ struct Input {
     vector<tuple<int, int, int>> queries;
 };
 
+int file_cnt = 0;
 // ファイルに書き込む
 void write_output(const string filename, const Input &in) {
     ofstream of(filename);
@@ -28,6 +29,7 @@ void write_output(const string filename, const Input &in) {
     }
     of.close();
     // cerr << "Generated: " << filename << endl;
+    file_cnt++;
 }
 
 // N, M, Qからクエリを生成する
@@ -604,10 +606,18 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("18_normal_stairs_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
+                int N = NORMAL_MAX_N - 1;
+                int M = NORMAL_MAX_M - 3;
                 int Q = NORMAL_MAX_Q - 1;
                 Input in = make_stairs_input(N, M, Q);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("18_normal_stairs_%02d.in", t++);
+                int N = NORMAL_MAX_N - 2;
+                int M = NORMAL_MAX_M - 2;
+                int Q = NORMAL_MAX_Q - 2;
+                Input in = make_stairs_input(N, M, Q, true);
                 write_output(filename, in);
             }
             {
@@ -616,6 +626,18 @@ int32_t main(int32_t argc, char *argv[]) {
                 int M = NORMAL_MAX_M;
                 int Q = NORMAL_MAX_Q;
                 Input in = make_stairs_input(N, M, Q, true);
+                write_output(filename, in);
+            }
+        }
+        // ランダム
+        {
+            t = 1;
+            for (int i = 0; i < 5; i++) {
+                string filename = ::format("19_normal_random_%02d.in", t++);
+                int N = rnd.next(NORMAL_MIN_N, NORMAL_MAX_N);
+                int M = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M);
+                int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
+                Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
         }
@@ -629,8 +651,8 @@ int32_t main(int32_t argc, char *argv[]) {
             {
                 string filename = ::format("21_hard_minN_%02d.in", t++);
                 int N = HARD_MIN_N;
-                int M = HARD_MAX_M;
-                int Q = HARD_MAX_Q;
+                int M = HARD_MAX_M - rnd.next(0, 100);
+                int Q = HARD_MAX_Q - rnd.next(0, 100);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -640,9 +662,21 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("22_hard_minM_%02d.in", t++);
-                int N = HARD_MAX_N;
+                int N = HARD_MAX_N - rnd.next(0, 100);
                 int M = HARD_MIN_M;
-                int Q = HARD_MAX_Q;
+                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+        }
+        // Qが小さい場合
+        {
+            t = 1;
+            {
+                string filename = ::format("23_hard_smallQ_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
+                int Q = 1000;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -650,6 +684,16 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             t = 1;
+            {
+                string filename = ::format("24_hard_max_%02d.in", t++);
+                int N = HARD_MAX_N;
+                int M = HARD_MAX_M;
+                int Q = HARD_MAX_Q;
+                random_query_config config;
+                config.random3query = true;
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
             {
                 string filename = ::format("24_hard_max_%02d.in", t++);
                 int N = HARD_MAX_N;
@@ -726,6 +770,28 @@ int32_t main(int32_t argc, char *argv[]) {
                 Input in = make_stairs_input(N, M, Q, true);
                 write_output(filename, in);
             }
+            {
+                string filename = ::format("28_hard_stairs_%02d.in", t++);
+                int N = HARD_MAX_N - rnd.next(0, 100);
+                int M = HARD_MAX_M - rnd.next(0, 100);
+                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                Input in = make_stairs_input(N, M, Q, true);
+                write_output(filename, in);
+            }
+        }
+        // ランダム
+        {
+            t = 1;
+            for (int i = 0; i < 5; i++) {
+                string filename = ::format("29_hard_random_%02d.in", t++);
+                int N = rnd.next(HARD_MIN_N, HARD_MAX_N);
+                int M = rnd.next(HARD_MIN_M, HARD_MAX_M);
+                int Q = rnd.next(HARD_MIN_Q, HARD_MAX_Q);
+                Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
         }
     }
+
+    cerr << "Generated " << file_cnt << " files" << endl;
 }
