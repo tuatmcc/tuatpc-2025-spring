@@ -486,7 +486,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // hackcase
         {
             t = 1;
-            string filename = ::format("19_normal_hack_%02d.in", t++);
+            string filename = ::format("10_normal_hack_%02d.in", t++);
             ifstream ifs("hackcase.txt");
             int N, M, Q;
             ifs >> N >> M;
