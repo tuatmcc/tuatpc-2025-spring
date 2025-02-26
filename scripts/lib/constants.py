@@ -1,4 +1,4 @@
-from enums import Difficulty
+from .enums import Difficulty
 
 # Default values for problem configuration
 DEFAULT_SUBMISSION_LIMIT_1 = 5

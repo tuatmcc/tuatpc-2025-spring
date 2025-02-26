@@ -1,7 +1,7 @@
 import re
 import tomllib
-from problem import Problem, ProblemConfig, ProblemStatement, Difficulty
-from typing import Dict, Tuple
+from .problem import Problem, ProblemConfig, ProblemStatement, Difficulty, TestCaseSet
+from typing import Dict, Tuple, List
 import logging
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,10 @@ def parse_problem_config(problem_toml_content: str) -> Tuple[ProblemConfig, Dict
         constraints[key] = str(value)
     return problem_config, constraints
 
+def parse_id_in_contest(problem_toml_content: str) -> int:
+    data = tomllib.loads(problem_toml_content)
+    return data['id']
+
 # PROBLEM
 def parse_time_limit(PROBLEM_content: str) -> int:
     time_limit_pattern = re.compile(r'time_limit=*([\d.]+)')
@@ -58,23 +62,20 @@ def parse_time_limit(PROBLEM_content: str) -> int:
     else:
         raise ValueError('time_limit not found in the file')
 
-def embed_constraints(md_content: str, parameters: dict[str, str]) -> str:
-    print(parameters.items())
-    for key, value in parameters.items():
-        md_content = md_content.replace(f'{{@constraints.{key}}}', str(value))
-    return md_content
-
 # statement.md + PROBLEM + problem.toml -> int, Problem, constraints, str
-def load_problem(statement_content: str, problem_rime_content: str, problem_toml_content: str) -> Tuple[int, Problem, Dict[str, str], str]:
+def load_problem(statement_content: str, problem_rime_content: str, problem_toml_content: str) -> Tuple[int, Problem, Dict[str, str], List[TestCaseSet]]:
     config, constraints = parse_problem_config(problem_toml_content)
-    execution_time_limit = parse_time_limit(problem_rime_content)
+    testcase_sets = config.testcase_sets
+    if config.execution_time_limit is None:
+        execution_time_limit = parse_time_limit(problem_rime_content)
+    else:
+        execution_time_limit = config.execution_time_limit
     problem_id = config.problem_id
-    embedded_statement = embed_constraints(statement_content, constraints)
-    problem_statement = parse_statement(embedded_statement)
+    problem_statement = parse_statement(statement_content)
     problem = Problem(
         name=problem_statement.name,
         difficulty=Difficulty(config.difficulty),
-        statement=embedded_statement,
+        statement=problem_statement.statement,
         constraints=problem_statement.constraints,
         input_format=problem_statement.input_format,
         output_format=problem_statement.output_format,
@@ -83,4 +84,4 @@ def load_problem(statement_content: str, problem_rime_content: str, problem_toml
         submission_limit_1=config.submission_limit_1,
         submission_limit_2=config.submission_limit_2
     )
-    return problem_id, problem, constraints, embedded_statement
+    return problem_id, problem, constraints, testcase_sets

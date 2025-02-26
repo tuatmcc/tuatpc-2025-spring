@@ -1,6 +1,8 @@
 import requests
 import json
-from problem import Problem
+from .problem import Problem
+from .testcase import TestCase, TestCaseSet
+from typing import List, Tuple
 import re
 
 API_URL = 'https://api.mofecoder.com/api'
@@ -36,6 +38,8 @@ class Client:
             print('Not logged in')
             return None
         try:
+            # print('-'*50)
+            # print(f'[+] {method} {API_URL + url} headers={self.headers | headers}, kwargs={kwargs}')
             response = requests.request(method, API_URL + url, headers=self.headers | headers, **kwargs)
             response.raise_for_status()
             return response
@@ -47,13 +51,28 @@ class Client:
         response = self._request('GET', f'/problems/{problem_id}')
         return Problem.from_dict(response.json())
 
-    def get_testcases(self, problem_id: int):
+    def get_testcases(self, problem_id: int) -> Tuple[List[TestCaseSet], List[TestCase]]:
         response = self._request('GET', f'/problems/{problem_id}/testcases')
-        return response.json()
+        data = response.json()
+        testcase_sets = [TestCaseSet.from_dict(testcase_set) for testcase_set in data['testcase_sets']]
+        testcases = [TestCase.from_dict(testcase) for testcase in data['testcases']]
+        return testcase_sets, testcases
     
-    def get_testcase(self, problem_id: int, testcase_id: int):
+    def get_testcase(self, problem_id: int, testcase_id: int) -> TestCase:    
         response = self._request('GET', f'/problems/{problem_id}/testcases/{testcase_id}')
-        return response.json()
+        return TestCase.from_dict(response.json()) if response else None
+
+    def put_testcase(self, problem_id: int, testcase_id: int, testcase: TestCase) -> int:
+        payload = json.dumps({
+            'explanation': testcase.explanation,
+            'input': testcase.input,
+            'output': testcase.output,
+            'name': testcase.name,
+            'id': testcase_id
+        }, ensure_ascii=False)
+        headers = {'content-type': 'application/json', 'content-length': str(len(payload))}
+        response = self._request('PUT', f'/problems/{problem_id}/testcases/{testcase_id}', headers=headers, data=payload)
+        return response.status_code if response else 500
     
     def delete_multiple_testcases(self, problem_id: int, testcase_ids: list[int]) -> int:
         payload = json.dumps({'testcases': testcase_ids})
@@ -61,11 +80,22 @@ class Client:
         response = self._request('DELETE', f'/problems/{problem_id}/testcases/delete_multiple', headers=headers, data=payload)
         return response.status_code if response else 500
 
+    def delete_testcase_set(self, problem_id: int, testcase_set_id: int) -> int:
+        response = self._request('DELETE', f'/problems/{problem_id}/testcase_sets/{testcase_set_id}')
+        return response.status_code if response else 500
+
+    def initialize_testcase_sets(self, problem_id: int):
+        testcase_sets, _ = self.get_testcases(problem_id)
+        for testcase_set in testcase_sets:
+            if testcase_set.is_sample() or testcase_set.is_all():
+                continue
+            self.delete_testcase_set(problem_id, testcase_set.id)
+
     def upload_testcases(self, problem_id: int, filename: str, delete_old_testcases: bool = True) -> int:
         if delete_old_testcases:
             try:
-                testcases = self.get_testcases(problem_id)
-                testcase_ids = [testcase['id'] for testcase in testcases['testcases']]
+                testcase_sets, testcases = self.get_testcases(problem_id)
+                testcase_ids = [testcase.id for testcase in testcases]
                 self.delete_multiple_testcases(problem_id, testcase_ids)
             except Exception as e:
                 print(f'Error deleting old testcases: {e}')
@@ -73,28 +103,34 @@ class Client:
             response = self._request('POST', f'/problems/{problem_id}/testcases/upload', files={'file': f})
             return response.status_code if response else 500
 
-    def get_testcase_ids(self, problem_id: int, regex_ptrn:re.Pattern):
-        testcases = self.get_testcases(problem_id)
-        return [testcase['id'] for testcase in testcases['testcases'] if regex_ptrn.match(testcase['name'])]
+    def get_testcase_ids_regex(self, problem_id: int, regex_ptrn: re.Pattern) -> list[int]:
+        testcase_sets, testcases = self.get_testcases(problem_id)
+        return [testcase.id for testcase in testcases if regex_ptrn.match(testcase.name)]
 
-    def get_testcase_set_id_by_name(self, problem_id: int, testcase_set_name: str):
-        testcase_sets = self.get_testcases(problem_id)['testcase_sets']
+    def get_testcase_set_id(self, problem_id: int, testcase_set_name: str) -> int:
+        testcase_sets, _ = self.get_testcases(problem_id)
         for testcase_set in testcase_sets:
-            if testcase_set['name'] == testcase_set_name:
-                return testcase_set['id']
+            if testcase_set.name == testcase_set_name:
+                return testcase_set.id
         return None
 
     def testcases_change_state_multiple(self, problem_id: int, testcase_ids: list[int], testcase_set_id: int) -> int:
-        response = self._request('PUT', f'/problems/{problem_id}/testcases/change_state_multiple',
-                      data={'testcase_ids': testcase_ids, 'testcase_set_id': testcase_set_id})
+        response = self._request('PATCH', f'/problems/{problem_id}/testcases/change_state_multiple',
+                      json={'testcase_ids': testcase_ids, 'testcase_set_id': testcase_set_id})
         return response.status_code if response else 500
 
-    def post_testcase_sets(self, problem_id: int, testcase_sets: dict[str, str]) -> int:
-        if 'aggregate_type' not in testcase_sets:
-            testcase_sets['aggregate_type'] = 'all'
-        payload = json.dumps(testcase_sets, ensure_ascii=False)
+    def post_testcase_set(self, problem_id: int, testcase_set: TestCaseSet) -> int:
+        payload = json.dumps({'name': testcase_set.name, 'aggregate_type': testcase_set.aggregate_type.value, 'points':testcase_set.points}, ensure_ascii=False)
         headers = {'content-type': 'application/json', 'content-length': str(len(payload))}
         response = self._request('POST', f'/problems/{problem_id}/testcase_sets', headers=headers, data=payload)
+        return response.status_code if response else 500
+    
+    def put_testcase_set(self, problem_id: int, testcase_set: TestCaseSet) -> int:
+        payload = json.dumps({'name': testcase_set.name, 'aggregate_type': testcase_set.aggregate_type.value, 'points':testcase_set.points}, ensure_ascii=False)
+        headers = {'content-type': 'application/json', 'content-length': str(len(payload))}
+        if testcase_set.id is None:
+            testcase_set.id = self.get_testcase_set_id(problem_id, testcase_set.name)
+        response = self._request('PUT', f'/problems/{problem_id}/testcase_sets/{testcase_set.id}', headers=headers, data=payload)
         return response.status_code if response else 500
 
     def put_problem(self, problem_id: int, problem: Problem) -> int:
