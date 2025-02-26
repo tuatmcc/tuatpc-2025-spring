@@ -46,7 +46,7 @@ cxx_validator(src='validator-kitashima.cpp', flags=[])
 #gcj_merger(output_replace=casenum_replace('Case 1', 'Case {0}'))
 id='X'
 #merged_testset(name=id + '_Merged', input_pattern='*.in')
-subtask_testset(name='Easy', score=1, input_patterns=['001*'])
+subtask_testset(name='Easy', score=1, input_patterns=['01*'])
 subtask_testset(name='All', score=99, input_patterns=['*'])
 # subtask_testset(name='Sample', score=0, input_patterns=['0*'])
 # subtask_testset(name='Normal', score=100, input_patterns=['2*'])

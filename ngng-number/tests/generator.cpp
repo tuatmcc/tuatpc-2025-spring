@@ -10,24 +10,24 @@ int main(int argc, char* argv[]){
 
     // sample1
     string sample1 = "1220";
-    ofstream of(format("000_sample_%02d.in",1).c_str());
+    ofstream of(format("00_sample_%02d.in",1).c_str());
     of << sample1 << endl;
     of.close();
 
     // sample2
     string sample2 = "25500";
-    ofstream of2(format("000_sample_%02d.in",2).c_str());
+    ofstream of2(format("00_sample_%02d.in",2).c_str());
     of2 << sample2 << endl;
     of2.close();
 
     // sample2
     string sample3 = "20250309";
-    ofstream of3(format("000_sample_%02d.in",3).c_str());
+    ofstream of3(format("00_sample_%02d.in",3).c_str());
     of3 << sample3 << endl;
     of3.close();
 
     for(int i=0;i<10;i++){
-        ofstream of4(format("001_subtask_%02d.in",i+1).c_str());
+        ofstream of4(format("01_subtask_%02d.in",i+1).c_str());
         const int N = rnd.next(MIN_length_of_N,MAX_length_of_N_subtask);
         string S(N,'.');
         for(int j=0;j<N;j++){
@@ -40,12 +40,12 @@ int main(int argc, char* argv[]){
 
     // sample2
     string sample22 = "25500";
-    ofstream of22(format("001_subtask_%02d.in",11).c_str());
+    ofstream of22(format("01_subtask_%02d.in",11).c_str());
     of22 << sample22 << endl;
     of22.close();
 
     for(int i=0;i<20;i++){
-        ofstream of5(format("002_random_rid_%02d.in",i+1).c_str());
+        ofstream of5(format("02_random_%02d.in",i+1).c_str());
         const int N = rnd.next(MIN_length_of_N,MAX_length_of_N);
         string S(N,'.');
         for(int j=0;j<N;j++){
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
 
 
     for(int i=0;i<5;i++){
-        ofstream of6(format("003_long_%02d.in",i+1).c_str());
+        ofstream of6(format("03_long_%02d.in",i+1).c_str());
         const int N = rnd.next(100000,MAX_length_of_N);
         string S(N,'.');
         for(int j=0;j<N;j++){
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]){
     }
 
     // max-1
-    ofstream of7(format("004_max-1_%02d.in",1).c_str());
+    ofstream of7(format("04_nines_%02d.in",1).c_str());
     string S_max_minus_one(99999,'.');
     for(int j=0;j<99999;j++){
         S_max_minus_one[j] = '9';
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]){
     of7.close();
 
     // max
-    ofstream of8(format("005_max_%02d.in",1).c_str());
+    ofstream of8(format("05_max_%02d.in",1).c_str());
     string S_max(100000,'.');
     for(int j=0;j<100000;j++){
         if(j == 0)S_max[j] = '1';
