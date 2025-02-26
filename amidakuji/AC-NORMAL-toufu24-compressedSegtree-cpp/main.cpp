@@ -132,7 +132,7 @@ int main() {
     Compress<int> comp_row(update_rows);
     comp_row.build();
     assert(comp_col.xs.size() <= N);
-    assert(comp_col.xs.size() <= Q);
+    assert(comp_col.xs.size() <= 2 * Q);
     assert(comp_row.xs.size() <= M);
     assert(comp_row.xs.size() <= Q);
     compressed_N = comp_col.xs.size();
