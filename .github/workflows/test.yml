@@ -15,21 +15,46 @@ on:
 jobs:
   Rime-and-HTML-test:
     runs-on: ubuntu-latest
-
+    container:
+      image: ghcr.io/tuatmcc/sakumon-image:latest
+      volumes:
+        - /github/workspace:/root/app
+    permissions:
+      contents: read
+      packages: read
+      attestations: read
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: false
-        tags: sakumon
-        load: true
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+      - name: Set Working Directory
+        run: cd /root/app
 
-    - name: Rime test and filename check and html check
-      run: docker run --rm -v $GITHUB_WORKSPACE:/root/app sakumon /bin/zsh -c "cd /root/app && rime test --keep_going && uv run --python python3.10 ./scripts/check_filename.py && uv run --python python3.10 ./scripts/check_html.py"
+      - name: Rime test
+        run: rime test --keep_going --jobs 4
+
+      - name: Check filenames
+        run: python3 scripts/check_filename.py
+
+      - name: Check HTMLs
+        run: python3 scripts/check_html.py
+      
+      - name: Make testcases for MOFE
+        run: python3 scripts/pack_testcases.py
+
+      - name: Upload Rime Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: rime-out
+          retention-days: 7
+          path: |
+            **/rime-out/
+            !**/rime-out/**/**.exe
+      
+      - name: Upload testcases for MOFE
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted_testcases
+          retention-days: 7
+          path: |
+            **.zip
