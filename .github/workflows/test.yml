@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - 'main'
-
     paths-ignore:
     - '**.md'
     - 'docs/**'
@@ -16,42 +15,46 @@ on:
 jobs:
   Rime-and-HTML-test:
     runs-on: ubuntu-latest
-
+    container:
+      image: ghcr.io/tuatmcc/sakumon-image:latest
+      volumes:
+        - /github/workspace:/root/app
+    permissions:
+      contents: read
+      packages: read
+      attestations: read
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '2.4'
+      - name: Set Working Directory
+        run: cd /root/app
 
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.8'
+      - name: Rime test
+        run: rime test --keep_going --jobs 4
 
-    - name: Update package list
-      run: |
-        sudo apt update
+      - name: Check filenames
+        run: python3 scripts/check_filename.py
 
-    - name: Install GCC
-      run: |
-        sudo apt install build-essential -y
-        sudo apt install gcc g++ -y
+      - name: Check HTMLs
+        run: python3 scripts/check_html.py
+      
+      - name: Make testcases for MOFE
+        run: python3 scripts/pack_testcases.py
 
-    - name: Upgrade pip
-      run: python3 -m pip install --upgrade pip
-
-    - name: Install Rime
-      run: python3 -m pip install git+https://github.com/icpc-jag/rime
-
-    - name: Install BeautifulSoup
-      run: python3 -m pip install bs4
-
-    - name: Rime test
-      run: rime test --keep_going
-
-    - name: File Name test
-      run: python3 ./scripts/check_filename.py
-
-    - name: HTML test
-      run: python3 ./scripts/check_html.py
-
+      - name: Upload Rime Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: rime-out
+          retention-days: 7
+          path: |
+            **/rime-out/
+            !**/rime-out/**/**.exe
+      
+      - name: Upload testcases for MOFE
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted_testcases
+          retention-days: 7
+          path: |
+            **.zip
