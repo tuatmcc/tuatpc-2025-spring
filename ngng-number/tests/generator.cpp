@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
     of2.close();
 
     // sample2
-    string sample3 = "20250309";
+    string sample3 = "2025030920250309202503092025030920250309";
     ofstream of3(format("00_sample_%02d.in",3).c_str());
     of3 << sample3 << endl;
     of3.close();
