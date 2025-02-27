@@ -6,7 +6,7 @@
 左から縦線 $1$、縦線 $2$、$\dots$、縦線 $N$ と番号がついた $N$ 本の縦線からなるあみだくじがあります。縦線は全て $M + 1\ [\mathrm{cm}]$ であり、横線の端点となれるのは上から $1, 2, \dots, M\ [\mathrm{cm}]$ の位置のみです。
 
 <!-- ![あみだくじ(1)](https://hackmd.io/_uploads/rJeFfkG5ke.svg) -->
-![あみだくじ.drawio](https://hackmd.io/_uploads/BJT_Fp2qkg.svg)
+![あみだくじ.drawio](https://hackmd.io/_uploads/HkQAwR69Je.svg)
 
 次の $Q$ 個のクエリを処理してください。
 - `1 x y`
