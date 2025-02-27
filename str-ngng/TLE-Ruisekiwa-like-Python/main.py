@@ -1,10 +1,12 @@
 #!/usr/local/bin/pypy3
 
-MOD = 998244353
+from sys import stdin
+
+input = stdin.readline
 
 def main():
     N, Q = map(int, input().split())
-    S = input()
+    S = input().rstrip()
     queries = []
     for i in range(Q):
         l, r = map(int, input().split())
@@ -87,7 +89,7 @@ def main():
         results.append(ans)
 
     for result in results:
-        print(result % MOD)
+        print(result)
 
 if __name__ == "__main__":
     main()

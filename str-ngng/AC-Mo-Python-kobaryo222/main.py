@@ -1,10 +1,13 @@
 #!/usr/local/bin/pypy3
 import math
 from functools import cmp_to_key
+from sys import stdin
+
+input = stdin.readline
 
 def main():
     N, Q = map(int, input().split())
-    S = input()
+    S = input().rstrip()
     A = list(map(lambda x : ord(x) - ord('a'), S))
     queries = []
     for i in range(Q):
