@@ -69,9 +69,9 @@ def parse_time_limit(PROBLEM_content: str) -> int:
     else:
         raise ValueError('time_limit not found in the file')
 
-# statement.md + PROBLEM + problem.toml -> int, Problem, constraints, str
-def load_problem(statement_content: str, problem_rime_content: str, problem_toml_content: str) -> Tuple[int, Problem, Dict[str, str], List[TestCaseSet]]:
-    config, constraints = parse_problem_config(problem_toml_content)
+# statement.md + PROBLEM + problem.toml -> int, Problem, str
+def load_problem(statement_content: str, problem_rime_content: str, problem_toml_content: str) -> Tuple[int, Problem, List[TestCaseSet]]:
+    config, _ = parse_problem_config(problem_toml_content)
     testcase_sets = config.testcase_sets
     if config.execution_time_limit is None:
         execution_time_limit = parse_time_limit(problem_rime_content)
@@ -91,4 +91,4 @@ def load_problem(statement_content: str, problem_rime_content: str, problem_toml
         submission_limit_1=config.submission_limit_1,
         submission_limit_2=config.submission_limit_2
     )
-    return problem_id, problem, constraints, testcase_sets
+    return problem_id, problem, testcase_sets

@@ -3,23 +3,46 @@ from lib.parser import load_problem, parse_id_in_contest
 from sys import argv
 from pathlib import Path
 from pack_testcases import make_zip
+import logging
 
-if __name__ == '__main__':
+logger = logging.getLogger(__name__)
+
+def upload_statement_and_testcases(username: str, password: str):
     client = Client()
-    client.login(argv[1], argv[2])
+    client.login(username, password)
 
     for path in Path('./').glob('*'):
         if not path.is_dir() or not (path / 'PROBLEM').exists():
             continue
+
         make_zip(path)
-        problem_toml = open(path / 'problem.toml', 'r').read()
-        problem_rime = open(path / 'PROBLEM', 'r').read()
+        
+        # 設定ファイルの読み込み
+        problem_toml_path = path / 'problem.toml'
+        problem_rime_path = path / 'PROBLEM'
+
+        if not problem_toml_path.exists():
+            logger.warning(f'problem.toml not found in {path.name}')
+            continue
+        if not problem_rime_path.exists():
+            logger.warning(f'PROBLEM not found in {path.name}')
+            continue
+
+        problem_toml = open(problem_toml_path, 'r').read()
+        problem_rime = open(problem_rime_path, 'r').read()
+        
+        # 問題文の読み込み
         statement_path = path / 'ss-out' / f'{parse_id_in_contest(problem_toml)}.md'
+        if not statement_path.exists():
+            logger.warning(f'Statement file not found: {statement_path}')
+
         statement = open(statement_path, 'r').read()
-        problem_id, problem, constraints, testcase_sets = load_problem(statement, problem_rime, problem_toml)
+        problem_id, problem, testcase_sets = load_problem(statement, problem_rime, problem_toml)
+
+        client.upload_testcases(problem_id, f'{path.name}.zip')
 
         client.put_problem(problem_id, problem)
-        client.upload_testcases(problem_id, f'{path.name}.zip')
+        
         client.initialize_testcase_sets(problem_id)
         for testcase_set in testcase_sets:
             testcase_ids = client.get_testcase_ids_regex(problem_id, testcase_set.regex)
@@ -38,3 +61,6 @@ if __name__ == '__main__':
             testcase = client.get_testcase(problem_id, testcase_id)
             testcase.explanation = md
             client.put_testcase(problem_id, testcase_id, testcase)
+
+if __name__ == '__main__':
+    upload_statement_and_testcases(argv[1], argv[2])
