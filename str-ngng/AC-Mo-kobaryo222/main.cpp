@@ -7,13 +7,18 @@
 
 using namespace std;
 
+struct Query {
+    int l, r, index;
+    Query(int l, int r, int index) : l(l), r(r), index(index) {}
+};
+
 int main()
 {
     int N, Q;
     cin >> N >> Q;
     string S;
     cin >> S;
-    vector<tuple<int, int, int>> queries(Q);
+    vector<Query> queries;
     for (int i = 0; i < Q; i++) {
         int l, r;
         cin >> l >> r;
@@ -23,17 +28,15 @@ int main()
 
     // 要調整
     const int block_size = N / min<int>(N, sqrt(Q));
-    auto comp = [block_size](tuple<int, int, int>& a, tuple<int, int, int>& b) {
-        auto [la, ra, _] = a;
-        auto [lb, rb, __] = b;
-        int block_a = la / block_size, block_b = lb / block_size;
+    auto comp = [block_size](const Query& a, const Query& b) {
+        int block_a = a.l / block_size, block_b = b.l / block_size;
         if (block_a != block_b)
             return block_a < block_b;
         // ブロック番号の偶奇でソート順を変える
         if (block_a % 2 == 1)
-            return ra > rb;
+            return a.r > b.r;
         else
-            return ra < rb;
+            return a.r < b.r;
     };
     sort(queries.begin(), queries.end(), comp);
 
@@ -102,18 +105,18 @@ int main()
     };
 
     vector<long long int> ans(Q);
-    for (auto [li, ri, idx] : queries) {
-        while (l > li)
+    for (const auto& query : queries) {
+        while (l > query.l)
             add_left();
-        while (r < ri)
+        while (r < query.r)
             add_right();
-        while (l < li)
+        while (l < query.l)
             erase_left();
-        while (r > ri)
+        while (r > query.r)
             erase_right();
-        ans[idx] = cans;
+        ans[query.index] = cans;
     }
 
     for (auto& x : ans)
-        cout << x << endl;
+        cout << x << '\n';
 }
