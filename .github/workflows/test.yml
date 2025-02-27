@@ -39,8 +39,8 @@ jobs:
       - name: Check HTMLs
         run: python3 scripts/check_html.py
       
-      - name: Make testcases for MOFE
-        run: python3 scripts/pack_testcases.py
+      # - name: Make testcases for MOFE
+      #   run: python3 scripts/pack_testcases.py
 
       - name: Upload Rime Output
         uses: actions/upload-artifact@v4
@@ -55,4 +55,4 @@ jobs:
         run: ss-manager run -o md
 
       - name: Upload testcases and statements to MOFE
-        run: python3 scripts/upload_statement_and_testcases.py kobaryo222 ${{ secrets.MOFE_PASSWORD }}
+        run: python3 scripts/upload_statement_and_testcases.py MCC_CI ${{ secrets.MOFE_CI_USER_PASSWORD }} 
