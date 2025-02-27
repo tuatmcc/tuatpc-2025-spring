@@ -2,9 +2,7 @@ import re
 import tomllib
 from .problem import Problem, ProblemConfig, ProblemStatement, Difficulty, TestCaseSet
 from typing import Dict, Tuple, List
-import logging
-
-logger = logging.getLogger(__name__)
+from .logger import logger
 
 def find_first_match(content: str, pattern: re.Pattern, error_message: str) -> str:
     try:
@@ -49,6 +47,10 @@ def parse_statement(md_content: str) -> ProblemStatement:
 # problem.toml
 def parse_problem_config(problem_toml_content: str) -> Tuple[ProblemConfig, Dict[str, str]]:
     data = tomllib.loads(problem_toml_content)
+    if 'mofe' not in data:
+        raise ValueError('MOFE 用の設定が見つかりません。problem.toml に [mofe] というセクションがあるか確認してください。')
+    if 'constraints' not in data:
+        raise ValueError('制約の設定が見つかりません。problem.toml に [constraints] というセクションがあるか確認してください。')
     problem_config, constraints = data['mofe'], data['constraints']
     problem_config = ProblemConfig.from_dict(problem_config)
     for key, value in constraints.items():
@@ -57,6 +59,8 @@ def parse_problem_config(problem_toml_content: str) -> Tuple[ProblemConfig, Dict
 
 def parse_id_in_contest(problem_toml_content: str) -> int:
     data = tomllib.loads(problem_toml_content)
+    if 'id' not in data:
+        raise ValueError('id が見つかりません。problem.toml に id というキーがあるか確認してください。')
     return data['id']
 
 # PROBLEM

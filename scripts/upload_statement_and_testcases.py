@@ -4,9 +4,8 @@ from sys import argv
 from pathlib import Path
 from pack_testcases import make_zip
 from typing import Optional, Tuple
-import logging
-
-logger = logging.getLogger(__name__)
+from lib.logger import logger
+from time import time
 
 def load_setting_files(base_path: Path) -> Optional[Tuple[str, str]]:
     problem_toml_path = base_path / 'problem.toml'
@@ -39,7 +38,7 @@ def upload_statement_and_testcases(username: str, password: str):
             continue
         
         logger.info(f'Processing for {path.name}')
-
+        timer = time()
         make_zip(path)
         
         if (ret := load_setting_files(path)) is None:
@@ -58,7 +57,7 @@ def upload_statement_and_testcases(username: str, password: str):
         logger.info(f'Updated problem statement')
 
         client.initialize_testcase_sets(problem_id)
-        logger.info(f'Deleted all testcase_sets for problem {problem_id}')
+        logger.info(f'Deleted all testcase_sets')
         
         for testcase_set in testcase_sets:
             testcase_ids = client.get_testcase_ids_regex(problem_id, testcase_set.regex)
@@ -83,6 +82,8 @@ def upload_statement_and_testcases(username: str, password: str):
             testcase.explanation = md
             client.put_testcase(problem_id, testcase_id, testcase)
             logger.info(f'Uploaded explanation for {testcase_name}')
+        
+        logger.info(f'Finished processing for {path.name}, took {time() - timer:.2f}s')
 
 if __name__ == '__main__':
     upload_statement_and_testcases(argv[1], argv[2])
