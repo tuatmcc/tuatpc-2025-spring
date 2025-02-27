@@ -51,6 +51,12 @@ class Client:
         response = self._request('GET', f'/problems/{problem_id}')
         return Problem.from_dict(response.json())
 
+    def get_problem_url(self, problem_id: int) -> str:
+        problem = self.get_problem(problem_id)
+        contest_slug = problem.contest.slug
+        slug = problem.slug
+        return f'https://mofecoder.com/contests/{contest_slug}/tasks/{slug}'
+
     def get_testcases(self, problem_id: int) -> Tuple[List[TestCaseSet], List[TestCase]]:
         response = self._request('GET', f'/problems/{problem_id}/testcases')
         data = response.json()
