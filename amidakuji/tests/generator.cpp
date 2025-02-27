@@ -486,7 +486,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // hackcase
         {
             t = 1;
-            string filename = ::format("10_normal_hack_%02d.in", t++);
+            string filename = ::format("10_subtask_hack_%02d.in", t++);
             ifstream ifs("hackcase.txt");
             int N, M, Q;
             ifs >> N >> M;
@@ -515,10 +515,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("11_normal_minN_%02d.in", t++);
-                int N = NORMAL_MIN_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("11_subtask_minN_%02d.in", t++);
+                int N = SUBTASK_MIN_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -527,10 +527,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("12_normal_minM_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MIN_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("12_subtask_minM_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MIN_M;
+                int Q = SUBTASK_MAX_Q;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -539,10 +539,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("13_normal_minNM_%02d.in", t++);
-                int N = NORMAL_MIN_N;
-                int M = NORMAL_MIN_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("13_subtask_minNM_%02d.in", t++);
+                int N = SUBTASK_MIN_N;
+                int M = SUBTASK_MIN_M;
+                int Q = SUBTASK_MAX_Q;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -550,18 +550,18 @@ int32_t main(int32_t argc, char *argv[]) {
         // N,M,Qが最大の場合
         {
             {
-                string filename = ::format("14_normal_max_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("14_subtask_max_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
             {
-                string filename = ::format("14_normal_max_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("14_subtask_max_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 random_query_config config;
                 config.use_vertical_lines = {3, 10, 11, 12};
                 config.one_prob = 10;
@@ -575,9 +575,9 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("15_normal_smallQ_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
+                string filename = ::format("15_subtask_smallQ_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
                 int Q = 10;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
@@ -587,10 +587,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("16_normal_many12query_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("16_subtask_many12query_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 random_query_config config;
                 config.one_prob = 5;
                 config.two_prob = 5;
@@ -603,10 +603,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("17_normal_many3query_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("17_subtask_many3query_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 random_query_config config;
                 config.one_prob = 1;
                 config.two_prob = 1;
@@ -617,10 +617,10 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("17_normal_many3query_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("17_subtask_many3query_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 random_query_config config;
                 config.one_prob = 2;
                 config.two_prob = 1;
@@ -634,10 +634,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("18_normal_stairs_%02d.in", t++);
-                int N = NORMAL_MAX_N - 2;
-                int M = NORMAL_MAX_M - 2;
-                int Q = NORMAL_MAX_Q - 2;
+                string filename = ::format("18_subtask_stairs_%02d.in", t++);
+                int N = SUBTASK_MAX_N - 2;
+                int M = SUBTASK_MAX_M - 2;
+                int Q = SUBTASK_MAX_Q - 2;
                 Input in = make_stairs_input(N, M, Q);
                 vector<tuple<int, int, int>> prev_in, next_in;
                 for (int i = 0; i < Q / 2; i++) {
@@ -652,10 +652,10 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("18_normal_stairs_%02d.in", t++);
-                int N = NORMAL_MAX_N - 2;
-                int M = NORMAL_MAX_M - 2;
-                int Q = NORMAL_MAX_Q - 2;
+                string filename = ::format("18_subtask_stairs_%02d.in", t++);
+                int N = SUBTASK_MAX_N - 2;
+                int M = SUBTASK_MAX_M - 2;
+                int Q = SUBTASK_MAX_Q - 2;
                 Input in = make_stairs_input(N, M, Q);
                 vector<tuple<int, int, int>> prev_in, next_in;
                 for (int i = 0; i < Q / 2; i++) {
@@ -674,18 +674,18 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("18_normal_stairs_%02d.in", t++);
-                int N = NORMAL_MAX_N - 1;
-                int M = NORMAL_MAX_M - 3;
-                int Q = NORMAL_MAX_Q - 1;
+                string filename = ::format("18_subtask_stairs_%02d.in", t++);
+                int N = SUBTASK_MAX_N - 1;
+                int M = SUBTASK_MAX_M - 3;
+                int Q = SUBTASK_MAX_Q - 1;
                 Input in = make_stairs_input(N, M, Q);
                 write_output(filename, in);
             }
             {
-                string filename = ::format("18_normal_stairs_%02d.in", t++);
-                int N = NORMAL_MAX_N;
-                int M = NORMAL_MAX_M;
-                int Q = NORMAL_MAX_Q;
+                string filename = ::format("18_subtask_stairs_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
                 Input in = make_stairs_input(N, M, Q, true);
                 // 1~Q/2をシャッフル
                 for (int i = 0; i < Q / 2; i++) {
@@ -698,10 +698,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             for (int i = 0; i < 5; i++) {
-                string filename = ::format("19_normal_random_%02d.in", t++);
-                int N = rnd.next(NORMAL_MIN_N, NORMAL_MAX_N);
-                int M = rnd.next(NORMAL_MIN_M, NORMAL_MAX_M);
-                int Q = rnd.next(NORMAL_MIN_Q, NORMAL_MAX_Q);
+                string filename = ::format("19_subtask_random_%02d.in", t++);
+                int N = rnd.next(SUBTASK_MIN_N, SUBTASK_MAX_N);
+                int M = rnd.next(SUBTASK_MIN_M, SUBTASK_MAX_M);
+                int Q = rnd.next(SUBTASK_MIN_Q, SUBTASK_MAX_Q);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -714,10 +714,10 @@ int32_t main(int32_t argc, char *argv[]) {
         int t = 1;
         {
             {
-                string filename = ::format("21_hard_minN_%02d.in", t++);
-                int N = HARD_MIN_N;
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                string filename = ::format("21_minN_%02d.in", t++);
+                int N = MIN_N;
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q - rnd.next(0, 100);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -726,10 +726,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("22_hard_minM_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MIN_M;
-                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                string filename = ::format("22_minM_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MIN_M;
+                int Q = MAX_Q - rnd.next(0, 100);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -738,9 +738,9 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("23_hard_smallQ_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
+                string filename = ::format("23_smallQ_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
                 int Q = 1000;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
@@ -750,30 +750,30 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("24_hard_max_%02d.in", t++);
-                int N = HARD_MAX_N;
-                int M = HARD_MAX_M;
-                int Q = HARD_MAX_Q;
+                string filename = ::format("24_max_%02d.in", t++);
+                int N = MAX_N;
+                int M = MAX_M;
+                int Q = MAX_Q;
                 random_query_config config;
                 config.random3query = true;
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
             {
-                string filename = ::format("24_hard_max_%02d.in", t++);
-                int N = HARD_MAX_N;
-                int M = HARD_MAX_M;
-                int Q = HARD_MAX_Q;
+                string filename = ::format("24_max_%02d.in", t++);
+                int N = MAX_N;
+                int M = MAX_M;
+                int Q = MAX_Q;
                 random_query_config config;
                 config.random3query = true;
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
             {
-                string filename = ::format("24_hard_max_%02d.in", t++);
-                int N = HARD_MAX_N;
-                int M = HARD_MAX_M;
-                int Q = HARD_MAX_Q;
+                string filename = ::format("24_max_%02d.in", t++);
+                int N = MAX_N;
+                int M = MAX_M;
+                int Q = MAX_Q;
                 random_query_config config;
                 config.use_vertical_lines = {100000000, 100000002};
                 config.one_prob = 10;
@@ -787,10 +787,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("25_hard_many12query_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q;
+                string filename = ::format("25_many12query_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q;
                 random_query_config config;
                 config.one_prob = 5;
                 config.two_prob = 5;
@@ -803,10 +803,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("26_hard_many3query_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q;
+                string filename = ::format("26_many3query_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q;
                 random_query_config config;
                 config.one_prob = 1;
                 config.two_prob = 1;
@@ -820,10 +820,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             {
-                string filename = ::format("28_hard_stairs_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q - rnd.next(1, 100);
+                string filename = ::format("28_stairs_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q - rnd.next(1, 100);
                 if (Q % 2 == 1)
                     Q++;
                 Input in = make_stairs_input(N, M, Q);
@@ -840,10 +840,10 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("28_hard_stairs_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q - rnd.next(1, 100);
+                string filename = ::format("28_stairs_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q - rnd.next(1, 100);
                 if (Q % 2 == 1)
                     Q++;
                 Input in = make_stairs_input(N, M, Q);
@@ -864,18 +864,18 @@ int32_t main(int32_t argc, char *argv[]) {
                 write_output(filename, in);
             }
             {
-                string filename = ::format("28_hard_stairs_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                string filename = ::format("28_stairs_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q - rnd.next(0, 100);
                 Input in = make_stairs_input(N, M, Q);
                 write_output(filename, in);
             }
             {
-                string filename = ::format("28_hard_stairs_%02d.in", t++);
-                int N = HARD_MAX_N - rnd.next(0, 100);
-                int M = HARD_MAX_M - rnd.next(0, 100);
-                int Q = HARD_MAX_Q - rnd.next(0, 100);
+                string filename = ::format("28_stairs_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q - rnd.next(0, 100);
                 Input in = make_stairs_input(N, M, Q, true);
                 // 1~Q/2をシャッフル
                 for (int i = 0; i < Q / 2; i++) {
@@ -888,10 +888,10 @@ int32_t main(int32_t argc, char *argv[]) {
         {
             t = 1;
             for (int i = 0; i < 5; i++) {
-                string filename = ::format("29_hard_random_%02d.in", t++);
-                int N = rnd.next(HARD_MIN_N, HARD_MAX_N);
-                int M = rnd.next(HARD_MIN_M, HARD_MAX_M);
-                int Q = rnd.next(HARD_MIN_Q, HARD_MAX_Q);
+                string filename = ::format("29_random_%02d.in", t++);
+                int N = rnd.next(MIN_N, MAX_N);
+                int M = rnd.next(MIN_M, MAX_M);
+                int Q = rnd.next(MIN_Q, MAX_Q);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
