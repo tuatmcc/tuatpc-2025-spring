@@ -1,0 +1,48 @@
+# documents: https://statements-manager.readthedocs.io/ja/stable/problem_config.html
+
+id = "C" # コンテスト内での問題 ID
+
+params_path = "./tests/constraints.h"
+#assets_path = "./statement/assets/"
+sample_path = "./tests/"
+ignore_samples = []
+
+[[statements]]
+path = "./statement/statement.md"
+lang = "ja"
+markdown_extensions = ["md_in_html", "tables", "fenced_code"]
+
+# 問題の制約
+[constraints]
+SUBTASK_MIN_N = 2
+SUBTASK_MAX_N = 20
+SUBTASK_MIN_M = 1
+SUBTASK_MAX_M = 100000
+SUBTASK_MIN_Q = 1
+SUBTASK_MAX_Q = 50000
+
+MIN_N = 2
+MAX_N = 1000000000
+MIN_M = 1
+MAX_M = 1000000000
+MIN_Q = 1
+MAX_Q = 50000
+
+[mofe]
+problem_id = 298 # MOFE 上での問題 ID
+difficulty = "ผักชี" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
+execution_time_limit = 5000 # 実行時間制限 (ms)
+submission_limit_1 = 5 # 1 回前の提出から何秒間隔を開ける必要があるか
+submission_limit_2 = 60 # 2 回前の提出から何秒間隔を開ける必要があるか
+
+[[mofe.testcase_sets.sample]]
+regex = "00_sample_\\d+" # sample のテストケースの名前にマッチする正規表現
+points = 0 # sample ケースの配点
+
+[[mofe.testcase_sets.subtask]]
+regex = "^1[0-9]" # subtask のテストケースの名前にマッチする正規表現
+points = 1 # subtask ケースの配点
+
+[[mofe.testcase_sets.all]]
+regex = "." # all のテストケースの名前にマッチする正規表現
+points = 99 # all ケースの配点
