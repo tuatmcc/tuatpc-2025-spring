@@ -94,6 +94,6 @@ int main(){
             ans += g4[R][i][j] - g4[L-1][i][j] - g1[L-1][i] * f3[j][i] - g2[L-1][i][j] * f2[i][j] - g3[L-1][i][j] * f1[j];
         }
 
-        cout << ans << endl;
+        cout << ans << '\n';
     }
 } 

@@ -7,6 +7,9 @@ input = stdin.readline
 def main():
     N, Q = map(int, input().split())
     S = input().rstrip()
+
+    assert((N + Q) * 26**2 <= 10 ** 7) # TLE のケースは強制的に RE にする
+
     queries = []
     for i in range(Q):
         l, r = map(int, input().split())
