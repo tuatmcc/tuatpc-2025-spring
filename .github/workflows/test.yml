@@ -2,12 +2,6 @@ name: Run test and upload testcases to MOFE
 
 on:
   push:
-    branches:
-    - 'main'
-    paths-ignore:
-    - '**.md'
-    - 'docs/**'
-  pull_request:
     paths-ignore:
     - '**.md'
     - 'docs/**'

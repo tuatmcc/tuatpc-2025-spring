@@ -2,21 +2,12 @@ name: Upload statements to MOFE
 
 on:
   push:
-    branches:
-      - 'main'
     paths:
       - '*/statement/statement.md'
       - '*/tests/*.in'
       - '*/tests/*.out'
       - '*/tests/*.md'
       - '*/tests/constraints.*'
-  pull_request:
-    paths:
-        - '*/statement/statement.md'
-        - '*/tests/*.in'
-        - '*/tests/*.out'
-        - '*/tests/*.md'
-        - '*/tests/constraints.*'
 
 jobs:
   ss-manager-and-upload-mofe:
