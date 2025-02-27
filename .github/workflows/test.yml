@@ -54,5 +54,8 @@ jobs:
       - name: Embed constraints and testcases to statements
         run: ss-manager run -o md
 
-      - name: Upload testcases and statements to MOFE
-        run: python3 scripts/upload_statement_and_testcases.py MCC_CI ${{ secrets.MOFE_CI_USER_PASSWORD }} 
+      - name: Upload statements to MOFE
+        run: python3 scripts/upload_statement.py MCC_CI ${{ secrets.MOFE_CI_USER_PASSWORD }}
+      
+      - name: Upload testcases to MOFE
+        run: python3 scripts/upload_testcases.py MCC_CI ${{ secrets.MOFE_CI_USER_PASSWORD }} 
