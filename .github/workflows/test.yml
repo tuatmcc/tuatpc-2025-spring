@@ -1,21 +1,19 @@
-name: Run test
+name: Run test and upload testcases to MOFE
 
 on:
   push:
     branches:
     - 'main'
-    paths:
-      - '**'
-      - '!docs/**'
-      - '!**.md'
+    paths-ignore:
+    - '**.md'
+    - 'docs/**'
   pull_request:
-    paths:
-      - '**'
-      - '!docs/**'
-      - '!**.md'
+    paths-ignore:
+    - '**.md'
+    - 'docs/**'
 
 jobs:
-  Rime-and-HTML-test:
+  Rime-and-upload-testcases:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/tuatmcc/sakumon-image:latest
@@ -28,11 +26,33 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set Working Directory
         run: cd /root/app
+
       - name: Rime test
-        run: rime test --keep_going
+        run: rime test --keep_going --jobs 4
+
       - name: Check filenames
         run: python3 scripts/check_filename.py
-      - name: Check HTMLs
-        run: python3 scripts/check_html.py
+
+      # - name: Check HTMLs
+      #   run: python3 scripts/check_html.py
+      
+      # - name: Make testcases for MOFE
+      #   run: python3 scripts/pack_testcases.py
+
+      - name: Upload Rime Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: rime-out
+          retention-days: 7
+          path: |
+            **/rime-out/
+            !**/rime-out/**/**.exe
+      
+      - name: Embed constraints and testcases to statements
+        run: ss-manager run -o md
+     
+      - name: Upload testcases to MOFE
+        run: python3 scripts/upload_testcases.py kobaryo222 ${{ secrets.MOFE_PASSWORD }} 
