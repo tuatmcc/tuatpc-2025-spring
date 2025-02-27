@@ -28,11 +28,8 @@
 <div style="background: #f5f5f5; border: 1px #ccc solid; 2px 3px 0 #ddd; font-size: 100%; padding: 16px 0 0 15px; color: #333; border-radius: 3px">
     
 $N$
-$A_1\ \ B_1$
-$A_2\ \ B_2$
-$\ \vdots$
-$A_N\ \ B_N$
-    
+$A_1\ \ A_2\ \ \vdots \ A_N$
+$B_1\ \ B_2\ \ \vdots \ B_N$
 </div>
 
 ## 出力
