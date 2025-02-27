@@ -2,6 +2,7 @@ import requests
 import json
 from .problem import Problem
 from .testcase import TestCase, TestCaseSet
+from .logger import logger
 from typing import List, Tuple
 import re
 
@@ -55,6 +56,8 @@ class Client:
         problem = self.get_problem(problem_id)
         contest_slug = problem.contest.slug
         slug = problem.slug
+        if contest_slug is None or slug is None:
+            raise ValueError('指定された問題にはコンテストが設定されていません')
         return f'https://mofecoder.com/contests/{contest_slug}/tasks/{slug}'
 
     def get_testcases(self, problem_id: int) -> Tuple[List[TestCaseSet], List[TestCase]]:
