@@ -4,5 +4,5 @@ const int MAX_SUBTASK_N = 1000;
 
 const int MIN_A = 1;
 const int MAX_A = 1000000000;
-const int MIN_B = 1;
-const int MAX_B = 1000000000;
+const int MIN_H = 1;
+const int MAX_H = 1000000000;

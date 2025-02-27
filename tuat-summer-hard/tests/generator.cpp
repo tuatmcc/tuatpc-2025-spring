@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include "testlib.h"
-#include "constrains.h"
+#include "constraints.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -18,11 +18,19 @@ int main(int argc, char* argv[]){
     }
     {
         ofstream of(format("00_sample_02.in").c_str());
-        // of << "10" << endl; // check 2025-01-29
+        of << "5" << endl;
+        of << "314 159" << endl;
+        of << "265 358" << endl;
+        of << "979 323" << endl;
+        of << "846 264" << endl;
+        of << "338 327" << endl;
+        of.close();
+    }
+    {
+        ofstream of(format("00_sample_03.in").c_str());
         of << "9" << endl; // check 2025-01-29
         of << "1264 1297" << endl; // ngng628
         of << "1862 1278" << endl; // new_textfile
-        // of << "1715 0" << endl; // kobaryo222 ...を入れようと思ったが制約違反になるらしい
         of << "1748 1230" << endl; // lX57
         of << "1286 1357" << endl; // sunrize
         of << "972 891" << endl; // Sakasu
@@ -47,7 +55,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -61,9 +69,9 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             if(rnd.next(0, 1)) A = rnd.next(RATE_MAX, MAX_A);
-            else B = rnd.next(RATE_MAX, MAX_B);
+            else B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -77,7 +85,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(RATE_MAX, MAX_A);
-            int B = rnd.next(RATE_MAX, MAX_B);
+            int B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -88,7 +96,7 @@ int main(int argc, char* argv[]){
         int N = MAX_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_B, SUM_MAX - 1) << endl;
+            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
         }
         of.close();
     }
@@ -97,7 +105,25 @@ int main(int argc, char* argv[]){
         int N = MAX_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << MIN_A << ' ' << MIN_B << endl;
+            of << MIN_A << ' ' << MIN_H << endl;
+        }
+        of.close();
+    }
+    for(int t = 5; t <= 5; ++t){
+        ofstream of(format("11_max_%02d.in", t).c_str());
+        int N = SUM_MAX;
+        of << N << endl;
+        for(int i = 0; i < N; ++i){
+            of << MIN_A << ' ' << MIN_H << endl;
+        }
+        of.close();
+    }
+    for(int t = 6; t <= 6; ++t){
+        ofstream of(format("11_max_%02d.in", t).c_str());
+        int N = SUM_MAX + 1;
+        of << N << endl;
+        for(int i = 0; i < N; ++i){
+            of << MIN_A << ' ' << MIN_H << endl;
         }
         of.close();
     }
@@ -113,7 +139,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -127,9 +153,9 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(MIN_A, RATE_MAX - 1);
-            int B = rnd.next(MIN_B, RATE_MAX - 1);
+            int B = rnd.next(MIN_H, RATE_MAX - 1);
             if(rnd.next(0, 1)) A = rnd.next(RATE_MAX, MAX_A);
-            else B = rnd.next(RATE_MAX, MAX_B);
+            else B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -143,7 +169,7 @@ int main(int argc, char* argv[]){
         of << N << endl;
         for(int i = 0; i < N; ++i){
             int A = rnd.next(RATE_MAX, MAX_A);
-            int B = rnd.next(RATE_MAX, MAX_B);
+            int B = rnd.next(RATE_MAX, MAX_H);
             of << A << ' ' << B << endl;
         }
         of.close();
@@ -154,7 +180,7 @@ int main(int argc, char* argv[]){
         int N = MAX_SUBTASK_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_B, SUM_MAX - 1) << endl;
+            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
         }
         of.close();
     }
@@ -163,7 +189,7 @@ int main(int argc, char* argv[]){
         int N = MAX_SUBTASK_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << MIN_A << ' ' << MIN_B << endl;
+            of << MIN_A << ' ' << MIN_H << endl;
         }
         of.close();
     }
@@ -173,7 +199,7 @@ int main(int argc, char* argv[]){
         int N = MIN_N;
         of << N << endl;
         for(int i = 0; i < N; ++i){
-            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_B, SUM_MAX - 1) << endl;
+            of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
         }
         of.close();
     }
