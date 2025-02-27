@@ -5,14 +5,13 @@ def main():
     all_users_rating_max = 0
     max_sum = 0
 
-    ah = []
+    a = list(map(int, input().split()))
+    h = list(map(int, input().split()))
 
-    for _ in range(n):
-        a, h = map(int, input().split())
-        this_user_max = max(a, h)
+    for i in range(n):
+        this_user_max = max(a[i], h[i])
         all_users_rating_max = max(all_users_rating_max, this_user_max)
         max_sum += this_user_max
-        ah.append((a, h))
 
     if n == 1 or n == 2 or all_users_rating_max < 1600 or max_sum < 4200:
         print("Yes")

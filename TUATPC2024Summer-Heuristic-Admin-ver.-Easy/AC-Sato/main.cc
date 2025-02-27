@@ -11,13 +11,17 @@ int main() {
 
 	cin >> n;
 
-	vector<pair<long long, long long>> ah(n);
+	vector<long long> a(n), h(n);
+	for (int i = 0; i < n; ++i)
+		cin >> a[i];
+
+	for (int i = 0; i < n; ++i)
+		cin >> h[i];
 
 	for (int i = 0; i < n; ++i) {
 		long long this_user_max;
-		cin >> ah[i].first >> ah[i].second;
 
-		this_user_max = max(ah[i].first, ah[i].second);
+		this_user_max = max(a[i], h[i]);
 		chmax(all_users_rating_max, this_user_max);
 		max_sum += this_user_max;
 	}
