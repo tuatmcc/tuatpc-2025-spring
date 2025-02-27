@@ -1,0 +1,43 @@
+name: Upload statements to MOFE
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '*/statement/statement.md'
+      - '*/tests/*.in'
+      - '*/tests/*.out'
+      - '*/tests/*.md'
+      - '*/tests/constraints.*'
+  pull_request:
+    paths:
+        - '*/statement/statement.md'
+        - '*/tests/*.in'
+        - '*/tests/*.out'
+        - '*/tests/*.md'
+        - '*/tests/constraints.*'
+
+jobs:
+  ss-manager-and-upload-mofe:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/tuatmcc/sakumon-image:latest
+      volumes:
+        - /github/workspace:/root/app
+    permissions:
+      contents: read
+      packages: read
+      attestations: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Working Directory
+        run: cd /root/app
+      
+      - name: Embed constraints and testcases to statements
+        run: ss-manager run -o md
+
+      - name: Upload statements to MOFE
+        run: python3 scripts/upload_statement.py kobaryo222 ${{ secrets.MOFE_PASSWORD }}
