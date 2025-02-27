@@ -17,14 +17,14 @@ markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 # 問題の制約
 [constraints]
 MIN_N = 4
-MAX_N = 50000
+MAX_N = 40000
 MIN_Q = 1
-MAX_Q = 50000
+MAX_Q = 40000
 
 [mofe]
 problem_id = 296 # MOFE 上での問題 ID
 difficulty = "ผักชี" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
-execution_time_limit = 4000 # 実行時間制限 (ms)
+execution_time_limit = 2000 # 実行時間制限 (ms)
 submission_limit_1 = 5 # 1 回前の提出から何秒間隔を開ける必要があるか
 submission_limit_2 = 60 # 2 回前の提出から何秒間隔を開ける必要があるか
 
