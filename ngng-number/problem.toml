@@ -2,7 +2,7 @@
 
 id = "E" # コンテスト内での問題 ID
 
-params_path = "./tests/constraints.hpp"
+params_path = "./tests/constraints.h"
 #assets_path = "./statement/assets/"
 sample_path = "./tests/"
 ignore_samples = []
