@@ -1,3 +1,4 @@
+
 # TUATPC2024Summer (Heuristic) (Admin ver.) (Easy)
 
 ## 問題文
@@ -19,13 +20,13 @@
 
 ### 部分点
 
-この問題に部分点はありません。
+この問題に部分点は存在しません。
 
 ## 入力
 
 入力は以下の形式で標準入力から与えられます。
 
-<div style="background: #f5f5f5; border: 1px #ccc solid; 2px 3px 0 #ddd; font-size: 100%; padding: 16px 0 0 15px; color: #333; border-radius: 3px">
+<div class="code-math">
     
 $N$
 $A_1\ \ A_2\ \ \cdots \ A_N$
@@ -34,6 +35,6 @@ $B_1\ \ B_2\ \ \cdots \ B_N$
 
 ## 出力
 
-$3$ つの条件のうち少なくとも $1$ つ満たすものがある場合は `Yes` を、ない場合は `No` を標準出力に出力してください。
+$3$ つの条件のうち少なくとも $1$ つを満たす場合は `Yes` を、満たさない場合は `No` を標準出力に出力してください。
 
 {@samples.all}
