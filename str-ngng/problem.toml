@@ -17,9 +17,9 @@ markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 # 問題の制約
 [constraints]
 MIN_N = 4
-MAX_N = 40000
+MAX_N = 50000
 MIN_Q = 1
-MAX_Q = 40000
+MAX_Q = 20000
 
 [mofe]
 problem_id = 296 # MOFE 上での問題 ID
