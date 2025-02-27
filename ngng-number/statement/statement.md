@@ -17,7 +17,7 @@
 
 ## 制約
 
-- $1 \leq N \leq 10^{@constraints.MAX_D}$
+- $1 \leq N \leq 10^{ {@constraints.MAX_D} }$
 - 入力は全て整数
 
 ### 部分点
