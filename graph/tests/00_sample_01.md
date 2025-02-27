@@ -1,5 +1,5 @@
 入力を図に表すと以下のようになります。
-![graph1](https://www.dropbox.com/scl/fi/d88j2q2u15ihyf39pd49x/graph1.jpg?rlkey=xtilyyokldyo7qrrn0u8du1ky&st=5cwp48cl&raw=1)
+![graph1](https://www.dropbox.com/scl/fi/5gxfwl83de0szzt6wi8ce/graph1.jpg?rlkey=yvm6tn474x1w6m9n1l2a5scky&st=yksebbfg&raw=1)
 
 楽器 $G$ に $1$ を与えた場合、$2$ 回の遷移でどのように頂点が選択されても必ず音の種類が $1$ の頂点しか選ばれないため、求める確率は $1$ になります。
 楽器 $G$ に $2$ を与えた場合、$1, 1, 1$ の順で音を奏でるには
