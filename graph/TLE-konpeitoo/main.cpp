@@ -1,8 +1,9 @@
 #include<bits/stdc++.h>
 using namespace std;
 vector<vector<pair<int, int>>> g;
-string S;
-vector<char> X;
+//string S;
+vector<int> S;
+vector<int> X;
 
 long long gcd(long long a, long long b){
     while(true){
@@ -34,20 +35,22 @@ long long dfs(int start){
 int main(){
     int N;
     cin >> N;
+    int L;
+    cin >> L;
+    S = vector<int>(L);
+    for(int i = 0; i < L; i++)cin >> S[i];
+    //cin >> S;
     g = vector<vector<pair<int, int>>>(N, vector<pair<int, int>>());
-    X = vector<char>(N);
-    for(int i = 0; i < N; i++)cin >> X[i];
+    X = vector<int>(N);
+    //for(int i = 0; i < N; i++)cin >> X[i];
     for(int i = 0; i < N; i++){
         int M;
-        cin >> M;
+        cin >> M >> X[i];
         vector<int> V(M), W(M);
         for(int j = 0; j < M; j++)cin >> V[j];
         for(int j = 0; j < M; j++)cin >> W[j];
         for(int j = 0; j < M; j++)g[i].push_back({V[j] - 1, W[j]});
     }
-    int L;
-    cin >> L;
-    cin >> S;
     vector<long long> ans(N, 0);
     for(int i = 0; i < N; i++){
         if(X[i] != S[0])continue;
