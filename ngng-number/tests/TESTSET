@@ -2,17 +2,17 @@
 
 ## Input generators.
 #c_generator(src='generator.c')
-cxx_generator(src='generator.cpp', flags=[])
-#java_generator(src='Generator.java', encoding='UTF-8', mainclass='Generator')
+cxx_generator(src='generator.cpp', flags=[], dependency=['testlib.h'])
+#java_generator(src='Generator.java', encoding='UTF-8', ma,inclass='Generator')
 #rust_generator(src='generator.rs')
 #go_generator(src='generator.go')
 #script_generator(src='generator.pl')
 
 ## Input validators.
 #c_validator(src='validator.c')
-cxx_validator(src='validate_shima.cpp', flags=[])
-cxx_validator(src='validator_sunrize.cpp', flags=[])
-cxx_validator(src='validator-kitashima.cpp', flags=[])
+cxx_validator(src='validate_shima.cpp', flags=[], dependency=['testlib.h'])
+cxx_validator(src='validator_sunrize.cpp', flags=[], dependency=['testlib.h'])
+cxx_validator(src='validator-kitashima.cpp', flags=[], dependency=['testlib.h'])
 #java_validator(src='Validator.java', encoding='UTF-8',
 #               mainclass='tmp/validator/Validator')
 #rust_validator(src='validator.rs')

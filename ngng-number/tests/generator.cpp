@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
     of.close();
 
     // sample2
-    string sample2 = "25500";
+    string sample2 = "12345";
     ofstream of2(format("00_sample_%02d.in",2).c_str());
     of2 << sample2 << endl;
     of2.close();
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
     }
 
     // sample2
-    string sample22 = "25500";
+    string sample22 = "12345";
     ofstream of22(format("01_subtask_%02d.in",11).c_str());
     of22 << sample22 << endl;
     of22.close();
