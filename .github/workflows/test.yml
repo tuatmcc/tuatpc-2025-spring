@@ -39,8 +39,8 @@ jobs:
       - name: Check HTMLs
         run: python3 scripts/check_html.py
       
-      - name: Make testcases for MOFE
-        run: python3 scripts/pack_testcases.py
+      # - name: Make testcases for MOFE
+      #   run: python3 scripts/pack_testcases.py
 
       - name: Upload Rime Output
         uses: actions/upload-artifact@v4
