@@ -6,11 +6,11 @@ using namespace std;
 const int N_MIN = 1;
 const int N_MAX = 200000;
 
-const int Hi_MIN = 1;
-const int Hi_MAX = 1000000000;
+const long long Hi_MIN = 1;
+const long long Hi_MAX = 1000000000;
 
-const int Ai_MIN = 1;
-const int Ai_MAX = 1000000000;
+const long long Ai_MIN = 1;
+const long long Ai_MAX = 1000000000;
 
 void gen(const string name, const int n, const pair<vector<long long>, vector<long long>> ah) {
 	ofstream of(name);
