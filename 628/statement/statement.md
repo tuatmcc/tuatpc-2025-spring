@@ -15,8 +15,8 @@ $A^4 + B^2 - 1$ を求めてください。
 
 入力は以下の形式で標準入力から与えられます。
 
-<div style="background: #f5f5f5; border: 1px #ccc solid; 2px 3px 0 #ddd; font-size: 100%; padding: 16px 0 0 15px; color: #333; border-radius: 3px">
-    
+<div class="code-math">
+
 $A\ \ B$
 
 </div>
