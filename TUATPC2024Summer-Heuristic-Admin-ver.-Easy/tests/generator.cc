@@ -69,8 +69,8 @@ int main(int argc, char *argv[]) {
 
 		for (int i = 0; i < random_n; ++i) {
 			long long a, h;
-			a = rnd.next(1600, Ai_MAX);
-			h = rnd.next(4200, Hi_MAX);
+			a = rnd.next(1600LL, Ai_MAX);
+			h = rnd.next(4200LL, Hi_MAX);
 			random_case.first[i] = a;
 			random_case.second[i] = h;
 		}
@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
 
 		for (int i = 0; i < random_n; ++i) {
 			long long a, h;
-			a = rnd.next(Ai_MIN, 1600);
-			h = rnd.next(Hi_MIN, 4200);
+			a = rnd.next(Ai_MIN, 1600LL);
+			h = rnd.next(Hi_MIN, 4200LL);
 			random_case.first[i] = a;
 			random_case.second[i] = h;
 		}
@@ -101,8 +101,8 @@ int main(int argc, char *argv[]) {
 
 		for (int i = 0; i < random_n; ++i) {
 			long long a, h;
-			a = rnd.next(Ai_MIN, 1600);
-			h = rnd.next(4200, Hi_MAX);
+			a = rnd.next(Ai_MIN, 1600LL);
+			h = rnd.next(4200LL, Hi_MAX);
 			random_case.first[i] = a;
 			random_case.second[i] = h;
 		}
@@ -117,8 +117,8 @@ int main(int argc, char *argv[]) {
 
 		for (int i = 0; i < random_n; ++i) {
 			long long a, h;
-			a = rnd.next(1600, Ai_MAX);
-			h = rnd.next(Hi_MIN, 4200);
+			a = rnd.next(1600LL, Ai_MAX);
+			h = rnd.next(Hi_MIN, 4200LL);
 			random_case.first[i] = a;
 			random_case.second[i] = h;
 		}
