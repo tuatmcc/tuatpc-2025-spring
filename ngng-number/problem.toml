@@ -12,6 +12,13 @@ path = "./statement.md"
 lang = "ja"
 markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 
+
+# 問題の制約
+[constraints]
+MIN_length_of_N = 1;
+MAX_length_of_N = 100000;
+MAX_length_of_N_subtask = 5;
+
 [mofe]
 problem_id = 301 # MOFE 上での問題 ID
 difficulty = "ผักชี" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
