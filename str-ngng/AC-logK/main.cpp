@@ -162,6 +162,6 @@ int main(){
     mo.Execute();
 
     for(const auto &val : ans){
-        cout << val << endl;
+        cout << val << '\n';
     }
 }

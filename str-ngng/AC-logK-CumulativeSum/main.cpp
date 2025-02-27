@@ -109,6 +109,6 @@ int main(){
                 ans += f4[i][j].second;
             }
         }
-        cout << ans << endl;
+        cout << ans << '\n';
     }
 }
