@@ -8,7 +8,7 @@ sample_path = "./tests/"
 ignore_samples = []
 
 [[statements]]
-path = "./statement/statement.md"
+path = "./statement.md"
 lang = "ja"
 markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 
