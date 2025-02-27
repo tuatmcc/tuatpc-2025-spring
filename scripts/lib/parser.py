@@ -6,6 +6,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def find_first_match(content: str, pattern: re.Pattern, error_message: str) -> str:
+    try:
+        first_match = pattern.search(content).group(1).strip()
+    except AttributeError:
+        raise ValueError(error_message)
+    return first_match
+
 def parse_statement(md_content: str) -> ProblemStatement:
     name_pattern = re.compile(r'# (.+)\n')
     statement_pattern = re.compile(r'## 問題文\n(.+?)##', re.DOTALL)
@@ -15,14 +22,14 @@ def parse_statement(md_content: str) -> ProblemStatement:
     output_format_pattern_with_sample = re.compile(r'## 出力\n(.+?)##', re.DOTALL)
     output_format_pattern = re.compile(r'## 出力\n(.+?)$', re.DOTALL)
     try:
-        name = name_pattern.search(md_content).group(1).strip()
-        statement = statement_pattern.search(md_content).group(1).strip()
-        constraints = constraints_pattern.search(md_content).group(1).strip()
-        input_format = input_format_pattern.search(md_content).group(1).strip()
+        name = find_first_match(md_content, name_pattern, '問題名が見つかりません。`# {問題名}` という行があるか確認してください。')
+        statement = find_first_match(md_content, statement_pattern, '問題文が見つかりません。`## 問題文` という行があるか確認してください。')
+        constraints = find_first_match(md_content, constraints_pattern, '制約が見つかりません。`## 制約` という行があるか確認してください。')
+        input_format = find_first_match(md_content, input_format_pattern, '入力形式の説明が見つかりません。`## 入力` という行があるか確認してください。')
         if output_format_pattern_with_sample.search(md_content):
-            output_format = output_format_pattern_with_sample.search(md_content).group(1).strip()
+            output_format = find_first_match(md_content, output_format_pattern_with_sample, '出力形式の説明が見つかりません。`## 出力` という行があるか確認してください。')
         else:
-            output_format = output_format_pattern.search(md_content).group(1).strip()
+            output_format = find_first_match(md_content, output_format_pattern, '出力形式の説明が見つかりません。`## 出力` という行があるか確認してください。')
     except AttributeError:
         raise ValueError('Invalid markdown format')
     
