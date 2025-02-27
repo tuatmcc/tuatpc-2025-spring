@@ -2,6 +2,7 @@
 
 id = "F" # コンテスト内での問題 ID
 
+# --- ここから ---
 params_path = "./tests/constraints.hpp"
 #assets_path = "./statement/assets/"
 sample_path = "./tests/"
@@ -11,13 +12,14 @@ ignore_samples = []
 path = "./statement/statement.md"
 lang = "ja"
 markdown_extensions = ["md_in_html", "tables", "fenced_code"]
+# --- ここまでの部分はあんまり書き換えないでください ---
 
 # 問題の制約
 [constraints]
 MIN_N = 4
-MAX_N = 20000
+MAX_N = 50000
 MIN_Q = 1
-MAX_Q = 20000
+MAX_Q = 50000
 
 [mofe]
 problem_id = 296 # MOFE 上での問題 ID
