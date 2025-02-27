@@ -19,7 +19,7 @@ $i$ 番目のクエリでは整数 $L_i, R_i$ が与えられるので、以下�
 - ${@constraints.MIN_N} \le N \le {@constraints.MAX_N}$
 - ${@constraints.MIN_Q} \le Q \le {@constraints.MAX_Q}$
 - $S$ は英小文字のみからなる長さ $N$ の文字列
-- $1 \le L_i \le  R_i \le N$
+- $1 \le L_i \le R_i \le N$
 - $N, Q, L_i, R_i$ は整数
 
 ### 部分点
@@ -30,8 +30,8 @@ $i$ 番目のクエリでは整数 $L_i, R_i$ が与えられるので、以下�
 
 入力は以下の形式で標準入力から与えられます。
 
-<div style="background: #f5f5f5; border: 1px #ccc solid; 2px 3px 0 #ddd; font-size: 100%; padding: 16px 0 0 15px; color: #333; border-radius: 3px">
-    
+<div class="code-math">
+
 $N\ \ Q$
 $S$
 $L_1\ \ R_1$
