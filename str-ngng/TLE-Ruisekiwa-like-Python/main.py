@@ -1,5 +1,7 @@
 #!/usr/local/bin/pypy3
 
+MOD = 998244353
+
 def main():
     N, Q = map(int, input().split())
     S = input()
@@ -85,7 +87,7 @@ def main():
         results.append(ans)
 
     for result in results:
-        print(result)
+        print(result % MOD)
 
 if __name__ == "__main__":
     main()
