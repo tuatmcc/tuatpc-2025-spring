@@ -89,6 +89,7 @@ int main(){
     vector<int> A(N), B(N);
     for(int i = 0; i < N; ++i) cin >> A[i];
     for(int i = 0; i < N; ++i) cin >> B[i];
+    assert(N <= 1000);
 
     const int R = 1600;
     const int D = 4200;
