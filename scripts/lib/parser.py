@@ -6,10 +6,10 @@ from .logger import logger
 
 def find_first_match(content: str, pattern: re.Pattern, error_message: str) -> str:
     try:
-        first_match = pattern.search(content).group(1).strip()
+        first_match = pattern.search(content).group(1)
     except AttributeError:
         raise ValueError(error_message)
-    return first_match
+    return first_match.strip()
 
 def parse_statement(md_content: str) -> ProblemStatement:
     name_pattern = re.compile(r'# (.+)\n')
@@ -30,10 +30,10 @@ def parse_statement(md_content: str) -> ProblemStatement:
             output_format = find_first_match(md_content, output_format_pattern, '出力形式の説明が見つかりません。`## 出力` という行があるか確認してください。')
     except AttributeError:
         raise ValueError('Invalid markdown format')
-    
+
     partial_scores = ''
     if partial_scores_pattern.search(md_content):
-        partial_scores = partial_scores_pattern.search(md_content).group(1)
+        partial_scores = find_first_match(md_content, partial_scores_pattern, '部分点の説明が見つかりません。`### 部分点` という行があるか確認してください。')
     
     return ProblemStatement(
         name=name,
