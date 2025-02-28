@@ -2,7 +2,8 @@ import requests
 import json
 from .problem import Problem
 from .testcase import TestCase, TestCaseSet
-from typing import List, Tuple
+from .logger import logger
+from typing import List, Tuple, Optional
 import re
 
 API_URL = 'https://api.mofecoder.com/api'
@@ -50,6 +51,15 @@ class Client:
     def get_problem(self, problem_id: int) -> Problem:
         response = self._request('GET', f'/problems/{problem_id}')
         return Problem.from_dict(response.json())
+
+    def get_problem_url(self, problem_id: int) -> Optional[str]:
+        problem = self.get_problem(problem_id)
+        contest_slug = problem.contest.slug
+        slug = problem.slug
+        if contest_slug is None or slug is None:
+            logger.warning(f'問題 [{problem_id}] にはコンテストが設定されていません.')
+            return None
+        return f'https://mofecoder.com/contests/{contest_slug}/tasks/{slug}'
 
     def get_testcases(self, problem_id: int) -> Tuple[List[TestCaseSet], List[TestCase]]:
         response = self._request('GET', f'/problems/{problem_id}/testcases')
