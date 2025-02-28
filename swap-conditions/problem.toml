@@ -28,7 +28,7 @@ R_MIN = 1
 R_MAX = 4
 
 [mofe]
-problem_id = 303 # MOFE 上での問題 ID
+problem_id = 299 # MOFE 上での問題 ID
 difficulty = "ผักชี" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
 execution_time_limit = 2000 # 実行時間制限 (ms)
 submission_limit_1 = 5 # 1 回前の提出から何秒間隔を開ける必要があるか
