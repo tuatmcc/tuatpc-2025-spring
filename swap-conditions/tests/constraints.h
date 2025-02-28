@@ -3,10 +3,10 @@
 
 #pragma once
 
-const double A_MIN = -1e+18;
-const double A_MAX = 1e+18;
+const long long int A_MIN = -1000000000000000000;
+const long long int A_MAX = 1000000000000000000;
 const long long int T_MIN = 1;
-const double T_MAX = 100000.0;
+const long long int T_MAX = 100000;
 const long long int X_MIN = 1;
 const long long int X_MAX = 4;
 const long long int Y_MIN = 1;
