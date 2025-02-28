@@ -16,9 +16,9 @@ $T$ 個のテストケースが与えられるので、それぞれについて�
 ## 制約
 
 - ${@constraints.T_MIN} \le T \le {@constraints.T_MAX}$
-- $X \in \{1, 2, 3, 4\}$
-- $Y \in \{1, 2, 3, 4\} \setminus \{X\}$
-- $R \in \{1, 2, 3, 4\}$
+- $X \in \lbrace 1, 2, 3, 4 \rbrace$
+- $Y \in \lbrace 1, 2, 3, 4 \rbrace \setminus \{X\}$
+- $R \in \lbrace 1, 2, 3, 4 \rbrace$
 - ${@constraints.A_MIN} \le A_i \le {@constraints.A_MAX}$
 - 入力は全て整数
 
