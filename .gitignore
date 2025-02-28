@@ -14,3 +14,5 @@ pyproject.toml
 requirements.lock
 requirements-dev.lock
 !common/testlib.h
+
+!*/tests/*.out
