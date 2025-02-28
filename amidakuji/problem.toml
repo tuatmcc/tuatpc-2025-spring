@@ -31,7 +31,7 @@ MAX_Q = 50000
 [mofe]
 problem_id = 298 # MOFE 上での問題 ID
 difficulty = "ผักชี" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
-execution_time_limit = 10000 # 実行時間制限 (ms)
+execution_time_limit = 4000 # 実行時間制限 (ms)
 submission_limit_1 = 5 # 1 回前の提出から何秒間隔を開ける必要があるか
 submission_limit_2 = 60 # 2 回前の提出から何秒間隔を開ける必要があるか
 
@@ -40,7 +40,7 @@ regex = "00_sample_\\d+" # sample のテストケースの名前にマッチす�
 points = 0 # sample ケースの配点
 
 [[mofe.testcase_sets.subtask]]
-regex = "^1[0-9]" # subtask のテストケースの名前にマッチする正規表現
+regex = "^[0-1][0-9]" # subtask のテストケースの名前にマッチする正規表現
 points = 1 # subtask ケースの配点
 
 [[mofe.testcase_sets.all]]
