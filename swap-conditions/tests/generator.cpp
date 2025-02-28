@@ -7,7 +7,7 @@ const int MAX_XYR = 4;
 const ll MIN_A = -1e18;
 const ll MAX_A = 1e18;
 const ll MIN_T = 1;
-const ll MAX_T = 1e5;
+const ll MAX_T = 1e4;
 
 
 void vec_fileout(ofstream &f, vector<ll> x){
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]){
     //sample
     vector<ll> xyr = {1, 4, 1}, a = {800, 1000, 2000, 4000};
     registerGen(argc, argv, 1);
-    ofstream sample1(format("00_sample01.in").c_str());
+    ofstream sample1(format("00_sample_01.in").c_str());
     sample1 << "4\n";
     for(int i = 0; i < 4; i++){
         vec_fileout(sample1, xyr);
@@ -56,18 +56,18 @@ int main(int argc, char* argv[]){
         xyr[2]++;
     }
     sample1.close();
-    ofstream sample2(format("00_sample02.in").c_str());
+    ofstream sample2(format("00_sample_02.in").c_str());
     sample2 << "8\n";
     xyr = {3, 2, 1}, a = vector<ll>(4, 25000);
     for(int i = 0; i < 4; i++){
-        vec_fileout(sample1, xyr);
-        vec_fileout(sample1, a);
+        vec_fileout(sample2, xyr);
+        vec_fileout(sample2, a);
         xyr[2]++;
     }
     xyr = {2, 4, 1}, a = {17000, 12000, 21000, 60000};
     for(int i = 0; i < 4; i++){
-        vec_fileout(sample1, xyr);
-        vec_fileout(sample1, a);
+        vec_fileout(sample2, xyr);
+        vec_fileout(sample2, a);
         xyr[2]++;
     }
     sample2.close();
