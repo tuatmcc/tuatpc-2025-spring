@@ -2,7 +2,7 @@
 
 id = "G" # コンテスト内での問題 ID
 
-#params_path = "./tests/constraints.hpp"
+params_path = "./tests/constraints.hpp"
 #assets_path = "./statement/assets/"
 sample_path = "./tests/"
 ignore_samples = []
@@ -14,10 +14,7 @@ markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 
 # 問題の制約
 [constraints]
-MIN_N = 4
-MAX_N = 20000
-MIN_Q = 1
-MAX_Q = 20000
+S_MAX = 1500000
 
 [mofe]
 problem_id = 304 # MOFE 上での問題 ID
