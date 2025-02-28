@@ -348,10 +348,16 @@ int main() {
    int n;
    std::cin >> n;
    std::vector<int> x(n);
-   for (int i = 0; i < n; i++) {
-      int a, h;
-      std::cin >> a >> h;
-      x[i] = std::max(a, h);
+   //  for (int i = 0; i < n; i++) {
+   //     int a, h;
+   //     std::cin >> a >> h;
+   //     x[i] = std::max(a, h);
+   //  }
+   for(int i = 0; i < n; ++i){
+     int a; cin >> a; x[i] = a;
+   }
+   for(int i = 0; i < n; ++i){
+     int a; cin >> a; x[i] = max(x[i], a);
    }
 
    mint s1 = [&] {
