@@ -48,13 +48,16 @@ int main(int argc, char* argv[]){
     //sample
     vector<ll> xyr = {1, 4, 1}, a = {800, 1000, 2000, 4000};
     registerGen(argc, argv, 1);
-    ofstream sample1(format("04_sample.in").c_str());
-    sample1 << "12\n";
+    ofstream sample1(format("00_sample01.in").c_str());
+    sample1 << "4\n";
     for(int i = 0; i < 4; i++){
         vec_fileout(sample1, xyr);
         vec_fileout(sample1, a);
         xyr[2]++;
     }
+    sample1.close();
+    ofstream sample2(format("00_sample02.in").c_str());
+    sample2 << "8\n";
     xyr = {3, 2, 1}, a = vector<ll>(4, 25000);
     for(int i = 0; i < 4; i++){
         vec_fileout(sample1, xyr);
@@ -67,11 +70,11 @@ int main(int argc, char* argv[]){
         vec_fileout(sample1, a);
         xyr[2]++;
     }
-    sample1.close();
+    sample2.close();
     
     //completely random
     for(int f_ct = 0; f_ct < 5; f_ct++){
-        ofstream of(format("04_random_%02d.in", f_ct+1).c_str());
+        ofstream of(format("10_random_%02d.in", f_ct+1).c_str());
         ll t1 = rnd.next(MIN_T, MAX_T / 2);
         ll t2 = rnd.next((ll)0, MAX_T - t1);
         of << t1 + t2 << endl;
@@ -108,7 +111,7 @@ int main(int argc, char* argv[]){
     //set A randomly, then make all case of {x, y, r}
     auto p = perm(4);
     for(int f_ct = 0; f_ct < 5; f_ct++){
-        ofstream of(format("04_random_%02d.in", f_ct+6).c_str());
+        ofstream of(format("10_random_%02d.in", f_ct+6).c_str());
         ll t = rnd.next(MIN_T, MAX_T / 1152);
         of << t * 1152 << endl;
         for(int i = 0; i < t; i++){
@@ -135,7 +138,7 @@ int main(int argc, char* argv[]){
 
     //tokoko and friends have same points if tokoko select the S.
     for(int f_ct = 0; f_ct < 3; f_ct++){
-        ofstream of(format("04_random_%02d.in", f_ct+11).c_str());
+        ofstream of(format("10_random_%02d.in", f_ct+11).c_str());
         ll t = rnd.next(MIN_T, MAX_T);
         of << t << endl;
         for(int i = 0; i < t; i++){
@@ -161,7 +164,7 @@ int main(int argc, char* argv[]){
 
     //some friends are tie right now.
     for(int f_ct = 0; f_ct < 3; f_ct++){
-        ofstream of(format("04_random_%02d.in", f_ct+14).c_str());
+        ofstream of(format("10_random_%02d.in", f_ct+14).c_str());
         ll t = rnd.next(MIN_T, MAX_T);
         of << t << endl;
         for(int i = 0; i < t; i++){
@@ -185,7 +188,7 @@ int main(int argc, char* argv[]){
     }
 
 
-    ofstream of(format("04_max.in").c_str());
+    ofstream of(format("10_max.in").c_str());
     int t = MAX_T;
     of << t << endl;
     for(int i = 0; i < t; i++){

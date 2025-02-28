@@ -16,10 +16,10 @@ markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 
 # 問題の制約
 [constraints]
-A_MIN = -1e18
-A_MAX = 1e18
+A_MIN = -1000000000000000000
+A_MAX = 1000000000000000000
 T_MIN = 1
-T_MAX = 1e5
+T_MAX = 100000
 X_MIN = 1
 X_MAX = 4
 Y_MIN = 1
@@ -28,14 +28,14 @@ R_MIN = 1
 R_MAX = 4
 
 [mofe]
-problem_id = 9999 # MOFE 上での問題 ID
-difficulty = "Benihuki" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
+problem_id = 303 # MOFE 上での問題 ID
+difficulty = "ผักชี" # 問題の難易度、 "Milk", "Assam", "Benihuki", "Ceylon", "Darjeeling", "Earlgray", "Flavor", "ผักชี" から選ぶ
 execution_time_limit = 2000 # 実行時間制限 (ms)
 submission_limit_1 = 5 # 1 回前の提出から何秒間隔を開ける必要があるか
 submission_limit_2 = 60 # 2 回前の提出から何秒間隔を開ける必要があるか
 
 [[mofe.testcase_sets.sample]]
-regex = "04_sample" # sample のテストケースの名前にマッチする正規表現
+regex = "00_sample_\\d+" # sample のテストケースの名前にマッチする正規表現
 points = 0 # sample ケースの配点
 
 [[mofe.testcase_sets.all]]
