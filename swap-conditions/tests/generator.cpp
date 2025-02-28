@@ -188,7 +188,7 @@ int main(int argc, char* argv[]){
     }
 
 
-    ofstream of(format("10_max.in").c_str());
+    ofstream of(format("20_max_01.in").c_str());
     int t = MAX_T;
     of << t << endl;
     for(int i = 0; i < t; i++){
