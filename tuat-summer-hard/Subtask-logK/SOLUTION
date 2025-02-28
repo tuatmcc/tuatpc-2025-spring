@@ -20,4 +20,4 @@ cxx_solution(src='main.cpp', flags=['-std=c++2a', '-O2'], challenge_cases=[]) # 
 #cs_solution(src='main.cs') # C# (mono)
 
 ## Score
-expected_score(50)
+expected_score(1)

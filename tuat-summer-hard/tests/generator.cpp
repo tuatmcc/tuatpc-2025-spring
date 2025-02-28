@@ -26,32 +26,12 @@ int main(int argc, char* argv[]){
         print(format("00_sample_01.in"), N, A, B);
     }
     {
-        // ofstream of(format("00_sample_02.in").c_str());
-        // of << "5" << endl;
-        // of << "314 159" << endl;
-        // of << "265 358" << endl;
-        // of << "979 323" << endl;
-        // of << "846 264" << endl;
-        // of << "338 327" << endl;
-        // of.close();
         int N = 5;
         vector<int> A{314, 159, 265, 358, 979};
         vector<int> B{323, 846, 264, 338, 327};
         print(format("00_sample_02.in"), N, A, B);
     }
     {
-        // ofstream of(format("00_sample_03.in").c_str());
-        // of << "9" << endl; // check 2025-01-29
-        // of << "1264 1297" << endl; // ngng628
-        // of << "1862 1278" << endl; // new_textfile
-        // of << "1748 1230" << endl; // lX57
-        // of << "1286 1357" << endl; // sunrize
-        // of << "972 891" << endl; // Sakasu
-        // of << "891 7" << endl; // sugawa197203
-        // of << "860 1309" << endl; // mr63tnegi
-        // of << "1337 1407" << endl; // toufu24
-        // of << "958 240" << endl; // shojusen
-        // of.close();
         int N = 9;
         vector<int> A{1264, 1862, 1748, 1286, 972, 891, 860, 1337, 958};
         vector<int> B{1297, 1278, 1230, 1357, 891, 7, 1309, 1407, 240};
@@ -60,259 +40,297 @@ int main(int argc, char* argv[]){
 
     const int RATE_MAX = 1600;
     const int SUM_MAX = 4200;
+    const int RATE_SMALL = 160;
 
-    // 1* ... test
+    const vector<int> RANDOM_CASE{10, 5, 5, 3};
+    auto RANDOM_CASE_START = [&](int type) -> int {
+        int ret = 1;
+        for(int i = 0; i < type; ++i) ret += RANDOM_CASE[i];
+        return ret;
+    };
+    auto RANDOM_CASE_END = [&](int type) -> int {
+        int ret = 1;
+        for(int i = 0; i <= type; ++i) ret += RANDOM_CASE[i];
+        return ret;
+    };
+    const vector<int> MAX_CASE{3, 3, 3, 3};
+    auto MAX_CASE_START = [&](int type) -> int {
+        int ret = 1;
+        for(int i = 0; i < type; ++i) ret += MAX_CASE[i];
+        return ret;
+    };
+    auto MAX_CASE_END = [&](int type) -> int {
+        int ret = 1;
+        for(int i = 0; i <= type; ++i) ret += MAX_CASE[i];
+        return ret;
+    };
+    // Type 0 ... どちらのレートも 160 未満
+    // Type 1 ... どちらのレートも 1600 未満
+    // Type 2 ... どちらのレートも 1600 以上 4200 未満
+    // Type 3 ... どちらのレートも 4200 以上
+
+    // 1* ... subtask
     // 10 ... random
-    // type 1 ... All Participant's Both Rate < 1600
-    for(int t = 1; t <= 5; ++t){
-        int RND_MIN_N = MAX_N * 0.8;
-        int RND_MAX_N = MAX_N * 0.9;
+    for(int t = RANDOM_CASE_START(0); t <= RANDOM_CASE_END(0); ++t){
+        int RND_MIN_N = MAX_SUBTASK_N * 0.90;
+        int RND_MAX_N = MAX_SUBTASK_N * 0.95;
+        int N = rnd.next(RND_MIN_N, RND_MAX_N);
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(MIN_A, RATE_SMALL - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_SMALL - 1));
+        }
+        print(format("10_subtask_random_%02d.in", t), N, A, B);
+    }
+    for(int t = RANDOM_CASE_START(1); t <= RANDOM_CASE_END(1); ++t){
+        int RND_MIN_N = MAX_SUBTASK_N * 0.90;
+        int RND_MAX_N = MAX_SUBTASK_N * 0.95;
         int N = rnd.next(RND_MIN_N, RND_MAX_N);
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
             A.emplace_back(rnd.next(MIN_A, RATE_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, RATE_MAX - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_MAX - 1));
         }
-        print(format("10_random_%02d.in", t), N, A, B);
+        print(format("10_subtask_random_%02d.in", t), N, A, B);
     }
-    // type 2 ... All Participant's Each Rate >= 1600
-    for(int t = 6; t <= 10; ++t){
-        // ofstream of(format("10_random_%02d.in", t).c_str());
-        // int RND_MIN_N = MAX_N * 0.8;
-        // int RND_MAX_N = MAX_N * 0.9;
-        // int N = rnd.next(RND_MIN_N, RND_MAX_N);
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     int A = rnd.next(MIN_A, RATE_MAX - 1);
-        //     int B = rnd.next(MIN_H, RATE_MAX - 1);
-        //     if(rnd.next(0, 1)) A = rnd.next(RATE_MAX, MAX_A);
-        //     else B = rnd.next(RATE_MAX, MAX_H);
-        //     of << A << ' ' << B << endl;
-        // }
-        // of.close();
-        int RND_MIN_N = MAX_N * 0.8;
-        int RND_MAX_N = MAX_N * 0.9;
+    for(int t = RANDOM_CASE_START(2); t <= RANDOM_CASE_END(2); ++t){
+        int RND_MIN_N = MAX_SUBTASK_N * 0.90;
+        int RND_MAX_N = MAX_SUBTASK_N * 0.95;
         int N = rnd.next(RND_MIN_N, RND_MAX_N);
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
-            A.emplace_back(rnd.next(MIN_A, RATE_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, RATE_MAX - 1));
-            if(rnd.next(0, 1)) A.back() = rnd.next(RATE_MAX, MAX_A);
-            else B.back() = rnd.next(RATE_MAX, MAX_H);
+            A.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
+            B.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
         }
-        print(format("10_random_%02d.in", t), N, A, B);
+        print(format("10_subtask_random_%02d.in", t), N, A, B);
     }
-    // type 3 ... All Participant's Both Rate >= 1600
-    for(int t = 11; t <= 15; ++t){
-        // ofstream of(format("10_random_%02d.in", t).c_str());
-        // int RND_MIN_N = MAX_N * 0.8;
-        // int RND_MAX_N = MAX_N * 0.9;
-        // int N = rnd.next(RND_MIN_N, RND_MAX_N);
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     int A = rnd.next(RATE_MAX, MAX_A);
-        //     int B = rnd.next(RATE_MAX, MAX_H);
-        //     of << A << ' ' << B << endl;
-        // }
-        // of.close();
-        int RND_MIN_N = MAX_N * 0.8;
-        int RND_MAX_N = MAX_N * 0.9;
+    for(int t = RANDOM_CASE_START(3); t <= RANDOM_CASE_END(3); ++t){
+        int RND_MIN_N = MAX_SUBTASK_N * 0.90;
+        int RND_MAX_N = MAX_SUBTASK_N * 0.95;
         int N = rnd.next(RND_MIN_N, RND_MAX_N);
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
-            A.emplace_back(rnd.next(RATE_MAX, MAX_A));
-            B.emplace_back(rnd.next(RATE_MAX, MAX_H));
+            A.emplace_back(rnd.next(SUM_MAX, MAX_A));
+            B.emplace_back(rnd.next(SUM_MAX, MAX_B));
         }
-        print(format("10_random_%02d.in", t), N, A, B);
-    }
-    // 11 ... max
-    for(int t = 1; t <= 3; ++t){
-        int N = MAX_N;
-        vector<int> A, B;
-        for(int i = 0; i < N; ++i){
-            A.emplace_back(rnd.next(MIN_A, SUM_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, SUM_MAX - 1));
-        }
-        print(format("11_max_%02d.in", t), N, A, B);
-    }
-    for(int t = 4; t <= 4; ++t){
-        int N = MAX_N;
-        vector<int> A, B;
-        for(int i = 0; i < N; ++i){
-            A.emplace_back(MIN_A);
-            B.emplace_back(MIN_H);
-        }
-        print(format("11_max_%02d.in", t), N, A, B);
-    }
-    for(int t = 5; t <= 5; ++t){
-        int N = SUM_MAX;
-        vector<int> A, B;
-        for(int i = 0; i < N; ++i){
-            A.emplace_back(MIN_A);
-            B.emplace_back(MIN_H);
-        }
-        print(format("11_max_%02d.in", t), N, A, B);
-    }
-    for(int t = 6; t <= 6; ++t){
-        int N = SUM_MAX + 1;
-        vector<int> A, B;
-        for(int i = 0; i < N; ++i){
-            A.emplace_back(MIN_A);
-            B.emplace_back(MIN_H);
-        }
-        print(format("11_max_%02d.in", t), N, A, B);
+        print(format("10_subtask_random_%02d.in", t), N, A, B);
     }
 
-    // 2* ... subtask
+    // 2* ... main
     // 20 ... random
-    // type 1 ... All Participant's Both Rate < 1600
-    for(int t = 1; t <= 5; ++t){
-        int RND_MIN_N = MAX_SUBTASK_N * 0.8;
-        int RND_MAX_N = MAX_SUBTASK_N * 0.9;
+    for(int t = RANDOM_CASE_START(0); t <= RANDOM_CASE_END(0); ++t){
+        int RND_MIN_N = MAX_N * 0.90;
+        int RND_MAX_N = MAX_N * 0.95;
+        int N = rnd.next(RND_MIN_N, RND_MAX_N);
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(MIN_A, RATE_SMALL - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_SMALL - 1));
+        }
+        print(format("20_main_random_%02d.in", t), N, A, B);
+    }
+    for(int t = RANDOM_CASE_START(1); t <= RANDOM_CASE_END(1); ++t){
+        int RND_MIN_N = MAX_N * 0.90;
+        int RND_MAX_N = MAX_N * 0.95;
         int N = rnd.next(RND_MIN_N, RND_MAX_N);
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
             A.emplace_back(rnd.next(MIN_A, RATE_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, RATE_MAX - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_MAX - 1));
         }
-        print(format("20_random_%02d.in", t), N, A, B);
+        print(format("20_main_random_%02d.in", t), N, A, B);
     }
-    // type 2 ... All Participant's Each Rate >= 1600
-    for(int t = 6; t <= 10; ++t){
-        // ofstream of(format("20_random_%02d.in", t).c_str());
-        // int RND_MIN_N = MAX_SUBTASK_N * 0.8;
-        // int RND_MAX_N = MAX_SUBTASK_N * 0.9;
-        // int N = rnd.next(RND_MIN_N, RND_MAX_N);
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     int A = rnd.next(MIN_A, RATE_MAX - 1);
-        //     int B = rnd.next(MIN_H, RATE_MAX - 1);
-        //     if(rnd.next(0, 1)) A = rnd.next(RATE_MAX, MAX_A);
-        //     else B = rnd.next(RATE_MAX, MAX_H);
-        //     of << A << ' ' << B << endl;
-        // }
-        // of.close();
-        int RND_MIN_N = MAX_SUBTASK_N * 0.8;
-        int RND_MAX_N = MAX_SUBTASK_N * 0.9;
+    for(int t = RANDOM_CASE_START(2); t <= RANDOM_CASE_END(2); ++t){
+        int RND_MIN_N = MAX_N * 0.90;
+        int RND_MAX_N = MAX_N * 0.95;
         int N = rnd.next(RND_MIN_N, RND_MAX_N);
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
+            B.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
+        }
+        print(format("20_main_random_%02d.in", t), N, A, B);
+    }
+    for(int t = RANDOM_CASE_START(3); t <= RANDOM_CASE_END(3); ++t){
+        int RND_MIN_N = MAX_N * 0.90;
+        int RND_MAX_N = MAX_N * 0.95;
+        int N = rnd.next(RND_MIN_N, RND_MAX_N);
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(SUM_MAX, MAX_A));
+            B.emplace_back(rnd.next(SUM_MAX, MAX_B));
+        }
+        print(format("20_main_random_%02d.in", t), N, A, B);
+    }
+
+    // 30 ... min
+    {
+        int N = MIN_N;
+        vector<int> A{1};
+        vector<int> B{1};
+        print(format("30_min_01.in"), N, A, B);
+    }
+    {
+        int N = MIN_N;
+        vector<int> A{RATE_MAX - 1};
+        vector<int> B{RATE_MAX - 1};
+        print(format("30_min_02.in"), N, A, B);
+    }
+    {
+        int N = MIN_N;
+        vector<int> A{RATE_MAX};
+        vector<int> B{RATE_MAX};
+        print(format("30_min_03.in"), N, A, B);
+    }
+    {
+        int N = MIN_N;
+        vector<int> A{SUM_MAX - 1};
+        vector<int> B{SUM_MAX - 1};
+        print(format("30_min_04.in"), N, A, B);
+    }
+    {
+        int N = MIN_N;
+        vector<int> A{SUM_MAX};
+        vector<int> B{SUM_MAX};
+        print(format("30_min_05.in"), N, A, B);
+    }
+    {
+        int N = MIN_N;
+        vector<int> A{MAX_A};
+        vector<int> B{MAX_B};
+        print(format("30_min_06.in"), N, A, B);
+    }
+
+    // 40 ... subtask max
+    for(int t = MAX_CASE_START(0); t <= MAX_CASE_END(0); ++t){
+        int N = MAX_SUBTASK_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(MIN_A, RATE_SMALL - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_SMALL - 1));
+        }
+        print(format("40_subtask_max_%02d.in", t), N, A, B);
+    }
+    for(int t = MAX_CASE_START(1); t <= MAX_CASE_END(1); ++t){
+        int N = MAX_SUBTASK_N;
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
             A.emplace_back(rnd.next(MIN_A, RATE_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, RATE_MAX - 1));
-            if(rnd.next(0, 1)) A.back() = rnd.next(RATE_MAX, MAX_A);
-            else B.back() = rnd.next(RATE_MAX, MAX_H);
+            B.emplace_back(rnd.next(MIN_B, RATE_MAX - 1));
         }
-        print(format("20_random_%02d.in", t), N, A, B);
+        print(format("40_subtask_max_%02d.in", t), N, A, B);
     }
-    // type 3 ... All Participant's Both Rate >= 1600
-    for(int t = 11; t <= 15; ++t){
-        // ofstream of(format("20_random_%02d.in", t).c_str());
-        // int RND_MIN_N = MAX_SUBTASK_N * 0.8;
-        // int RND_MAX_N = MAX_SUBTASK_N * 0.9;
-        // int N = rnd.next(RND_MIN_N, RND_MAX_N);
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     int A = rnd.next(RATE_MAX, MAX_A);
-        //     int B = rnd.next(RATE_MAX, MAX_H);
-        //     of << A << ' ' << B << endl;
-        // }
-        // of.close();
-        int RND_MIN_N = MAX_SUBTASK_N * 0.8;
-        int RND_MAX_N = MAX_SUBTASK_N * 0.9;
-        int N = rnd.next(RND_MIN_N, RND_MAX_N);
-        vector<int> A, B;
-        for(int i = 0; i < N; ++i){
-            A.emplace_back(rnd.next(RATE_MAX, MAX_A));
-            B.emplace_back(rnd.next(RATE_MAX, MAX_H));
-        }
-        print(format("20_random_%02d.in", t), N, A, B);
-    }
-    // 21 ... max
-    for(int t = 1; t <= 3; ++t){
-        // ofstream of(format("21_max_%02d.in", t).c_str());
-        // int N = MAX_SUBTASK_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
-        // }
-        // of.close();
+    for(int t = MAX_CASE_START(2); t <= MAX_CASE_END(2); ++t){
         int N = MAX_SUBTASK_N;
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
-            A.emplace_back(rnd.next(MIN_A, SUM_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, SUM_MAX - 1));
+            A.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
+            B.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
         }
-        print(format("21_max_%02d.in", t), N, A, B);
+        print(format("40_subtask_max_%02d.in", t), N, A, B);
     }
-    for(int t = 4; t <= 4; ++t){
-        // ofstream of(format("21_max_%02d.in", t).c_str());
-        // int N = MAX_SUBTASK_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << MIN_A << ' ' << MIN_H << endl;
-        // }
-        // of.close();
+    for(int t = MAX_CASE_START(3); t <= MAX_CASE_END(3); ++t){
         int N = MAX_SUBTASK_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(SUM_MAX, MAX_A));
+            B.emplace_back(rnd.next(SUM_MAX, MAX_B));
+        }
+        print(format("40_subtask_max_%02d.in", t), N, A, B);
+    }
+
+    // 41 ... main max
+    for(int t = MAX_CASE_START(0); t <= MAX_CASE_END(0); ++t){
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(MIN_A, RATE_SMALL - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_SMALL - 1));
+        }
+        print(format("41_main_max_%02d.in", t), N, A, B);
+    }
+    for(int t = MAX_CASE_START(1); t <= MAX_CASE_END(1); ++t){
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(MIN_A, RATE_MAX - 1));
+            B.emplace_back(rnd.next(MIN_B, RATE_MAX - 1));
+        }
+        print(format("41_main_max_%02d.in", t), N, A, B);
+    }
+    for(int t = MAX_CASE_START(2); t <= MAX_CASE_END(2); ++t){
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
+            B.emplace_back(rnd.next(RATE_MAX, SUM_MAX - 1));
+        }
+        print(format("41_main_max_%02d.in", t), N, A, B);
+    }
+    for(int t = MAX_CASE_START(3); t <= MAX_CASE_END(3); ++t){
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(rnd.next(SUM_MAX, MAX_A));
+            B.emplace_back(rnd.next(SUM_MAX, MAX_B));
+        }
+        print(format("41_main_max_%02d.in", t), N, A, B);
+    }
+
+    // 90 ... hand
+    {
+        int N = MAX_N;
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
             A.emplace_back(MIN_A);
-            B.emplace_back(MIN_H);
+            B.emplace_back(MIN_B);
         }
-        print(format("21_max_%02d.in", t), N, A, B);
+        print(format("90_hand_01.in"), N, A, B);
     }
-    // 22 ... min
-    for(int t = 1; t <= 3; ++t){
-        // ofstream of(format("22_min_%02d.in", t).c_str());
-        // int N = MIN_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << rnd.next(MIN_A, SUM_MAX - 1) << ' ' << rnd.next(MIN_H, SUM_MAX - 1) << endl;
-        // }
-        // of.close();
-        int N = MIN_N;
+    {
+        int N = MAX_N;
         vector<int> A, B;
         for(int i = 0; i < N; ++i){
-            A.emplace_back(rnd.next(MIN_A, SUM_MAX - 1));
-            B.emplace_back(rnd.next(MIN_H, SUM_MAX - 1));
+            A.emplace_back(MAX_A);
+            B.emplace_back(MAX_B);
         }
-        print(format("22_min_%02d.in", t), N, A, B);
-    }
-    // 29 ... hand
-    {
-        // ofstream of("29_hand_01.in");
-        // int N = MAX_SUBTASK_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << RATE_MAX - 1 << ' ' << RATE_MAX - 1 << endl;
-        // }
-        // of.close();
+        print(format("90_hand_02.in"), N, A, B);
     }
     {
-        // ofstream of("29_hand_02.in");
-        // int N = MAX_SUBTASK_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << RATE_MAX << ' ' << RATE_MAX << endl;
-        // }
-        // of.close();
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(RATE_MAX - 1);
+            B.emplace_back(RATE_MAX - 1);
+        }
+        print(format("90_hand_03.in"), N, A, B);
     }
     {
-        // ofstream of("29_hand_03.in");
-        // int N = MAX_SUBTASK_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << SUM_MAX - 1 << ' ' << SUM_MAX - 1 << endl;
-        // }
-        // of.close();
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(RATE_MAX);
+            B.emplace_back(RATE_MAX);
+        }
+        print(format("90_hand_04.in"), N, A, B);
     }
     {
-        // ofstream of("29_hand_04.in");
-        // int N = MAX_SUBTASK_N;
-        // of << N << endl;
-        // for(int i = 0; i < N; ++i){
-        //     of << SUM_MAX << ' ' << SUM_MAX << endl;
-        // }
-        // of.close();
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(SUM_MAX - 1);
+            B.emplace_back(SUM_MAX - 1);
+        }
+        print(format("90_hand_05.in"), N, A, B);
+    }
+    {
+        int N = MAX_N;
+        vector<int> A, B;
+        for(int i = 0; i < N; ++i){
+            A.emplace_back(SUM_MAX);
+            B.emplace_back(SUM_MAX);
+        }
+        print(format("90_hand_06.in"), N, A, B);
     }
 
     return 0;
