@@ -282,7 +282,7 @@ Input make_input(const int N, const int M, int Q, const random_query_config &con
     return in;
 }
 
-Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
+Input make_stairs_input(int N, int M, int Q, bool random3query = false, int threshold = -1) {
     Input in;
     in.N = N;
     in.M = M;
@@ -296,7 +296,7 @@ Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
     set<int> used_yokobou;
     bool hantenn = false;
     int i = 0;
-    for (; i < Q / 2; i++) {
+    for (; i < ((threshold == -1) ? Q / 2 : threshold); i++) {
         if (used.contains({width, height})) {
             i--;
             height = rnd.next(1, M);
@@ -684,21 +684,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 if (Q % 2 == 1) {
                     Q--;
                 }
-                Input in = make_stairs_input(N, M, Q);
-                vector<tuple<int, int, int>> prev_in, next_in;
-                for (int i = 0; i < Q / 2; i++) {
-                    prev_in.push_back(in.queries[i]);
-                    next_in.push_back(in.queries[i + Q / 2]);
-                }
-                in.queries.clear();
-                // prev_inをシャッフル
-                for (int i = 0; i < Q / 2; i++) {
-                    swap(prev_in[i], prev_in[rnd.next(i, Q / 2 - 1)]);
-                }
-                for (int i = 0; i < Q / 2; i++) {
-                    in.queries.push_back(prev_in[i]);
-                    in.queries.push_back(next_in[i]);
-                }
+                Input in = make_stairs_input(N, M, Q, false, Q - 10);
                 write_output(filename, in);
             }
             {
@@ -914,23 +900,8 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = MAX_N - rnd.next(0, 100);
                 int M = MAX_M - rnd.next(0, 100);
                 int Q = MAX_Q - rnd.next(1, 100);
-                if (Q % 2 == 1)
-                    Q++;
-                Input in = make_stairs_input(N, M, Q);
-                vector<tuple<int, int, int>> prev_in, next_in;
-                for (int i = 0; i < Q / 2; i++) {
-                    prev_in.push_back(in.queries[i]);
-                    next_in.push_back(in.queries[i + Q / 2]);
-                }
-                in.queries.clear();
-                // prev_inをシャッフル
-                for (int i = 0; i < Q / 2; i++) {
-                    swap(prev_in[i], prev_in[rnd.next(i, Q / 2 - 1)]);
-                }
-                for (int i = 0; i < Q / 2; i++) {
-                    in.queries.push_back(prev_in[i]);
-                    in.queries.push_back(next_in[i]);
-                }
+                Input in = make_stairs_input(N, M, Q, false, Q - 3);
+
                 write_output(filename, in);
             }
             {
