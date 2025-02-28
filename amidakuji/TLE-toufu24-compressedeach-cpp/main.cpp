@@ -9,6 +9,8 @@ using namespace std;
 */
 
 int main() {
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
     int N, M;
     cin >> N >> M;
 
@@ -92,7 +94,7 @@ int main() {
 
                 // 下まで到達したら終了
                 if (cur_y == compressed_M) {
-                    cout << cur_x + 1 << endl;
+                    cout << cur_x + 1 << '\n';
                     break;
                 }
             }

@@ -2,21 +2,27 @@
 
 import math
 import bisect
+import sys
 
 
 def main():
     # 入力
-    N, M_orig = map(int, input().split())
-    Q = int(input())
+    data = sys.stdin.read().split()
+    it = iter(data)
+
+    N = int(next(it))
+    M_orig = int(next(it))
+    Q = int(next(it))
+
     queries = []
     for _ in range(Q):
-        [t, *args] = list(map(int, input().split()))
+        t = int(next(it))
         if t == 1 or t == 2:
-            x = int(args[0])
-            y = int(args[1])
+            x = int(next(it))
+            y = int(next(it))
             queries.append([t, x, y])
         else:
-            s = int(args[0])
+            s = int(next(it))
             queries.append([t, s, -1])
 
     # y 座標の座標圧縮

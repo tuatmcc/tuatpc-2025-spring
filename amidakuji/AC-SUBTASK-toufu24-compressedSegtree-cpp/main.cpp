@@ -96,6 +96,8 @@ struct Query {
 };
 
 int main() {
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
     int N, M;
     cin >> N >> M;
     int Q;
@@ -152,7 +154,7 @@ int main() {
             Perm result = seg.all_prod();
             int ans = result.perm[comp_col.get(q.x)];
             // 逆変換
-            cout << comp_col[ans] + 1 << endl;
+            cout << comp_col[ans] + 1 << '\n';
         }
     }
 }
