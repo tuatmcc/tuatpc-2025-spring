@@ -2,6 +2,7 @@ from .enums import Difficulty
 from typing import Dict, Any, List, Optional
 from .constants import DEFAULT_SUBMISSION_LIMIT_1, DEFAULT_SUBMISSION_LIMIT_2, DEFAULT_EXECUTION_TIME_LIMIT, DEFAULT_DIFFICULTY
 from .testcase import TestCaseSet
+from .contest import Contest
 
 class ProblemConfig:
     def __init__(self, problem_id: int, difficulty: Difficulty, testcase_sets: List[TestCaseSet], execution_time_limit: Optional[int],submission_limit_1: int = DEFAULT_SUBMISSION_LIMIT_1, submission_limit_2: int = DEFAULT_SUBMISSION_LIMIT_2):
@@ -34,7 +35,7 @@ class ProblemStatement:
         self.output_format = output_format
 
 class Problem:
-    def __init__(self, name: str, difficulty: Difficulty, statement: str, constraints: str, input_format: str, output_format: str, partial_scores: str = '', execution_time_limit: int = DEFAULT_EXECUTION_TIME_LIMIT, submission_limit_1: int = DEFAULT_SUBMISSION_LIMIT_1, submission_limit_2: int = DEFAULT_SUBMISSION_LIMIT_2):
+    def __init__(self, name: str, difficulty: Difficulty, statement: str, constraints: str, input_format: str, output_format: str, partial_scores: str = '', execution_time_limit: int = DEFAULT_EXECUTION_TIME_LIMIT, submission_limit_1: int = DEFAULT_SUBMISSION_LIMIT_1, submission_limit_2: int = DEFAULT_SUBMISSION_LIMIT_2, slug: Optional[str] = None, contest: Optional[Contest] = None):
         self.name = name
         self.difficulty = difficulty
         self.constraints = constraints
@@ -45,6 +46,8 @@ class Problem:
         self.execution_time_limit = execution_time_limit
         self.submission_limit_1 = submission_limit_1
         self.submission_limit_2 = submission_limit_2
+        self.slug = slug
+        self.contest = contest
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Problem':
@@ -58,7 +61,9 @@ class Problem:
             statement=data['statement'],
             execution_time_limit=data['execution_time_limit'],
             submission_limit_1=data['submission_limit_1'],
-            submission_limit_2=data['submission_limit_2']
+            submission_limit_2=data['submission_limit_2'],
+            slug=data.get('slug', None),
+            contest=Contest.from_dict(data['contest']) if 'contest' in data else None
         )
 
     def to_dict(self) -> Dict[str, Any]:
