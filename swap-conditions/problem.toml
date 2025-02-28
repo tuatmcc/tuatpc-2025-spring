@@ -16,16 +16,16 @@ markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 
 # 問題の制約
 [constraints]
-const long long A_MIN = -1e18;
-const long long A_MAX = 1e18;
-const int 		T_MIN = 1;
-const int 		T_MAX = 1e5;
-const int 		X_MIN = 1;
-const int 		X_MAX = 4;
-const int 		Y_MIN = 1;
-const int 		Y_MAX = 4;
-const int 		R_MIN = 1;
-const int 		R_MAX = 4;
+A_MIN = -1e18
+A_MAX = 1e18
+T_MIN = 1
+T_MAX = 1e5
+X_MIN = 1
+X_MAX = 4
+Y_MIN = 1
+Y_MAX = 4
+R_MIN = 1
+R_MAX = 4
 
 [mofe]
 problem_id = 9999 # MOFE 上での問題 ID
