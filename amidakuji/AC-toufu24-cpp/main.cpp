@@ -145,7 +145,7 @@ int32_t main() {
     map<int, int> convert;
     map<int, int> convert_rev;
     int idx = 0;
-    assert(require_node_set.size() <= 4 * Q);
+    assert(require_node_set.size() <= 8 * Q);
     for (int x : require_node_set) {
         convert[x] = idx++;
         convert_rev[convert[x]] = x;
@@ -209,4 +209,14 @@ int32_t main() {
             cout << ans[i] + 1 << "\n";
         }
     }
+
+    // メモリ解放
+    // auto delete_tree = [&](SegmentTreeNode *node, auto &&delete_tree) -> void {
+    //     if (!node)
+    //         return;
+    //     delete_tree(node->left, delete_tree);
+    //     delete_tree(node->right, delete_tree);
+    //     delete node;
+    // };
+    // delete_tree(root, delete_tree);
 }
