@@ -9,13 +9,13 @@ int main() {
         cout << "Yes" << endl;
         return 0;
     }
-    ll s = 0, b = 0;
+    ll s = 0, h = 0;
     for(int i = 0; i < n; i++){
-        ll a, h;
-        cin >> a >> h;
-        s += max(a, h);
-        b = max({b, a, h});
-        if(b >= 1600 && s >= 4200){
+        ll a, b;
+        cin >> a >> b;
+        s += max(a, b);
+        b = max({h, a, b});
+        if(h >= 1600 && s >= 4200){
             cout << "No" << endl;
             return 0;
         }
