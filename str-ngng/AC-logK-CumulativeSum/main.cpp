@@ -1,32 +1,25 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <utility>
 using namespace std;
 
 using ll = long long;
 using T = ll;
-using P = pair<T, T>;
+
+const int MAX_N = 30010;
 const int C = 26;
+T c1[MAX_N][C];
+T c2[MAX_N][C][C];
+T c3[MAX_N][C][C];
+T c4[MAX_N][C][C];
+T f1[C];
+T f2[C][C];
+T f3[C][C];
+T f4[C][C];
 
 int main(){
+    cin.tie(0)->sync_with_stdio(false);
     int N, Q; cin >> N >> Q;
     string S; cin >> S;
-
-    // `c1[i][c]` := S の 0 文字目から i 文字目までに含まれる文字 c の個数
-    vector c1(N + 1, vector(C, T{}));
-    // `c2[i][c][d]` := S の 0 文字目から i 文字目までに含まれる (c < d)
-    //                  部分文字列 cd の個数 (first)
-    //                  部分文字列 dc の個数 (second)
-    vector c2(N + 1, vector(C, vector(C, P{})));
-    // `c3[i][c][d]` := S の 0 文字目から i 文字目までに含まれる (c < d)
-    //                  部分文字列 cdc の個数 (first)
-    //                  部分文字列 dcd の個数 (second)
-    vector c3(N + 1, vector(C, vector(C, P{})));
-    // `c4[i][c][d]` := S の 0 文字目から i 文字目までに含まれる (c < d)
-    //                  部分文字列 cdcd の個数 (first)
-    //                  部分文字列 dcdc の個数 (second)
-    vector c4(N + 1, vector(C, vector(C, P{})));
 
     // c1 の前計算
     for(int i = 1; i <= N; ++i){
@@ -38,75 +31,70 @@ int main(){
     for(int i = 2; i <= N; ++i){
         int c = S[i - 1] - 'a';
         for(int j = 0; j < C; ++j){
-            for(int k = j + 1; k < C; ++k){
+            for(int k = 0; k < C; ++k){
                 c2[i][j][k] = c2[i - 1][j][k];
             }
         }
         for(int d = 0; d < C; ++d){
             if(d == c) continue;
-            if(c < d) c2[i][c][d].second += c1[i - 1][d];
-            else c2[i][d][c].first += c1[i - 1][d];
+            c2[i][d][c] += c1[i - 1][d];
         }
     }
     // c3 の前計算
     for(int i = 3; i <= N; ++i){
         int c = S[i - 1] - 'a';
         for(int j = 0; j < C; ++j){
-            for(int k = j + 1; k < C; ++k){
+            for(int k = 0; k < C; ++k){
                 c3[i][j][k] = c3[i - 1][j][k];
             }
         }
         for(int d = 0; d < C; ++d){
             if(d == c) continue;
-            if(c < d) c3[i][c][d].first += c2[i - 1][c][d].first;
-            else c3[i][d][c].second += c2[i - 1][d][c].second;
+            c3[i][c][d] += c2[i - 1][c][d];
         }
     }
     // c4 の前計算
     for(int i = 4; i <= N; ++i){
         int c = S[i - 1] - 'a';
         for(int j = 0; j < C; ++j){
-            for(int k = j + 1; k < C; ++k){
+            for(int k = 0; k < C; ++k){
                 c4[i][j][k] = c4[i - 1][j][k];
             }
         }
         for(int d = 0; d < C; ++d){
             if(d == c) continue;
-            if(c < d) c4[i][c][d].second += c3[i - 1][c][d].second;
-            else c4[i][d][c].first += c3[i - 1][d][c].first;
+            c4[i][d][c] += c3[i - 1][d][c];
         }
     }
 
-    vector f1(C, T{});
-    vector f2(C, vector(C, P{}));
-    vector f3(C, vector(C, P{}));
-    vector f4(C, vector(C, P{}));
     while(Q--){
         int l, r; cin >> l >> r, --l;
         T ans = 0;
         for(int i = 0; i < C; ++i) f1[i] = c1[r][i] - c1[l][i];
         for(int i = 0; i < C; ++i){
             for(int j = i + 1; j < C; ++j){
-                f2[i][j].first = c2[r][i][j].first - c2[l][i][j].first;
-                f2[i][j].first -= c1[l][i] * f1[j];
-                f2[i][j].second = c2[r][i][j].second - c2[l][i][j].second;
-                f2[i][j].second -= c1[l][j] * f1[i];
-                f3[i][j].first = c3[r][i][j].first - c3[l][i][j].first;
-                f3[i][j].first -= c1[l][i] * f2[i][j].second;
-                f3[i][j].first -= c2[l][i][j].first * f1[i];
-                f3[i][j].second = c3[r][i][j].second - c3[l][i][j].second;
-                f3[i][j].second -= c1[l][j] * f2[i][j].first;
-                f3[i][j].second -= c2[l][i][j].second * f1[j];
-                f4[i][j].first = c4[r][i][j].first - c4[l][i][j].first;
-                f4[i][j].first -= c1[l][i] * f3[i][j].second;
-                f4[i][j].first -= c2[l][i][j].first * f2[i][j].first;
-                f4[i][j].first -= c3[l][i][j].first * f1[j];
-                ans += f4[i][j].first;
-                f4[i][j].second = c4[r][i][j].second - c4[l][i][j].second;
-                f4[i][j].second -= c1[l][j] * f3[i][j].first;
-                f4[i][j].second -= c2[l][i][j].second * f2[i][j].second;
-                f4[i][j].second -= c3[l][i][j].second * f1[i];
-                ans += f4[i][j].second;
+                f2[i][j] = c2[r][i][j] - c2[l][i][j];
+                f2[i][j] -= c1[l][i] * f1[j];
+                f2[j][i] = c2[r][j][i] - c2[l][j][i];
+                f2[j][i] -= c1[l][j] * f1[i];
+
+                f3[i][j] = c3[r][i][j] - c3[l][i][j];
+                f3[i][j] -= c1[l][i] * f2[j][i];
+                f3[i][j] -= c2[l][i][j] * f1[i];
+                f3[j][i] = c3[r][j][i] - c3[l][j][i];
+                f3[j][i] -= c1[l][j] * f2[i][j];
+                f3[j][i] -= c2[l][j][i] * f1[j];
+                
+                f4[i][j] = c4[r][i][j] - c4[l][i][j];
+                f4[i][j] -= c1[l][i] * f3[j][i];
+                f4[i][j] -= c2[l][i][j] * f2[i][j];
+                f4[i][j] -= c3[l][i][j] * f1[j];
+                f4[j][i] = c4[r][j][i] - c4[l][j][i];
+                f4[j][i] -= c1[l][j] * f3[i][j];
+                f4[j][i] -= c2[l][j][i] * f2[j][i];
+                f4[j][i] -= c3[l][j][i] * f1[i];
+
+                ans += f4[i][j] + f4[j][i];
             }
         }
         cout << ans << '\n';
