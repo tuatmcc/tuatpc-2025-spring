@@ -1,6 +1,6 @@
 import re
 import os
-from exceptions import FileNameError
+from lib.exceptions import FileNameError
 from pathlib import Path
 
 
