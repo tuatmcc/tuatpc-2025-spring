@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
         // random
         Generator small(N_small, Q_small, S_random, LR_random);
         for (int i = 0; i < 5; i++) {
-            small.generateTestFile(format("10_small_%02d.in", i + 1));
+            small.generateTestFile(::format("10_small_%02d.in", i + 1));
         }
     }
     // large
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
         // random
         Generator large(N_random, Q_random, S_random, LR_random);
         for (int i = 0; i < 5; i++) {
-            large.generateTestFile(format("20_large_%02d.in", i + 1));
+            large.generateTestFile(::format("20_large_%02d.in", i + 1));
         }
     }
     // max
@@ -138,35 +138,35 @@ int main(int argc, char* argv[])
         // random
         Generator max_case(N_max, Q_max, S_random, LR_large_range);
         for (int i = 0; i < 10; i++) {
-            max_case.generateTestFile(format("30_max_%02d.in", i + 1));
+            max_case.generateTestFile(::format("30_max_%02d.in", i + 1));
         }
     }
     // アルファベットの種類が少ないケース
     {
         Generator few_alphabets(N_max, Q_max, S_few_random, LR_large_range);
         for (int i = 0; i < 10; i++) {
-            few_alphabets.generateTestFile(format("40_few_alphabets_%02d.in", i + 1));
+            few_alphabets.generateTestFile(::format("40_few_alphabets_%02d.in", i + 1));
         }
     }
     // min
     {
         Generator min_case([](){ return MIN_N; }, [](){ return MIN_Q; }, S_random, LR_random);
         for (int i = 0; i < 5; i++) {
-            min_case.generateTestFile(format("50_min_%02d.in", i + 1));
+            min_case.generateTestFile(::format("50_min_%02d.in", i + 1));
         }
     }
     // 交互
     {
         Generator alternating_case(N_max, Q_max, S_alternating, LR_large_range);
         for (int i = 0; i < 10; i++) {
-            alternating_case.generateTestFile(format("60_alternating_%02d.in", i + 1));
+            alternating_case.generateTestFile(::format("60_alternating_%02d.in", i + 1));
         }
     }
     // 全て同じ文字のケース
     {
         Generator all_same_case(N_max, Q_max, S_all_same, LR_large_range);
         for (int i = 0; i < 5; i++) {
-            all_same_case.generateTestFile(format("70_all_same_%02d.in", i + 1));
+            all_same_case.generateTestFile(::format("70_all_same_%02d.in", i + 1));
         }
     }
     return 0;
