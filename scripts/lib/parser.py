@@ -13,11 +13,11 @@ def find_first_match(content: str, pattern: re.Pattern, error_message: str) -> s
 
 def parse_statement(md_content: str) -> ProblemStatement:
     name_pattern = re.compile(r'# (.+)\n')
-    statement_pattern = re.compile(r'## 問題文\n(.+?)##', re.DOTALL)
-    constraints_pattern = re.compile(r'## 制約\n(.+?)##', re.DOTALL)
-    partial_scores_pattern = re.compile(r'### 部分点\n(.+?)##', re.DOTALL)
-    input_format_pattern = re.compile(r'## 入力\n(.+?)##', re.DOTALL)
-    output_format_pattern_with_sample = re.compile(r'## 出力\n(.+?)##', re.DOTALL)
+    statement_pattern = re.compile(r'## 問題文\n(.+?)## 制約', re.DOTALL)
+    constraints_pattern = re.compile(r'## 制約\n(.+?)### 部分点', re.DOTALL)
+    partial_scores_pattern = re.compile(r'### 部分点\n(.+?)## 入力', re.DOTALL)
+    input_format_pattern = re.compile(r'## 入力\n(.+?)## 出力', re.DOTALL)
+    output_format_pattern_with_sample = re.compile(r'## 出力\n(.+?)## 入力例', re.DOTALL)
     output_format_pattern = re.compile(r'## 出力\n(.+?)$', re.DOTALL)
     try:
         name = find_first_match(md_content, name_pattern, '問題名が見つかりません。`# {問題名}` という行があるか確認してください。')
