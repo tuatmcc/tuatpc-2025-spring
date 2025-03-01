@@ -4,18 +4,20 @@ using ll = long long;
 using vl = vector<ll>;
 
 int judge(vl a, ll s, int x, int y){
-    vector<pair<ll, ll>> p(4);
+    ll tokoko = a[x] + 4 * s;
+    int rt = 1;
     for(int i = 0; i < 4; i++){
-        if((i + 1) == x) p[i] = make_pair(a[i] + 4 * s, 4 - (i + 1));
-        else if((i + 1) == y) p[i] = make_pair(a[i] - 2 * s, 4 - (i + 1));
-        else p[i] = make_pair(a[i] - s, 4 - (i + 1));
+        if(i == x) continue;
+        ll fr = a[i];
+        if(i == y) fr -= 2 * s;
+        else fr -= s;
+        if(fr > tokoko){
+            rt++;
+        }else if(fr == tokoko){
+            if(i < x) rt++;
+        }
     }
-    sort(p.begin(), p.end());
-    reverse(p.begin(), p.end());
-    for(int i = 0; i < 4; i++){
-        if(p[i].second == 4 - x) return (i + 1);
-    }
-    return 0;
+    return rt;
 }
 
 
@@ -26,12 +28,14 @@ int main() {
         int x, y, r;
         vl a(4);
         cin >> x >> y >> r;
+        x--;
+        y--;
         for(int i = 0; i < 4; i++) cin >> a[i];
         if(judge(a, 0, x, y) < r){
             cout << -1 << endl;
             continue;
         }
-        ll le = 0, ri = 2e18;
+        ll le = 0, ri = 5e17;
         while(le != ri){
             ll c = (le + ri) / 2;
             if(judge(a, c, x, y) <= r){
