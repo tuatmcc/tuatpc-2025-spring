@@ -13,10 +13,10 @@ struct Input {
 int file_cnt = 0;
 // ファイルに書き込む
 void write_output(const string filename, const Input &in) {
+    assert(in.Q == (int)in.queries.size());
     ofstream of(filename);
     of << in.N << " " << in.M << endl;
     of << in.Q << endl;
-    assert(in.Q == (int)in.queries.size());
     for (auto [t, x, y] : in.queries) {
         of << t << " ";
         if (t == 1 || t == 2) {
@@ -28,7 +28,7 @@ void write_output(const string filename, const Input &in) {
         of << endl;
     }
     of.close();
-    // cerr << "Generated: " << filename << endl;
+    cerr << "Generated: " << filename << endl;
     file_cnt++;
 }
 
@@ -282,7 +282,7 @@ Input make_input(const int N, const int M, int Q, const random_query_config &con
     return in;
 }
 
-Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
+Input make_stairs_input(int N, int M, int Q, bool random3query = false, int threshold = -1) {
     Input in;
     in.N = N;
     in.M = M;
@@ -296,7 +296,7 @@ Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
     set<int> used_yokobou;
     bool hantenn = false;
     int i = 0;
-    for (; i < Q / 2; i++) {
+    for (; i < ((threshold == -1) ? Q / 2 : threshold); i++) {
         if (used.contains({width, height})) {
             i--;
             height = rnd.next(1, M);
@@ -349,7 +349,7 @@ Input make_stairs_input(int N, int M, int Q, bool random3query = false) {
             }
 
             // 1/1000の確率で挿入/削除
-            if (rnd.next(1, 1000) == 1) {
+            if (rnd.next(1, 1000) == 1 && i + 1 < Q) {
                 if (rnd.next(0, 1) == 0) {
                     int rnd_x = rnd.next(1, N - 1);
                     int rnd_y = rnd.next(1, M);
@@ -517,8 +517,8 @@ int32_t main(int32_t argc, char *argv[]) {
             {
                 string filename = ::format("11_subtask_minN_%02d.in", t++);
                 int N = SUBTASK_MIN_N;
-                int M = SUBTASK_MAX_M;
-                int Q = SUBTASK_MAX_Q;
+                int M = SUBTASK_MAX_M - rnd.next(0, 100);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 100);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -528,9 +528,9 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("12_subtask_minM_%02d.in", t++);
-                int N = SUBTASK_MAX_N;
+                int N = SUBTASK_MAX_N - rnd.next(0, 3);
                 int M = SUBTASK_MIN_M;
-                int Q = SUBTASK_MAX_Q;
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 100);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -542,7 +542,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 string filename = ::format("13_subtask_minNM_%02d.in", t++);
                 int N = SUBTASK_MIN_N;
                 int M = SUBTASK_MIN_M;
-                int Q = SUBTASK_MAX_Q;
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 100);
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
@@ -576,8 +576,8 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("15_subtask_smallQ_%02d.in", t++);
-                int N = SUBTASK_MAX_N;
-                int M = SUBTASK_MAX_M;
+                int N = SUBTASK_MAX_N - rnd.next(0, 5);
+                int M = SUBTASK_MAX_M - rnd.next(0, 100);
                 int Q = 10;
                 Input in = make_input(N, M, Q);
                 write_output(filename, in);
@@ -588,13 +588,25 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("16_subtask_many12query_%02d.in", t++);
-                int N = SUBTASK_MAX_N;
-                int M = SUBTASK_MAX_M;
-                int Q = SUBTASK_MAX_Q;
+                int N = SUBTASK_MAX_N - rnd.next(0, 1);
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
                 random_query_config config;
                 config.one_prob = 5;
                 config.two_prob = 5;
                 config.three_prob = 1;
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("16_subtask_many12query_%02d.in", t++);
+                int N = SUBTASK_MAX_N - rnd.next(0, 3);
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
+                random_query_config config;
+                config.one_prob = 100;
+                config.two_prob = 1;
+                config.three_prob = 0;
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
@@ -604,9 +616,9 @@ int32_t main(int32_t argc, char *argv[]) {
             t = 1;
             {
                 string filename = ::format("17_subtask_many3query_%02d.in", t++);
-                int N = SUBTASK_MAX_N;
-                int M = SUBTASK_MAX_M;
-                int Q = SUBTASK_MAX_Q;
+                int N = SUBTASK_MAX_N - rnd.next(0, 5);
+                int M = SUBTASK_MAX_M - rnd.next(0, 5);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 5);
                 random_query_config config;
                 config.one_prob = 1;
                 config.two_prob = 1;
@@ -619,13 +631,26 @@ int32_t main(int32_t argc, char *argv[]) {
             {
                 string filename = ::format("17_subtask_many3query_%02d.in", t++);
                 int N = SUBTASK_MAX_N;
-                int M = SUBTASK_MAX_M;
-                int Q = SUBTASK_MAX_Q;
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
                 random_query_config config;
                 config.one_prob = 2;
                 config.two_prob = 1;
                 config.three_prob = 15;
                 config.use_vertical_lines = {4, 5, 8, 9, 10, 14, 19};
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("17_subtask_many3query_%02d.in", t++);
+                int N = SUBTASK_MAX_N - rnd.next(0, 1);
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
+                random_query_config config;
+                config.one_prob = 0;
+                config.two_prob = 0;
+                config.three_prob = 1;
+                config.random3query = true;
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
@@ -653,39 +678,28 @@ int32_t main(int32_t argc, char *argv[]) {
             }
             {
                 string filename = ::format("18_subtask_stairs_%02d.in", t++);
-                int N = SUBTASK_MAX_N - 2;
-                int M = SUBTASK_MAX_M - 2;
-                int Q = SUBTASK_MAX_Q - 2;
-                Input in = make_stairs_input(N, M, Q);
-                vector<tuple<int, int, int>> prev_in, next_in;
-                for (int i = 0; i < Q / 2; i++) {
-                    prev_in.push_back(in.queries[i]);
-                    next_in.push_back(in.queries[i + Q / 2]);
+                int N = SUBTASK_MAX_N - 1;
+                int M = SUBTASK_MAX_M - rnd.next(0, 100);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 100);
+                if (Q % 2 == 1) {
+                    Q--;
                 }
-                in.queries.clear();
-                // prev_inをシャッフル
-                for (int i = 0; i < Q / 2; i++) {
-                    swap(prev_in[i], prev_in[rnd.next(i, Q / 2 - 1)]);
-                }
-                for (int i = 0; i < Q / 2; i++) {
-                    in.queries.push_back(prev_in[i]);
-                    in.queries.push_back(next_in[i]);
-                }
+                Input in = make_stairs_input(N, M, Q, false, Q - 10);
                 write_output(filename, in);
             }
             {
                 string filename = ::format("18_subtask_stairs_%02d.in", t++);
                 int N = SUBTASK_MAX_N - 1;
-                int M = SUBTASK_MAX_M - 3;
-                int Q = SUBTASK_MAX_Q - 1;
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
                 Input in = make_stairs_input(N, M, Q);
                 write_output(filename, in);
             }
             {
                 string filename = ::format("18_subtask_stairs_%02d.in", t++);
-                int N = SUBTASK_MAX_N;
-                int M = SUBTASK_MAX_M;
-                int Q = SUBTASK_MAX_Q;
+                int N = SUBTASK_MAX_N - rnd.next(0, 2);
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
                 Input in = make_stairs_input(N, M, Q, true);
                 // 1~Q/2をシャッフル
                 for (int i = 0; i < Q / 2; i++) {
@@ -798,6 +812,18 @@ int32_t main(int32_t argc, char *argv[]) {
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
+            {
+                string filename = ::format("25_many12query_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q;
+                random_query_config config;
+                config.one_prob = 10;
+                config.two_prob = 1;
+                config.three_prob = 0;
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
         }
         // クエリ3が多い場合
         {
@@ -812,6 +838,36 @@ int32_t main(int32_t argc, char *argv[]) {
                 config.two_prob = 1;
                 config.three_prob = 10;
                 config.use_vertical_lines = {3, 4};
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("26_many3query_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q;
+                random_query_config config;
+                config.one_prob = 2;
+                config.two_prob = 1;
+                config.three_prob = 15;
+                config.use_vertical_lines = {100000004, 100000005, 100000008, 100000009, 100000010, 100000014};
+                for (int i = 0; i < 20; i++) {
+                    config.use_vertical_lines.push_back(rnd.next(1, 100000000));
+                }
+
+                Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("26_many3query_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q;
+                random_query_config config;
+                config.one_prob = 0;
+                config.two_prob = 0;
+                config.three_prob = 1;
+                config.random3query = true;
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
@@ -844,23 +900,8 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = MAX_N - rnd.next(0, 100);
                 int M = MAX_M - rnd.next(0, 100);
                 int Q = MAX_Q - rnd.next(1, 100);
-                if (Q % 2 == 1)
-                    Q++;
-                Input in = make_stairs_input(N, M, Q);
-                vector<tuple<int, int, int>> prev_in, next_in;
-                for (int i = 0; i < Q / 2; i++) {
-                    prev_in.push_back(in.queries[i]);
-                    next_in.push_back(in.queries[i + Q / 2]);
-                }
-                in.queries.clear();
-                // prev_inをシャッフル
-                for (int i = 0; i < Q / 2; i++) {
-                    swap(prev_in[i], prev_in[rnd.next(i, Q / 2 - 1)]);
-                }
-                for (int i = 0; i < Q / 2; i++) {
-                    in.queries.push_back(prev_in[i]);
-                    in.queries.push_back(next_in[i]);
-                }
+                Input in = make_stairs_input(N, M, Q, false, Q - 3);
+
                 write_output(filename, in);
             }
             {
