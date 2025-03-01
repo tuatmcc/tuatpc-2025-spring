@@ -7,7 +7,7 @@ const int MAX_X = 4;
 const long long MIN_A = -1000000000000000000;
 const long long MAX_A = 1000000000000000000;
 const int MIN_T = 1;
-const int MAX_T = 100000;
+const int MAX_T = 30000;
 
 int main(int argc, char *argv[]){
     registerValidation(argc, argv);
