@@ -382,6 +382,20 @@ int main(int argc, char* argv[]){
 
    {
       ofstream of(::format("00_sample_01.in").c_str());
+      of << "1" << std::endl;
+      of << "o---^v^v^v---^v^v^v---o" << std::endl;
+      of.close();
+   }
+   {
+      ofstream of(::format("00_sample_02.in").c_str());
+      of << "3" << std::endl;
+      of << "o---+---^v^v^v---+---o" << std::endl;
+      of << "    |            |" << std::endl;
+      of << "    +---^v^v^v---+" << std::endl;
+      of.close();
+   }
+   {
+      ofstream of(::format("00_sample_03.in").c_str());
       of << "9" << std::endl;
       of << "o---+---^v^v^v-----------+---^v^v^v---o" << std::endl;
       of << "    |                    |" << std::endl;
@@ -395,7 +409,7 @@ int main(int argc, char* argv[]){
       of.close();
    }
    {
-      ofstream of(::format("00_sample_02.in").c_str());
+      ofstream of(::format("00_sample_04.in").c_str());
       of << "21" << std::endl;
       of << "o---+---^v^v^v---------------------------------------------------------------------------+---o" << std::endl;
       of << "    |                                                                                    |" << std::endl;
