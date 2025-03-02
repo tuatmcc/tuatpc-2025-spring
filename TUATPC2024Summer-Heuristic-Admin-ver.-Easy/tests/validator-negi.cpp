@@ -16,13 +16,13 @@ int main(int argc, char* argv[]){
     inf.readEoln();
     for(int i = 0; i < n; i++){
         inf.readLong(MIN_A, MAX_A, "A");
-        if(i == n - 1) inf.readSpace();
-        else inf.readEoln();
+        if(i == n - 1) inf.readEoln();
+        else inf.readSpace();
     }
     for(int i = 0; i < n; i++){
         inf.readLong(MIN_B, MAX_B, "B");
-        if(i == n - 1) inf.readSpace();
-        else inf.readEoln();
+        if(i == n - 1) inf.readEoln();
+        else inf.readSpace();
     }
     inf.readEof();
     return 0;
