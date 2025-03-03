@@ -85,6 +85,7 @@ const int MOD = 998244353;
 using mint = ModInt<MOD>;
 
 int main(){
+    cin.tie(0)->sync_with_stdio(false);
     int N; cin >> N;
     vector<int> A(N), B(N);
     for(int i = 0; i < N; ++i) cin >> A[i];
@@ -122,47 +123,37 @@ int main(){
         return ret;
     };
 
-    vector<int> M(N);
-    for(int i = 0; i < N; ++i) M[i] = max(A[i], B[i]);
-    sort(M.begin(), M.end());
+    vector<int> C(N);
+    for(int i = 0; i < N; ++i) C[i] = max(A[i], B[i]);
+    sort(C.begin(), C.end());
 
-    // S1 ... 最大値が 1600 未満のチームの総数
-    mint S1 = 1;
-    for(int i = 0; i < N; ++i) if(M[i] < R) S1 *= 2;
-    S1 -= 1;
+    mint X1 = [&]{
+        mint ret = 1;
+        for(auto c : C) if(c < R) ret *= 2;
+        return ret - 1;
+    }();
 
-    // S2 ... 総和が 4200 未満のチームの総数
-    mint S2;
-    {
+    mint X2 = [&]{
         vector<mint> cnt(D);
-        for(int i = 0; i < N; ++i) if(M[i] < D) cnt[M[i]] += 1;
-        S2 = subset_sum(cnt);
-    }
+        for(int i = 0; i < N; ++i) if(C[i] < D) cnt[C[i]] += 1;
+        return subset_sum(cnt);
+    }();
 
-    // S12 ... 最大値が 1600 未満かつ総和が 4200 未満のチームの総数
-    mint S12;
-    {
+    mint X12 = [&]{
         vector<mint> cnt(D);
-        for(int i = 0; i < N; ++i) if(M[i] < R) cnt[M[i]] += 1;
-        S12 = subset_sum(cnt);
-    }
-
-    
-    mint S = S1 + S2 - S12;
-
-    // T ... 1 or 2 人チームで、最大値が 1600 以上かつ総和が 4200 以上のチームの総数
-    mint T;
-    {
-        // 1 人チーム
-        for(int i = 0; i < N; ++i) if(M[i] >= D) T += 1;
-    }
-    {
-        // 2 人チーム
+        for(int i = 0; i < N; ++i) if(C[i] < R) cnt[C[i]] += 1;
+        return subset_sum(cnt);
+    }();
+   
+    mint Y = [&]{
+        mint ret = 0;
+        for(const int &c : C) if(c >= D) ret += 1;
         for(int i = 0; i < N; ++i){
-            if(M[i] < R) continue;
-            T += distance(lower_bound(M.begin(), M.begin() + i, D - M[i]), M.begin() + i);
+            if(C[i] < R) continue;
+            ret += distance(lower_bound(C.begin(), C.begin() + i, D - C[i]), C.begin() + i);
         }
-    }
+        return ret;
+    }();
 
-    cout << S + T << endl;
+    cout << X1 + X2 - X12 + Y << endl;
 }
