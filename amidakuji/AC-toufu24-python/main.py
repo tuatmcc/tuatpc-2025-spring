@@ -7,23 +7,12 @@ import sys
 
 def main():
     # 入力
-    data = sys.stdin.read().split()
-    it = iter(data)
-
-    N = int(next(it))
-    M_orig = int(next(it))
-    Q = int(next(it))
-
+    N, M_orig = map(int, input().split())
+    Q = int(input())
     queries = []
     for _ in range(Q):
-        t = int(next(it))
-        if t == 1 or t == 2:
-            x = int(next(it))
-            y = int(next(it))
-            queries.append([t, x, y])
-        else:
-            s = int(next(it))
-            queries.append([t, s, -1])
+        t, *args = map(int, input().split())
+        queries.append([t, *args])
 
     # y 座標の座標圧縮
     ys = []
@@ -53,28 +42,11 @@ def main():
         nx = x
         ny = y % block_size
         while ny >= 0:
-            l = -1
-            r = -1
-            # 左側 (nx-1) の横線を調べる
-            if (nx - 1) in lines[block_idx]:
-                arr = lines[block_idx][nx - 1]
-                pos = bisect.bisect_right(arr, ny)
-                if pos > 0:
-                    l = arr[pos - 1]
-            # 右側 (nx) の横線を調べる
-            if nx in lines[block_idx]:
-                arr = lines[block_idx][nx]
-                pos = bisect.bisect_right(arr, ny)
-                if pos > 0:
-                    r = arr[pos - 1]
-            # 近い方に移動する
-            if l >= r:
-                if l == -1:
-                    break
-                ny = l
+            # 左側に横線があるか調べる
+            if (nx - 1) in lines[block_idx] and ny in lines[block_idx][nx - 1]:
                 nx -= 1
-            else:
-                ny = r
+            # 右側に横線があるか調べる
+            elif nx in lines[block_idx] and ny in lines[block_idx][nx]:
                 nx += 1
             ny -= 1
         return nx
