@@ -1,222 +1,97 @@
-// 参考: https://yukicoder.me/wiki/offline_dsp
-
-// O(Q log^2(Q)) で解けてると思っている
-
 #include <bits/stdc++.h>
 using namespace std;
-#define int int64_t
-#include "RollbackUnionFindWithData.hpp"
 
-struct SegmentTreeNode {
-    int tl, tr;                    // 区間[l, r)
-    vector<pair<int, int>> edges;  // ノードで管理する辺
-    SegmentTreeNode *left, *right; // セグ木の子ノード
-    SegmentTreeNode(int l, int r) : tl(l), tr(r), left(nullptr), right(nullptr) {}
-};
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    // 入力処理
+    int N, M_orig, Q;
+    cin >> N >> M_orig >> Q;
 
-void register_edge(SegmentTreeNode *node, int L, int R, pair<int, int> edge) {
-    // 区間[L, R)とノードの区間が交差しない場合は何もしない
-    if (R <= node->tl || L >= node->tr)
-        return;
-    // ノードの区間が完全に[L, R)を含む場合は辺を追加
-    if (L <= node->tl && node->tr <= R) {
-        node->edges.push_back(edge);
-        return;
-    }
-    // そうでない場合は再帰的に子ノードに辺を追加
-    int mid = (node->tl + node->tr) / 2;
-    if (!node->left) {
-        node->left = new SegmentTreeNode(node->tl, mid);
-        node->right = new SegmentTreeNode(mid, node->tr);
-    }
-    register_edge(node->left, L, R, edge);
-    register_edge(node->right, L, R, edge);
-}
+    vector<vector<int>> queries(Q, vector<int>(3));
+    vector<int> ys;
 
-SegmentTreeNode *build_segment_tree(const vector<pair<pair<int, int>, pair<int, int>>> &intervals, int Q) {
-    // セグメントツリーを構築
-    SegmentTreeNode *root = new SegmentTreeNode(0, Q);
-    for (const auto &[interval, edge] : intervals) {
-        auto [L, R] = interval;
-        register_edge(root, L, R, edge);
-    }
-    return root;
-}
-
-int32_t main() {
-    // 入力
-    int N, M;
-    cin >> N >> M;
-    int Q;
-    cin >> Q;
-    vector<tuple<int, int, int>> queries;
-    map<int, set<int>> require_height; // 縦線ごとの構築が必要な高さ
     for (int i = 0; i < Q; i++) {
         int t;
         cin >> t;
         if (t == 1 || t == 2) {
             int x, y;
             cin >> x >> y;
-            x--; // 0-based index
-            queries.emplace_back(t, x, y);
-            // 横線で変化する頂点
-            require_height[x].insert(y);
-            require_height[x].insert(y + 1);
-            require_height[x + 1].insert(y);
-            require_height[x + 1].insert(y + 1);
-
-            // 端点の追加
-            require_height[x].insert(0);
-            require_height[x].insert(M + 1);
-            require_height[x + 1].insert(0);
-            require_height[x + 1].insert(M + 1);
+            queries[i] = {t, x, y};
+            ys.push_back(y);
         } else {
             int s;
             cin >> s;
-            s--; // 0-based index
-
-            queries.emplace_back(t, s, -1);
-            require_height[s].insert(0);
-            require_height[s].insert(M + 1);
+            queries[i] = {t, s, -1};
         }
     }
 
-    // 辺の生存期間を記録
-    // 辺の追加，削除のタイミングを記録
-    // {辺のインデックス, 追加時間}
-    map<pair<int, int>, int> active_edges;
-    set<int> require_node_set; // 構築が必要なノードの集合
-    // 縦線ごとに辺を張る
-    for (auto [x, ys] : require_height) {
-        vector<int> y_vec(ys.begin(), ys.end());
-        for (int i = 0; i < y_vec.size() - 1; i++) {
-            pair<int, int> edge = {x + y_vec[i] * N, x + y_vec[i + 1] * N};
-            active_edges[edge] = 0;
-            require_node_set.insert(x + y_vec[i] * N);
-            require_node_set.insert(x + y_vec[i + 1] * N);
+    // y座標の座標圧縮
+    sort(ys.begin(), ys.end());
+    ys.erase(unique(ys.begin(), ys.end()), ys.end());
+    unordered_map<int, int> zipy;
+    for (int i = 0; i < (int)ys.size(); i++) {
+        zipy[ys[i]] = i + 1;
+    }
+    for (auto &q : queries) {
+        if (q[0] != 3) {
+            q[2] = zipy[q[2]];
         }
     }
 
-    // {時間, 辺のインデックス}
-    vector<pair<pair<int, int>, pair<int, int>>> edges_interval;
-    // すべての時間にノードを持つセグメントツリーを構築
-    for (int i = 0; i < Q + 2; i++) {
-        edges_interval.push_back({{i, i}, {-1, -1}});
-    }
+    // 平方分割
+    int M = ys.size();
+    int block_size = sqrt(M) + 1;
+    int block_cnt = (M + block_size - 1) / block_size + 1;
 
-    for (int i = 1; i <= Q; i++) {
-        auto [t, x, y] = queries[i - 1];
-        if (t == 1) {
-            // 辺の追加，削除のタイミングを記録
-            pair<int, int> edge1 = {x + y * N, x + (y + 1) * N};
-            pair<int, int> edge2 = {(x + 1) + y * N, (x + 1) + (y + 1) * N};
-            edges_interval.push_back({{active_edges[edge1], i}, edge1});
-            edges_interval.push_back({{active_edges[edge2], i}, edge2});
-            active_edges.erase(edge1);
-            active_edges.erase(edge2);
+    vector<unordered_map<int, int>> to(block_cnt);
+    vector<unordered_map<int, unordered_set<int>>> lines(block_cnt);
 
-            // 斜めに辺を張る
-            pair<int, int> new_edge1 = {x + y * N, (x + 1) + (y + 1) * N};
-            pair<int, int> new_edge2 = {(x + 1) + y * N, x + (y + 1) * N};
-            active_edges[new_edge1] = i;
-            active_edges[new_edge2] = i;
-        } else if (t == 2) {
-            // 辺の追加，削除のタイミングを記録
-            pair<int, int> edge1 = {x + y * N, (x + 1) + (y + 1) * N};
-            pair<int, int> edge2 = {(x + 1) + y * N, x + (y + 1) * N};
-            edges_interval.push_back({{active_edges[edge1], i}, edge1});
-            edges_interval.push_back({{active_edges[edge2], i}, edge2});
-            active_edges.erase(edge1);
-            active_edges.erase(edge2);
-
-            // 縦に辺を張る
-            pair<int, int> new_edge1 = {x + y * N, x + (y + 1) * N};
-            pair<int, int> new_edge2 = {(x + 1) + y * N, (x + 1) + (y + 1) * N};
-            active_edges[new_edge1] = i;
-            active_edges[new_edge2] = i;
+    auto block_first_pos = [&](int x, int y) -> int {
+        int block_idx = y / block_size;
+        int nx = x, ny = y % block_size;
+        while (ny >= 0) {
+            if (lines[block_idx].contains(nx - 1) &&
+                lines[block_idx][nx - 1].contains(ny)) {
+                nx -= 1;
+            } else if (lines[block_idx].contains(nx) &&
+                       lines[block_idx][nx].contains(ny)) {
+                nx += 1;
+            }
+            ny--;
         }
-    }
-    // 残りの辺の削除のタイミングを記録
-    for (auto [edge, st] : active_edges) {
-        edges_interval.push_back({{st, Q + 1}, edge});
-    }
+        return nx;
+    };
 
-    // ノードのインデックスを振り直す
-    map<int, int> convert;
-    map<int, int> convert_rev;
-    int idx = 0;
-    assert(require_node_set.size() <= 8 * Q);
-    for (int x : require_node_set) {
-        convert[x] = idx++;
-        convert_rev[convert[x]] = x;
-    }
+    vector<int> ans;
+    for (const auto &q : queries) {
+        int t = q[0], x = q[1], y = q[2];
+        if (t == 1 || t == 2) {
+            int block_id = y / block_size;
+            int left = block_first_pos(x, y);
+            int right = block_first_pos(x + 1, y);
+            if (!to[block_id].contains(left))
+                to[block_id][left] = left;
+            if (!to[block_id].contains(right))
+                to[block_id][right] = right;
 
-    // edges_intervalもインデックスを振り直す
-    for (auto &p : edges_interval) {
-        if (p.second.first == -1) {
-            continue;
-        }
-        p.second.first = convert[p.second.first];
-        p.second.second = convert[p.second.second];
-    }
+            swap(to[block_id][left], to[block_id][right]);
 
-    // セグ木を構築
-    // 最初と最後のノードを考慮するために+2
-    auto root = build_segment_tree(edges_interval, Q + 2);
-
-    // dfsでクエリを処理
-    vector<int> ans(Q, -2);
-    RollbackUnionFindWithData uf(require_node_set.size());
-
-    auto dfs = [&](SegmentTreeNode *node, auto &&dfs) -> void {
-        int cnt = 0;
-        if (!node)
-            return;
-
-        // 辺を追加
-        for (auto [u, v] : node->edges) {
-            if (u == -1 || v == -1) continue;
-            if (uf.unite(u, v))
-                cnt++;
-        }
-
-        if (node->tl + 1 == node->tr) {
-            // 葉ノードの処理
-            int t = node->tl - 1;
-            if (0 <= t && t < Q && get<0>(queries[t]) == 3) {
-                int s = get<1>(queries[t]);
-                assert(0 <= s && s < N);
-                // どの行に到達するか
-                ans[t] = convert_rev[uf.get_data(convert[s])] - N * (M + 1);
-                assert(ans[t] >= 0);
-                assert(ans[t] < N);
+            if (t == 1) {
+                lines[block_id][x].insert(y % block_size);
+            } else {
+                lines[block_id][x].erase(y % block_size);
             }
         } else {
-            // 左右の子に伝搬
-            dfs(node->left, dfs);
-            dfs(node->right, dfs);
-        }
-
-        // 帰るときに巻き戻す
-        while (cnt--)
-            uf.undo();
-    };
-    dfs(root, dfs);
-
-    // 出力
-    for (int i = 0; i < Q; i++) {
-        if (get<0>(queries[i]) == 3) {
-            cout << ans[i] + 1 << "\n";
+            int cur = x;
+            for (int i = 0; i < block_cnt; i++) {
+                if (to[i].contains(cur))
+                    cur = to[i][cur];
+            }
+            ans.push_back(cur);
         }
     }
 
-    // メモリ解放
-    // auto delete_tree = [&](SegmentTreeNode *node, auto &&delete_tree) -> void {
-    //     if (!node)
-    //         return;
-    //     delete_tree(node->left, delete_tree);
-    //     delete_tree(node->right, delete_tree);
-    //     delete node;
-    // };
-    // delete_tree(root, delete_tree);
+    for (const auto &s : ans)
+        cout << s << '\n';
 }
