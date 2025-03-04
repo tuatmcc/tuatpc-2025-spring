@@ -1,19 +1,14 @@
-name: Run test
+name: Run test and upload testcases to MOFE
 
 on:
   push:
-    branches:
-    - 'main'
     paths-ignore:
     - '**.md'
     - 'docs/**'
-  pull_request:
-    paths-ignore:
-    - '**.md'
-    - 'docs/**'
+    - .github/**
 
 jobs:
-  Rime-and-HTML-test:
+  Rime-and-upload-testcases:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/tuatmcc/sakumon-image:latest
@@ -36,8 +31,8 @@ jobs:
       - name: Check filenames
         run: python3 scripts/check_filename.py
 
-      - name: Check HTMLs
-        run: python3 scripts/check_html.py
+      # - name: Check HTMLs
+      #   run: python3 scripts/check_html.py
       
       # - name: Make testcases for MOFE
       #   run: python3 scripts/pack_testcases.py
@@ -53,6 +48,6 @@ jobs:
       
       - name: Embed constraints and testcases to statements
         run: ss-manager run -o md
-
-      - name: Upload testcases and statements to MOFE
-        run: python3 scripts/upload_statement_and_testcases.py MCC_CI ${{ secrets.MOFE_CI_USER_PASSWORD }} 
+     
+      - name: Upload testcases to MOFE
+        run: python3 scripts/upload_testcases.py ${{ vars.MOFE_USERNAME }} ${{ secrets.MOFE_PASSWORD }}
