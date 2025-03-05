@@ -98,7 +98,6 @@ int main(){
         }
         cnt %= mod;
 
-
         //cout << cnt << endl;
 
         ans += cnt;
