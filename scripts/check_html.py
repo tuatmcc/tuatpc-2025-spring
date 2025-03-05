@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import os
 import warnings
 import re
-from exceptions import TitleTagError, StructureOfStatementError, SpaceError
+from lib.exceptions import TitleTagError, StructureOfStatementError, SpaceError
 
 
 def title_check(soup):
