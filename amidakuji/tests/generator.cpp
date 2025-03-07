@@ -610,6 +610,20 @@ int32_t main(int32_t argc, char *argv[]) {
                 Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
+            {
+                string filename = ::format("16_subtask_many12query_%02d.in", t++);
+                int N = SUBTASK_MAX_N - rnd.next(0, 3);
+                int M = SUBTASK_MAX_M - rnd.next(0, 10);
+                int Q = SUBTASK_MAX_Q - rnd.next(0, 10);
+                random_query_config config;
+                config.one_prob = 100;
+                config.two_prob = 1;
+                config.three_prob = 0;
+                Input in = make_input(N, M, Q, config);
+                in.queries.pop_back();
+                in.queries.emplace_back(3, get<1>(in.queries[rnd.next(0, Q - 1)]), -1);
+                write_output(filename, in);
+            }
         }
         // クエリ3が多い場合
         {
@@ -711,7 +725,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // ランダム
         {
             t = 1;
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 string filename = ::format("19_subtask_random_%02d.in", t++);
                 int N = rnd.next(SUBTASK_MIN_N, SUBTASK_MAX_N);
                 int M = rnd.next(SUBTASK_MIN_M, SUBTASK_MAX_M);
@@ -818,10 +832,24 @@ int32_t main(int32_t argc, char *argv[]) {
                 int M = MAX_M - rnd.next(0, 100);
                 int Q = MAX_Q;
                 random_query_config config;
-                config.one_prob = 10;
+                config.one_prob = 100;
                 config.two_prob = 1;
                 config.three_prob = 0;
                 Input in = make_input(N, M, Q, config);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("25_many12query_%02d.in", t++);
+                int N = MAX_N - rnd.next(0, 100);
+                int M = MAX_M - rnd.next(0, 100);
+                int Q = MAX_Q - 1;
+                random_query_config config;
+                config.one_prob = 100;
+                config.two_prob = 1;
+                config.three_prob = 0;
+                Input in = make_input(N, M, Q, config);
+                in.queries.pop_back();
+                in.queries.emplace_back(3, get<1>(in.queries[rnd.next(0, Q - 1)]), -1);
                 write_output(filename, in);
             }
         }
@@ -928,7 +956,7 @@ int32_t main(int32_t argc, char *argv[]) {
         // ランダム
         {
             t = 1;
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 string filename = ::format("29_random_%02d.in", t++);
                 int N = rnd.next(MIN_N, MAX_N);
                 int M = rnd.next(MIN_M, MAX_M);
