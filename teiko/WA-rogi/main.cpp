@@ -180,7 +180,7 @@ mint parallel(int& i, int& j) {
 }
 
 
-int main() {
+void solve() {
     N = in(); cin.ignore();
     S.resize(N);
     FOR(i, N) getline(cin, S[i]);
@@ -191,4 +191,12 @@ int main() {
 
     int i = 0, j = 4;
     print(series(i, j, ssize(S[0]) - 1).val());
+}
+
+int main() {
+    int q;
+    std::cin >> q;
+    while (q--) {
+        solve();
+    }
 }

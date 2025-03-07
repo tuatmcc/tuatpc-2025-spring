@@ -190,7 +190,7 @@ bool reduce_series(int start_idx, int end_idx, int n, vector<vector<edge>> &grap
     return changed;
 }
 
-int main() {
+void solve() {
     int h, w{};
     cin >> h;
     cin.ignore();
@@ -198,6 +198,7 @@ int main() {
     for (auto& si : s) {
         getline(cin, si);
         w = std::max<int>(w, si.size());
+        cout << "si # => " << si << std::endl;
     }
 
     // 長さを揃える
@@ -240,4 +241,13 @@ int main() {
 
     mint ans = graph[start_idx][0].resist;
     cout << ans.val() << endl;
+}
+
+int main() {
+    int q;
+    std::cin >> q;
+    for (int i = 0; i < q; i++) {
+        std::cerr << "case " << i << std::endl;
+        solve();
+    }
 }

@@ -284,4 +284,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    q = int(input())
+    for _ in range(q):
+        main()

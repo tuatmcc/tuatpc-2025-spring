@@ -152,14 +152,6 @@ int main(int argc, char* argv[]){
            }
        }
        inf.ensure(cnt <= MAX_REG);
-   
-       for (int i = 0; i < s.size() - 1; i++) {
-           for (int j = 0; j < s[i].size(); j++) {
-               if (s[i][j] == '+') {
-                   inf.ensure(s[i + 1][j] == ' ');
-               }
-           }
-       }
    }
 
    inf.readEof();

@@ -136,7 +136,7 @@ tuple<vector<vector<edge>>, int, int> make_graph(const vector<string> &s) {
     return {new_graph, new_start_goal.first, new_start_goal.second};
 }
 
-int solve() {
+void solve() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
