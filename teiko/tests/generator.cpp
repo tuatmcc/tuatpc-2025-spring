@@ -3,6 +3,92 @@
 # include <cassert>
 using namespace std;
 
+const int Q_MIN = 1;
+const int Q_MAX = (long long)(1e5);
+const int MAX_HW = 1500000;
+const int MAX_REG = 30;
+
+bool is_ok_brackets(const std::string& s) {
+   std::stack<char> stk;
+   for (auto si : s) {
+      if (si == '(' || si == '[') {
+         stk.push(si);
+      }
+      else if (si == ')' || si == ']') {
+         if (stk.empty()) return false;
+         char top = stk.top();
+         stk.pop();
+         if (top == '(' && si == ']') return false;
+         if (top == '[' && si == ')') return false;
+      }
+   }
+   return stk.empty();
+}
+
+
+void clean_source(std::string& source) {
+   while (source.size() > 3) {
+      std::vector<int> v(source.size(), -1);
+      std::stack<int> stk;
+      for (int i = 0; i < source.size(); i++) {
+         if (source[i] == '(' || source[i] == '[') {
+            stk.emplace(i);
+         }
+         else if (source[i] == ')' || source[i] == ']') {
+            assert(not stk.empty());
+            int left = stk.top();
+            stk.pop();
+            v[left] = i;
+         }
+      }
+
+      bool ok = true;
+      for (int i = 0; i < source.size() - 2; i++) {
+         auto s = source.substr(i, 3);
+         assert(s.size() == 3);
+         if (s == "(R)" || s == "[R]") {
+            source[i] = ' ';
+            source[i + 2] = ' ';
+            ok = false;
+         }
+         if (s == "(R)" || s == "[R]") {
+            source[i] = ' ';
+            source[i + 2] = ' ';
+            ok = false;
+         }
+         if ((source[i] == '(' || source[i] == '[') && (source[i + 1] == '(') || source[i] == '[') {
+            int r1 = v[i];
+            int r2 = v[i + 1];
+            if (std::abs(r2 - r1) == 1) {
+               source[i] = ' ';
+               source[i + 1] = ' ';
+               source[r1] = ' ';
+               source[r2] = ' ';
+               ok = false;
+            }
+         }
+      }
+
+      for (int i = 0; i < source.size() - 1; i++) {
+         auto s = source.substr(i, 2);
+         if (s == "()" || s == "[]") {
+            source[i] = ' ';
+            source[i + 1] = ' ';
+            ok = false;
+         }
+      }
+
+      if (ok) {
+         break;
+      }
+
+      source.erase(std::remove(source.begin(), source.end(), ' '), source.end());
+   }
+}
+
+
+
+
 template <class T>
 bool chmax(T& a, const T& b) {
    if (a < b) {
@@ -22,7 +108,7 @@ bool chmin(T& a, const T& b) {
 }
 
 const int R_NUM_MIN = 1;
-const int R_NUM_MAX = 10000;
+const int R_NUM_MAX = 30;
 
 // 1.
 // これを生成する。
@@ -380,22 +466,22 @@ int main(int argc, char* argv[]){
 
    int max_hw = 0;
 
+
+   cout << "DEBUG 00_sample_01" << std::endl;
    {
       ofstream of(::format("00_sample_01.in").c_str());
       of << "1" << std::endl;
       of << "o---^v^v^v---^v^v^v---o" << std::endl;
       of.close();
-   }
-   {
-      ofstream of(::format("00_sample_02.in").c_str());
+
+      of << 3 << std::endl;
+
       of << "3" << std::endl;
       of << "o---+---^v^v^v---+---o" << std::endl;
       of << "    |            |" << std::endl;
       of << "    +---^v^v^v---+" << std::endl;
       of.close();
-   }
-   {
-      ofstream of(::format("00_sample_03.in").c_str());
+
       of << "9" << std::endl;
       of << "o---+---^v^v^v-----------+---^v^v^v---o" << std::endl;
       of << "    |                    |" << std::endl;
@@ -407,9 +493,7 @@ int main(int argc, char* argv[]){
       of << "    |                    |" << std::endl;
       of << "    +---^v^v^v-----------+" << std::endl;
       of.close();
-   }
-   {
-      ofstream of(::format("00_sample_04.in").c_str());
+
       of << "21" << std::endl;
       of << "o---+---^v^v^v---------------------------------------------------------------------------+---o" << std::endl;
       of << "    |                                                                                    |" << std::endl;
@@ -437,242 +521,400 @@ int main(int argc, char* argv[]){
 
 
    // 完全ランダム
-   for (int t = 1; t <= 20; t++) {
+   cout << "DEBUG 01_random_" << std::endl;
+   for (int t = 1; t <= 5; t++) {
       ofstream of(::format("01_random_%02d.in", t).c_str());
 
-      Generator gen;
-      gen.gen_source(1000);
-      auto s = gen.generate2D(true);
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      while (true) {
+         Generator gen;
+         gen.gen_source(30);
+         auto s = gen.generate2D(true);
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
+
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
       }
 
       of.close();
    }
 
+   cout << "DEBUG 02_series_01" << std::endl;
    // 1. 直列だけ
-   for (int t = 1; int num : {1, 2, 5000}) {
-      ofstream of(::format("02_series_%02d.in", t).c_str());
+   {
+      ofstream of(::format("02_series_01.in").c_str());
 
-      Generator gen;
-      gen.source = "(" + std::string(num, 'R') + ")";
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; num <= MAX_REG; num++) {
+         Generator gen;
+         gen.source = "(" + std::string(num, 'R') + ")";
+         auto s = gen.generate2D();
+
+         cases.push_back(s);
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
       }
 
       of.close();
-      t++;
    }
 
+   cout << "DEBUG 03_para" << std::endl;
    // 2. 並列だけ
-   for (int t = 1; int num : {2, 5, 5000}) {
-      ofstream of(::format("03_para_%02d.in", t).c_str());
+   {
+      ofstream of(::format("03_para_01.in").c_str());
 
-      Generator gen;
-      gen.source = "[" + std::string(num, 'R') + "]";
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; num <= MAX_REG; num++) {
+         Generator gen;
+         gen.source = "[" + std::string(num, 'R') + "]";
+         auto s = gen.generate2D();
+
+         cases.push_back(s);
       }
 
-      of.close();
-      t++;
-   }
-
-   // 1, 2, ..., k のやつ
-   for (int t = 1; int num : {2, 11, 20, 30}) {
-      ofstream of(::format("04_sum_%02d.in", t).c_str());
-
-      Generator gen;
-      gen.source = "(R";
-      for (int i = 2; i <= num; i++) {
-         gen.source.push_back('[');
-         for (int iter = 0; iter < i; iter++) {
-            gen.source.push_back('R');
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
          }
-         gen.source.push_back(']');
-      }
-      gen.source += ")";
-
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
       }
 
       of.close();
-      t++;
    }
 
-   // 1, 2, ..., k のやつ（逆順）
-   for (int t = 1; int num : {2, 11, 30}) {
-      ofstream of(::format("05_revsum_%02d.in", t).c_str());
+   cout << "DEBUG 04 sum" << std::endl;
+   {
+      ofstream of(::format("04_sum_01.in").c_str());
 
-      Generator gen;
-      gen.source = "(";
-      for (int i = num; i >= 1; i--) {
-         gen.source.push_back('[');
-         for (int iter = 0; iter < i; iter++) {
-            gen.source.push_back('R');
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         Generator gen;
+         gen.source = "(R";
+         for (int i = 2; i <= num; i++) {
+            gen.source.push_back('[');
+            for (int iter = 0; iter < i; iter++) {
+               gen.source.push_back('R');
+            }
+            gen.source.push_back(']');
          }
-         gen.source.push_back(']');
-      }
-      gen.source += ")";
+         gen.source += ")";
+   
+         auto s = gen.generate2D();
 
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
+
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
       }
 
       of.close();
-      t++;
    }
+
+   cout << "DEBUG 05 revsum" << std::endl;
+   {
+      ofstream of(::format("05_revsum_01.in").c_str());
+
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         Generator gen;
+         gen.source = "(";
+         for (int i = num; i >= 1; i--) {
+            gen.source.push_back('[');
+            for (int iter = 0; iter < i; iter++) {
+               gen.source.push_back('R');
+            }
+            gen.source.push_back(']');
+         }
+         gen.source += ")";
+   
+         auto s = gen.generate2D();
+   
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
+
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
+      }
+
+      of.close();
+   }
+
 
    // 適当手打ち
-   for (int t = 1; std::string hack : {
-      "(R(RRRRR)(RR[RR](RRRR[RR]RR)([RRR(RRRR)R(RR)R][([RRRRR][RR][RR][RR])[RR]R](RRRRRRRRR))))",
-      "([RRRRRRRRRRRRRR]RR[RRRRRRRRRRRRR]R(RRRRR)R(RRR)(RRR)[RRR]RR(RRRR)R)",
-      "(([RRR]R[RR])[RRRRRRRRRRRRR]R([RRR][RRRR][RRRRRR]RRR)((RRRR)[RR](RR[RR]R)RR)[RRR])",
-      "([(R(RR[RR(RR[RR([RRR(RRR)RRRR(RR)]RRR(RRRRRRRR[RRR]R)RRRR)RR]R)RR]R)R)RR]RRR)",
-      "[[(RR)R](RR)]",
-      "[(RRR)[RR]]",
-      "[R(R[R(RR)])]",
-      "[R[R[R[R[R[RR]]]]]]"
-   }) {
-      ofstream of(::format("07_handmaid_%02d.in", t).c_str());
-
-      Generator gen;
-      gen.source = hack;
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+   cout << "DEBUG 07 07_handmade_01" << std::endl;
+   {
+      ofstream of(::format("07_handmade_01.in").c_str());
+      std::vector<std::string> hacks = {
+         "(R(RRRRR)(RR[RR](RRRR[RR]RR)([RRR(RRRR)R(RR)R][([RRRRR][RR][RR][RR])[RR]R](RRRRRRRRR))))",
+         "([RRRRRRRRRRRRRR]RR[RRRRRRRRRRRRR]R(RRRRR)R(RRR)(RRR)[RRR]RR(RRRR)R)",
+         "(([RRR]R[RR])[RRRRRRRRRRRRR]R([RRR][RRRR][RRRRRR]RRR)((RRRR)[RR](RR[RR]R)RR)[RRR])",
+         "([(R(RR[RR(RR[RR([RRR(RRR)RRRR(RR)]RRR(RRRRRRRR[RRR]R)RRRR)RR]R)RR]R)R)RR]RRR)",
+         "[[(RR)R](RR)]",
+         "[(RRR)[RR]]",
+         "[R(R[R(RR)])]",
+         "[R[R[R[R[R[RR]]]]]]"
+      };
+      std::cout << hacks.size() << std::endl;
+      for (int t = 1; std::string hack : hacks) {
+         Generator gen;
+         gen.source = hack;
+         auto s = gen.generate2D();
+         chmax<int>(max_hw, s.size() * s[0].size());
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
       }
 
       of.close();
-      t++;
    }
+
 
    // 1, 2, ..., k のやつ
-   for (int t = 1; int num : {2, 11, 30}) {
-      ofstream of(::format("08_sumpara_%02d.in", t).c_str());
+   cout << "DEBUG 08" << std::endl;
+   {
+      ofstream of(::format("08_sumpara_01.in").c_str());
 
-      Generator gen;
-      gen.source = "[R";
-      for (int i = 2; i <= num; i++) {
-         gen.source.push_back('(');
-         for (int iter = 0; iter < i; iter++) {
-            gen.source.push_back('R');
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         Generator gen;
+         gen.source = "[R";
+         for (int i = 2; i <= num; i++) {
+            gen.source.push_back('(');
+            for (int iter = 0; iter < i; iter++) {
+               gen.source.push_back('R');
+            }
+            gen.source.push_back(')');
          }
-         gen.source.push_back(')');
-      }
-      gen.source += "]";
+         gen.source += "]";
+   
+         auto s = gen.generate2D();
+   
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
 
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
-      }
-
-      of.close();
-      t++;
-   }
-
-   // 1, 2, ..., k のやつ（逆順）
-   for (int t = 1; int num : {2, 11, 30}) {
-      ofstream of(::format("09_revsumpara_%02d.in", t).c_str());
-
-      Generator gen;
-      gen.source = "[";
-      for (int i = num; i >= 1; i--) {
-         gen.source.push_back('(');
-         for (int iter = 0; iter < i; iter++) {
-            gen.source.push_back('R');
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
          }
-         gen.source.push_back(')');
-      }
-      gen.source += "]";
-
-      auto s = gen.generate2D();
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+         else {
+            break;
+         }
+         hw -= hw_cnt;
       }
 
-      of.close();
-      t++;
-   }
-
-   // 入れ子
-   for (int t = 1; int num : {10, 300, 299}) {
-      ofstream of(::format("10_ireko_%02d.in", t).c_str());
-
-      Generator gen;
-      gen.source = "";
-      for (int i = 1; i <= num; i++) {
-         gen.source.append("[R");
-      }
-      gen.source.append("R");
-      gen.source += std::string(num, ']');
-
-      auto s = gen.generate2D(true);
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
       }
 
       of.close();
-      t++;
    }
 
-   // toufu hack
+   cout << "DEBUG 09" << std::endl;
+   // 逆順
+   {
+      ofstream of(::format("09_revsumpara_01.in").c_str());
+
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         Generator gen;
+         gen.source = "[";
+         for (int i = num; i >= 1; i--) {
+            gen.source.push_back('(');
+            for (int iter = 0; iter < i; iter++) {
+               gen.source.push_back('R');
+            }
+            gen.source.push_back(')');
+         }
+         gen.source += "]";
+   
+         auto s = gen.generate2D();
+      
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
+
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
+      }
+
+      of.close();
+   }
+
+   cout << "DEBUG 10" << std::endl;
+   // いれこ
+   {
+      ofstream of(::format("10_ireko_01.in").c_str());
+
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         Generator gen;
+         gen.source = "";
+         for (int i = 1; i <= num; i++) {
+            gen.source.append("[R");
+         }
+         gen.source.append("R");
+         gen.source += std::string(num, ']');
+   
+         auto s = gen.generate2D(true);
+         
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
+
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
+      }
+
+      of.close();
+   }
+
+   cout << "DEBUG 11" << std::endl;
    {
       ofstream of(::format("11_toufu_01.in").c_str());
 
-      Generator gen;
-      std::string unit = "[RR]";
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         Generator gen;
+         std::string unit = "[RR]";
+   
+         gen.source = "(";
+         for (int i = 0; i < R_NUM_MAX; i++) {
+            gen.source.append(unit);
+         }
+         gen.source += ")";
+   
+         auto s = gen.generate2D(true);
+            
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
 
-      gen.source = "(";
-      for (int i = 0; i < R_NUM_MAX; i++) {
-         gen.source.append(unit);
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
       }
-      gen.source += ")";
 
-
-      auto s = gen.generate2D(true);
-      chmax<int>(max_hw, s.size() * s[0].size());
-      of << s.size() << std::endl;
-      for (auto si : s) {
-         of << si << std::endl;
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
+         of << s.size() << std::endl;
+         for (auto si : s) {
+            of << si << std::endl;
+         }
       }
 
       of.close();
    }
-   // toufu hack
-   {
-      // [R, (R, [R, (R, [R, R)])])]
-      for (int par = 0; par <= 1; par++) {
-         ofstream of(::format("11_toufu_%02d.in", 2 + par).c_str());
 
+   cout << "DEBUG 11_toufu_02" << std::endl;
+   {
+      ofstream of(::format("11_toufu_02.in").c_str());
+
+      std::vector<std::vector<std::string>> cases;
+      int hw = MAX_HW;
+      for (int num = 1; ; num++) {
+         if (R_NUM_MAX - num <= 0) break;
          Generator gen;
          gen.source = "";
          std::stack<char> stk;
          char br = '[';
-         for (int i = 0; i < 400 - par; i++) {
+         for (int i = 0; i < R_NUM_MAX - num; i++) {
             gen.source.push_back(br);
             gen.source.push_back('R');
             stk.push(br);
@@ -686,19 +928,36 @@ int main(int argc, char* argv[]){
 
 
          auto s = gen.generate2D(true);
-         chmax<int>(max_hw, s.size() * s[0].size());
+            
+         int hw_cnt = 0;
+         for (auto line : s) hw_cnt += line.size();
+
+         if (hw - hw_cnt >= 0 && cases.size() + 1 <= Q_MAX) {
+            cases.push_back(s);
+         }
+         else {
+            break;
+         }
+         hw -= hw_cnt;
+      }
+
+      int q = cases.size();
+      std::cout << q << std::endl;
+      for (auto s : cases) {
          of << s.size() << std::endl;
          for (auto si : s) {
             of << si << std::endl;
          }
-
-         of.close();
-
       }
+
+      of.close();
    }
+
+
    // toufu hack
+   std::cout << "DBUG 11_toufu_03" << std::endl;
    {
-      ofstream of(::format("11_toufu_04.in").c_str());
+      ofstream of(::format("11_toufu_03.in").c_str());
 
       Generator gen;
       gen.source = "[";
@@ -711,6 +970,8 @@ int main(int argc, char* argv[]){
       gen.source.push_back(']');
 
       auto s = gen.generate2D(true);
+      int q = 1;
+      of << 1 << std::endl;
       chmax<int>(max_hw, s.size() * s[0].size());
       of << s.size() << std::endl;
       for (auto si : s) {
@@ -720,7 +981,88 @@ int main(int argc, char* argv[]){
       of.close();
    }
 
-   std::cout << max_hw << std::endl;
+   // 全列挙
+   std::cout << "DBUG all" << std::endl;
+      for (int n = 3; n <= 7; n++) {
+         ofstream of(::format("12_all_0%d.in", n).c_str());
+
+         set<string> st;
+         st.insert("(" + std::string(n, 'R') + ")");
+         st.insert("[" + std::string(n, 'R') + "]");
+         for (char br : {'(', '['}) {
+            // 以降の括弧の数
+            for (int i = 1; i <= n - 2; i++) {
+               // '(' の数
+               for (int op = 0; op <= i; op++) {
+                  // '[' の数
+                  int cl = i - op;
+                  if (cl < 0) continue;
+                  if (cl == 0 && br == '(') continue;
+      
+                  auto rec = [&st, br, i](auto&& self, int op, int cl, int r, std::string s) -> void {
+                     if (op == 0 && cl == 0 && r == 0) {
+                        auto t = s;
+                        if (i == 1 && ((s.back() == '(' || s.back() == '[') && (s.back() == ')' || s.back() == ']'))) return;
+                        if (is_ok_brackets(t)) {
+                           t = std::string(1, br) + t + std::string(1, br == '(' ? ')' : ']');
+                           clean_source(t);
+                           if (t.front() != '(' && t.front() != '[') {
+                              t = std::string(1, br) + t + std::string(1, br == '(' ? ')' : ']');
+                           }
+                           if (std::count(t.begin(), t.end(), '[') >= 1) {
+                              st.insert(t);
+                           }
+                        }
+                        return;
+                     }
+                     if (r == 0) {
+                        return;
+                     }
+                     if (op > 0) {
+                        for (int j = 1; j <= r; j++) {
+                           auto rs = std::string(j, 'R');
+                           auto t = s;
+                           t.append("(" + rs + ")");
+                           self(self, op - 1, cl, r - j, t);
+                        }
+                     }
+                     if (cl > 0) {
+                        for (int j = 1; j <= r; j++) {
+                           auto rs = std::string(j, 'R');
+                           auto t = s;
+                           t.append("[" + rs + "]");
+                           self(self, op, cl - 1, r - j, t);
+                        }
+                     }
+                     if (s.back() != 'R') {
+                        for (int j = 1; j <= r; j++) {
+                           auto rs = std::string(j, 'R');
+                           auto t = s;
+                           t.append(rs);
+                           self(self, op, cl, r - j, t);
+                        }
+                     }
+                  };
+      
+                  rec(rec, op, cl, n, "");
+               }
+            }
+         }
+      
+         of << st.size() << std::endl;
+         for (string sub : st) {
+            Generator gen;
+            gen.source = sub;
+            auto s = gen.generate2D(false);
+            of << s.size() << std::endl;
+            for (auto si : s) {
+               of << si << std::endl;
+            }
+         }
+         of.close();
+      }
+
+
 
    return 0;
 }
