@@ -549,12 +549,23 @@ int32_t main(int32_t argc, char *argv[]) {
         }
         // N,M,Qが最大の場合
         {
+            t = 1;
             {
                 string filename = ::format("14_subtask_max_%02d.in", t++);
                 int N = SUBTASK_MAX_N;
                 int M = SUBTASK_MAX_M;
                 int Q = SUBTASK_MAX_Q;
                 Input in = make_input(N, M, Q);
+                write_output(filename, in);
+            }
+            {
+                string filename = ::format("14_subtask_max_%02d.in", t++);
+                int N = SUBTASK_MAX_N;
+                int M = SUBTASK_MAX_M;
+                int Q = SUBTASK_MAX_Q;
+                random_query_config config;
+                config.random3query = true;
+                Input in = make_input(N, M, Q, config);
                 write_output(filename, in);
             }
             {
@@ -782,9 +793,7 @@ int32_t main(int32_t argc, char *argv[]) {
                 int N = MAX_N;
                 int M = MAX_M;
                 int Q = MAX_Q;
-                random_query_config config;
-                config.random3query = true;
-                Input in = make_input(N, M, Q, config);
+                Input in = make_input(N, M, Q);
                 write_output(filename, in);
             }
             {
