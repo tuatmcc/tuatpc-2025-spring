@@ -63,7 +63,7 @@ void makeSampleTestcase(){
      * */
 }
 
-void makeHandTestcase(){
+void makeHandTestcaseEasy(){
     /*ofstream of3(format("01_hand_02.in").c_str());
     of3 << "1 1" << endl;
     of3 << "2" << endl;
@@ -142,28 +142,31 @@ void makeHandTestcase(){
      * 0 1
      * */
 
+}
+
+void makeHandTestcase(){
     /*分母が最大になるケース1*/
-    ofstream of7(format("01_hand_04.in").c_str());
+    ofstream of7(format("03_hand_01.in").c_str());
     /*N*/
     int _MAX_N = 10000;
     int N = rnd.next(MIN_N, _MAX_N);
     of7 << N;
     /*L*/
     of7 << " 8" << endl;
-
+    
     /*A*/
     for(int j = 0; j < 8; j++){
         if(j != 0)of7 << " ";
         of7 << rnd.next(1, N);
     }
     of7 << endl;
-
+    
     for(int j = 0; j < N; j++){
         /*M*/
         of7 << "10";
         /*X*/
         of7 << " " << rnd.next(1, N) << endl;
-
+    
         /*V*/
         set<int> vset;
         while(vset.size() < 10){
@@ -176,7 +179,7 @@ void makeHandTestcase(){
             of7 << v;
         }
         of7 << endl;
-
+    
         /*W*/
         for(int k = 0; k < 10; k++){
             if(k == 0)of7 << "1";
@@ -185,28 +188,28 @@ void makeHandTestcase(){
         of7 << endl;
     }
     of7.close();
-
+    
     /*分母が最大になるケース2*/
-    ofstream of8(format("01_hand_05.in").c_str());
+    ofstream of8(format("03_hand_02.in").c_str());
     /*N*/
     N = rnd.next(MIN_N, _MAX_N);
     of8 << N;
     /*L*/
     of8 << " 8" << endl;
-
+    
     /*A*/
     for(int j = 0; j < 8; j++){
         if(j != 0)of8 << " ";
         of8 << rnd.next(1, N);
     }
     of8 << endl;
-
+    
     for(int j = 0; j < N; j++){
         /*M*/
         of8 << "8";
         /*X*/
         of8 << " " << rnd.next(1, N) << endl;
-
+    
         /*V*/
         set<int> vset;
         while(vset.size() < 8){
@@ -219,7 +222,7 @@ void makeHandTestcase(){
             of8 << v;
         }
         of8 << endl;
-
+    
         /*W*/
         for(int k = 0; k < 8; k++){
             if(k == 0)of8 << "9";
@@ -227,30 +230,30 @@ void makeHandTestcase(){
         }
         of8 << endl;
     }
-
+    
     of8.close();
-
+    
     /*約分が必要になるケース1*/
-    ofstream of9(format("01_hand_06.in").c_str());
+    ofstream of9(format("03_hand_03.in").c_str());
     /*N*/
     N = rnd.next(MIN_N, _MAX_N);
     of9 << N;
     /*L*/
     of9 << " 8" << endl;;
-
+    
     /*A*/
     for(int j = 0; j < 8; j++){
         if(j != 0)of9 << " ";
         of9 << rnd.next(1, N);
     }
     of9 << endl;
-
+    
     for(int j = 0; j < N; j++){
         /*M*/
         of9 << "10";
         /*X*/
         of9 << " " << rnd.next(1, N) << endl;
-
+    
         /*V*/
         set<int> vset;
         while(vset.size() < 10){
@@ -263,7 +266,7 @@ void makeHandTestcase(){
             of9 << v;
         }
         of9 << endl;
-
+    
         /*W*/
         for(int k = 0; k < 10; k++){
             if(k == 0)of9 << "10";
@@ -271,30 +274,30 @@ void makeHandTestcase(){
         }
         of9 << endl;
     }
-
+    
     of9.close();
-
+    
     /*約分が必要になるケース2*/
-    ofstream of10(format("01_hand_07.in").c_str());
+    ofstream of10(format("03_hand_04.in").c_str());
     /*N*/
     N = rnd.next(MIN_N, _MAX_N);
     of10 << N;
     /*L*/
     of10 << " 8" << endl;
-
+    
     /*A*/
     for(int j = 0; j < 8; j++){
         if(j != 0)of10 << " ";
         of10 << rnd.next(1, N);
     }
     of10 << endl;
-
+    
     for(int j = 0; j < N; j++){
         /*M*/
         of10 << "9";
         /*X*/
         of10 << " " << rnd.next(1, N) << endl;
-
+    
         /*V*/
         set<int> vset;
         while(vset.size() < 9){
@@ -307,7 +310,7 @@ void makeHandTestcase(){
             of10 << v;
         }
         of10 << endl;
-
+    
         /*W*/
         for(int k = 0; k < 9; k++){
             if(k == 0)of10 << "4";
@@ -315,7 +318,7 @@ void makeHandTestcase(){
         }
         of10 << endl;
     }
-
+    
     of10.close();
 }
 
@@ -413,7 +416,7 @@ void makeRandomTestcaseEasy(){
 
 void makeRandomTestcase(){
     for(int i = 0; i < 10; i++){
-        ofstream of(format("03_random_%02d.in", i + 1).c_str());
+        ofstream of(format("04_random_%02d.in", i + 1).c_str());
         /*N*/
         int N = rnd.next(MIN_N, MAX_N);
         of << N;
@@ -472,7 +475,7 @@ void makeRandomTestcase(){
 /*分岐が多いテストケース*/
 void makeRandomTestcase2(){
     for(int i = 10; i < 20; i++){
-        ofstream of(format("03_random_%02d.in", i + 1).c_str());
+        ofstream of(format("04_random_%02d.in", i + 1).c_str());
         /*N*/
         int MAX_N_ = 1000;
         int N = rnd.next(MIN_N, MAX_N_);
@@ -531,7 +534,7 @@ void makeRandomTestcase2(){
 
 void makeMaxTestcase(){
     /*Nが最大かつMiの総和が最大*/
-    ofstream of(format("03_max_01.in").c_str());
+    ofstream of(format("04_max_01.in").c_str());
     /*N*/
     int N = MAX_N;
     of << N;
@@ -558,7 +561,7 @@ void makeMaxTestcase(){
     of.close();  
 
     /*dfsだとTLEする, N = 1000でThe sum of Mi = 100*/
-    ofstream of2(format("03_max_02.in").c_str());
+    ofstream of2(format("04_max_02.in").c_str());
     /*N*/
     N = MAX_N / 100;
     of2 << N;
@@ -597,15 +600,17 @@ void makeMaxTestcase(){
 int main(int argc, char* argv[]){
     registerGen(argc, argv, 1);
     //サンプル
-    makeSampleTestcase();
+    makeSampleTestcase();//00
     //手動で作成したケース(要ります？)
-    makeHandTestcase();
+    makeHandTestcaseEasy();//01
     //部分点
-    makeRandomTestcaseEasy();
+    makeRandomTestcaseEasy();//02
+    //手動ケース(オーバーフロー)
+    makeHandTestcase();//03
     //ランダム
-    makeRandomTestcase();
+    makeRandomTestcase();//04
     //ランダム
-    makeRandomTestcase2();
+    makeRandomTestcase2();//04
     //最大ケース
-    makeMaxTestcase();
+    makeMaxTestcase();//04
 }
