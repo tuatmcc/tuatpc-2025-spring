@@ -63,7 +63,7 @@ $T$ 個のテストケースが与えられるので、それぞれについて�
 - $N, T$ は整数
 - $S$ は文法 $G$ に従って得られる文字列
 - $S$ に含まれる `^v^v^v` の数は $ {@constraints.REG_MAX} $ 個以下
-- $\mathrm{case}_i$ の $S$ の $j$ 行目の文字列の長さを $|S_{ij}|$ として、$\sum_{} |S_{ij}| \leq {@constraints.S_MAX}$
+- $i$ 番目のテストケースの $S$ の $j$ 行目の文字列の長さを $|S_{ij}|$ として、$\sum_{} |S_{ij}| \leq {@constraints.S_MAX}$
 
 ### 部分点
 
