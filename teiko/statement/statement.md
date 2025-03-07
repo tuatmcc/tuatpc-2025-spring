@@ -59,10 +59,10 @@ $T$ 個のテストケースが与えられるので、それぞれについて�
 
 ## 制約
 
-- ${@constraints.T_MIN} \leq T \leq {@constraints.T_MAX}$
+- $ {@constraints.T_MIN} \leq T \leq {@constraints.T_MAX} $
 - $N, T$ は整数
 - $S$ は文法 $G$ に従って得られる文字列
-- $S$ に含まれる `^v^v^v` の数は ${@constraints.REG_MAX}$ 個以下
+- $S$ に含まれる `^v^v^v` の数は $ {@constraints.REG_MAX} $ 個以下
 - $\mathrm{case}_i$ の $S$ の $j$ 行目の文字列の長さを $|S_{ij}|$ として、$\sum |S_{ij}| \leq {@constraints.S_MAX}$
 
 ### 部分点
