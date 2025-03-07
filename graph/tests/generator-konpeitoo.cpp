@@ -481,17 +481,21 @@ void makeRandomTestcase2(){
         int N = rnd.next(MIN_N, MAX_N_);
         of << N;
         /*L*/
-        int L = rnd.next(MIN_L, MAX_L);
+        int MIN_L_ = 6;
+        //int L = rnd.next(MIN_L, MAX_L);
+        int L = rnd.next(MIN_L_, MAX_L);
         of << " " << L << endl;
         /*A*/
         for(int j = 0; j < L; j++){
             if(j != 0)of << " ";
-            of << rnd.next(1, N);
+            //of << rnd.next(1, N);
+            of << rnd.next(1, min(2, N));
         }
         of << endl;
         /*M*/
         int MAX_MSUM_ = min((long long)pow(N, 2), (long long)100000);
-        int MAX_MSUM = rnd.next(N, MAX_MSUM_);
+        //int MAX_MSUM = rnd.next(N, MAX_MSUM_);
+        int MAX_MSUM = MAX_MSUM_;
         set<int> mset;
         while(mset.size() < N){
             mset.insert(rnd.next(1, MAX_MSUM));
@@ -502,7 +506,8 @@ void makeRandomTestcase2(){
             mPrev = m;
             of << M;
             /*X*/
-            of << " " << rnd.next(1, N) << endl;
+            //of << " " << rnd.next(1, N) << endl;
+            of << " " << rnd.next(1, min(2, N)) << endl;
             /*V*/
             set<int> vset;
             while(vset.size() < M){
