@@ -7,7 +7,17 @@
 using namespace std::literals::string_literals;
 using Fp = atcoder::modint998244353;
 
+int solve();
+
 int main() {
+    int q;
+    std::cin >> q;
+    while (q--) {
+        solve();
+    }
+}
+
+int solve() {
     //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     //  1. 入力
     //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
