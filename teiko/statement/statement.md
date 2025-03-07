@@ -63,7 +63,7 @@ $T$ 個のテストケースが与えられるので、それぞれについて�
 - $N, T$ は整数
 - $S$ は文法 $G$ に従って得られる文字列
 - $S$ に含まれる `^v^v^v` の数は $30$ 個以下
-- $i$ 行目の文字列の長さを $|S_i|$ として、$N \times \underset{1 \le i \le N}{\max} |S_i| \leq {@constraints.S_MAX}$
+- $\mathrm{case}_i$ の $S$ の $j$ 行目の文字列の長さを $|S_{ij}|$ として、$\sum |S_{ij}| \leq {@constraints.S_MAX}$
 
 ### 部分点
 
