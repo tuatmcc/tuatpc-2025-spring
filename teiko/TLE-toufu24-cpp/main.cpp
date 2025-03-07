@@ -198,7 +198,7 @@ void solve() {
     for (auto& si : s) {
         getline(cin, si);
         w = std::max<int>(w, si.size());
-        cout << "si # => " << si << std::endl;
+        cerr << "si # => " << si << std::endl;
     }
 
     // 長さを揃える

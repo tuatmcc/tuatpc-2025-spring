@@ -14,6 +14,8 @@ markdown_extensions = ["md_in_html", "tables", "fenced_code"]
 
 # 問題の制約
 [constraints]
+Q_MIN = 100000
+Q_MAX = 100000
 S_MAX = 1500000
 
 [mofe]

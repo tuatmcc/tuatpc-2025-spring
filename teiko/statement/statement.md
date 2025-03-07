@@ -59,7 +59,8 @@ $T$ 個のテストケースが与えられるので、それぞれについて�
 
 ## 制約
 
-- $N$ は整数
+- $1 \leq T \leq {@constraints.T_MAX}$
+- $N, T$ は整数
 - $S$ は文法 $G$ に従って得られる文字列
 - $S$ に含まれる `^v^v^v` の数は $30$ 個以下
 - $i$ 行目の文字列の長さを $|S_i|$ として、$N \times \underset{1 \le i \le N}{\max} |S_i| \leq {@constraints.S_MAX}$
@@ -74,6 +75,19 @@ $T$ 個のテストケースが与えられるので、それぞれについて�
 
 <div class="code-math">
 
+$T$
+$\mathrm{case}_1$
+$\vdots$
+$\mathrm{case}_N$
+
+</div>
+
+
+各テストケースは以下の形式で与えられます。
+
+
+<div class="code-math">
+
 $N$
 $S_1$
 $\vdots$
@@ -83,6 +97,8 @@ $S_N$
 
 ## 出力
 
-答えを標準出力に出力してください。
+標準出力に $T$ 行出力してください。
+
+$i$ 行目には $\mathrm{case}_i$ に対する答えを標準出力に出力してください。
 
 {@samples.all}
