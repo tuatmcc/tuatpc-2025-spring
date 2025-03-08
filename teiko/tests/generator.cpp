@@ -1080,7 +1080,7 @@ int main(int argc, char *argv[])
          std::string unit = "[RR]";
 
          gen.source = "(";
-         for (int i = 0; i < R_NUM_MAX; i++)
+         for (int i = 0; i < R_NUM_MAX / 2; i++)
          {
             gen.source.append(unit);
          }

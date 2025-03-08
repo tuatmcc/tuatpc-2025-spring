@@ -12,7 +12,7 @@ const int MAX_REG = 30;
 
 int main(int argc, char* argv[]){
    registerValidation(argc, argv);
-   int Q = inf.readInt();
+   int Q = inf.readInt(Q_MIN, Q_MAX);
    inf.readEoln();
 
    int sum = 0;
