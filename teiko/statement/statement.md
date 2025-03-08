@@ -12,7 +12,7 @@
 
 <div align="center">
 
-![回路図](https://hackmd.io/_uploads/SJ7Ee5Ysyx.svg)
+<img src="https://hackmd.io/_uploads/SJ7Ee5Ysyx.svg" width="75%">
 
 図 1 : 生成規則
 
@@ -26,7 +26,7 @@
 
 <div align="center">
 
-![連結例](https://hackmd.io/_uploads/S1G-ectiyg.svg)
+<img src="https://hackmd.io/_uploads/S1G-ectiyg.svg" width="75%">
 
 図 2 : $2$ つの記号の連結例
 
@@ -44,7 +44,7 @@
 
 <div align="center">
 
-![並列(2)](https://hackmd.io/_uploads/Bkueljuo1e.svg)
+<img src="https://hackmd.io/_uploads/Bkueljuo1e.svg" width="75%">
 
 図 3 : `<並列抵抗>` の置換例
 
