@@ -12,7 +12,7 @@
 
 <div align="center">
 
-![回路図](https://hackmd.io/_uploads/SJCL7xo5ke.png)
+![回路図](https://hackmd.io/_uploads/SJ7Ee5Ysyx.svg)
 
 図 1 : 生成規則
 
@@ -26,7 +26,7 @@
 
 <div align="center">
 
-![連結例](https://hackmd.io/_uploads/HkWTAc_sye.svg)
+![連結例](https://hackmd.io/_uploads/S1G-ectiyg.svg)
 
 図 2 : $2$ つの記号の連結例
 
