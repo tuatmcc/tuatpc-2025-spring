@@ -31,7 +31,7 @@
 
 ### 部分点
 <!-- セグ木 -->
-以下の制約を追加したデータセットに正解した場合は $1$ 点が与えられる。
+以下の制約を追加したデータセットに正解した場合は $1$ 点が与えられます。
 - ${@constraints.SUBTASK_MIN_N} \le N \le {@constraints.SUBTASK_MAX_N}$
 - ${@constraints.SUBTASK_MIN_M} \le M \le {@constraints.SUBTASK_MAX_M}$
 
