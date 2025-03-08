@@ -26,7 +26,7 @@
 
 <div align="center">
 
-<img src="https://hackmd.io/_uploads/S1G-ectiyg.svg" width="75%">
+<img src="https://hackmd.io/_uploads/HyByfqFjkg.svg" width="75%">
 
 図 2 : $2$ つの記号の連結例
 
